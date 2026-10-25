@@ -55256,7 +55256,10 @@ function ensureAC() {
   NB = AC.createBuffer(1, AC.sampleRate * 2, AC.sampleRate); const ch = NB.getChannelData(0); for (let i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
   const s = AC.createBufferSource(); s.buffer = AC.createBuffer(1, 1, 22050); s.connect(AC.destination); s.start(0);
   LAT = AC.outputLatency || AC.baseLatency || 0;
+  if (G.started && !BUS) lateAudio();
 }
+// 比赛已经在跑时才拿到音频：让音乐时钟对齐当前游戏时间，从当前位置接着放
+function lateAudio() { mixBus(); T0 = AC.currentTime - LAT - G.now; SP = SG.mus.findIndex(e => e.t >= G.now + .02); if (SP < 0) SP = SG.mus.length; engineOn(); }
 const mf = m => 440 * Math.pow(2, (m - 69) / 12);
 function env(g, t, a, peak, dec) { g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + dec); }
 function osc(type, f, t, dur, peak, dest, a) { a = a || .005; const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.setValueAtTime(f, t); env(g, t, a, peak, dur); o.connect(g); g.connect(dest); o.start(t); o.stop(t + a + dur + .05); return o; }
@@ -56043,7 +56046,7 @@ function openUI(type) {
   } else {
     const y0 = H / 2 - 400;
     LEVELS.forEach((L, i) => B.push({ x: 48 + (i % 2) * 316, y: y0 + (i >> 1) * 200, w: 304, h: 188, lv: i, c: unlocked(i) ? '#ffffff' : '#9aa0ae', act: () => unlocked(i) && reset(i, true) }));
-    B.push({ x: 230, y: y0 + 812, w: 260, h: 84, label: '返回', c: '#ffd23f', act: () => { if (G.over) openUI('result'); else if (G.started) openUI('pause'); else G.ui = null; } });
+    B.push({ x: 230, y: y0 + 812, w: 260, h: 84, label: '返回', c: '#ffd23f', act: () => { if (G.over) openUI('result'); else if (G.started) openUI('pause'); else { G.ui = null; startRun(); } } });
   }
   G.ui = { type, B, t: performance.now() };
 }
@@ -56058,7 +56061,7 @@ const SWIPE = 46, PTR = {};
 function down(x, y, id) {
   ensureAC();
   if (G.ui) { uiTap(x, y); return; }
-  if (Math.hypot(x - 668, y - 62) < 48) { if (G.started && !G.over) pause(); else if (!G.started) openUI('select'); return; }
+  if (Math.hypot(x - 668, y - 62) < 48) { if (G.started && !G.over) pause(); else if (!G.started) startRun(); return; }
   if (!G.started) { startRun(); return; }
   if (G.item && Math.hypot(x - IBX, y - IBY()) < IBR + 10) { useItem(); return; }
   PTR[id] = { x, y, used: false };
@@ -56344,6 +56347,135 @@ function frame(dt) {
 }
 function loop(t) { const dt = Math.min(.05, (t - last) / 1000); last = t; step(dt); frame(dt); requestAnimationFrame(loop); }
 
+// ====================== 车库 v2：3D 转台展厅 + 性能条 + 改装卡片 + 涂装色板（build.js 内联到 //<!--GARAGE--> 处） ======================
+// 展厅用独立的小场景渲染到同一个 WebGL 画布：上半屏是旋转的赛车，下半屏 HUD 画改装 / 涂装
+let GAR = null;
+function garScene() {
+  if (GAR) return GAR;
+  const S = new THREE.Scene(); S.background = new THREE.Color('#0d1022');
+  S.fog = new THREE.Fog('#0d1022', 18, 46);
+  const cam = new THREE.PerspectiveCamera(34, W / H, .1, 200);
+  S.add(new THREE.HemisphereLight('#c9d6ff', '#1a1430', 1.1));
+  const key = new THREE.DirectionalLight('#ffffff', 2.4); key.position.set(6, 10, 7); key.castShadow = true; key.shadow.mapSize.set(1024, 1024);
+  const kc = key.shadow.camera; kc.left = -6; kc.right = 6; kc.top = 6; kc.bottom = -6; key.shadow.bias = -.0005; S.add(key);
+  const rim = new THREE.DirectionalLight('#ff4fd8', 1.6); rim.position.set(-8, 4, -6); S.add(rim);
+  const rim2 = new THREE.DirectionalLight('#3ef0ff', 1.3); rim2.position.set(8, 3, -8); S.add(rim2);
+  // 转台：深色底座 + 发光圈 + 网格地面
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 4.7, .36, 48), new THREE.MeshStandardMaterial({ color: '#1b1f33', metalness: .6, roughness: .35 }));
+  base.position.y = -.18; base.receiveShadow = true; S.add(base);
+  const top = new THREE.Mesh(new THREE.CircleGeometry(4.25, 48).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: '#262b45', metalness: .3, roughness: .5 }));
+  top.position.y = .005; top.receiveShadow = true; S.add(top);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(4.45, .07, 8, 64).rotateX(Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#3ef0ff' })); S.add(ring);
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(3.2, .03, 6, 64).rotateX(Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#ff4fd8', transparent: true, opacity: .7 })); ring2.position.y = .02; S.add(ring2);
+  const grid = new THREE.GridHelper(80, 40, '#2c2f55', '#1a1d38'); grid.position.y = -.36; S.add(grid);
+  // 背景光柱
+  for (let i = 0; i < 7; i++) { const a = -1.2 + i * .4, m = new THREE.Mesh(new THREE.BoxGeometry(.18, 14, .18), new THREE.MeshBasicMaterial({ color: i % 2 ? '#ff4fd8' : '#3ef0ff', transparent: true, opacity: .45 })); m.position.set(Math.sin(a) * 16, 6, -Math.cos(a) * 16); S.add(m); }
+  GAR = { S, cam, ring, ring2, piv: new THREE.Group(), car: null, col: null, spin: 0, drag: null, vel: .6, pulse: 0 };
+  S.add(GAR.piv);
+  return GAR;
+}
+function garCar() {
+  const g = garScene(), c = carCol();
+  if (g.col === c && g.car) return;
+  if (g.car) g.piv.remove(g.car);
+  g.car = makeCar(c, '1'); g.car.traverse(o => { if (o.isMesh) o.castShadow = true; }); g.car.scale.setScalar(1.15); g.piv.add(g.car); g.col = c; g.pulse = 1;
+}
+// 在 render3D 之后：车库打开时，把展厅画到上半屏（剪裁区域），其余照常
+function garRender(rdt) {
+  const g = garScene(); garCar();
+  if (!g.drag) { g.vel = lerp(g.vel, .6, rdt * 1.5); g.spin += g.vel * rdt; }
+  g.piv.rotation.y = g.spin; g.pulse = Math.max(0, g.pulse - rdt * 2);
+  g.piv.position.y = .02 + Math.sin(performance.now() / 700) * .04; g.piv.scale.setScalar(1 + g.pulse * .06);
+  g.ring.material.color.setHSL((performance.now() / 6000) % 1, .9, .6); g.ring2.rotation.y += rdt * .5;
+  // 车的摆位：上半屏中间（像素空间）
+  const top = GY0 * CSSH / H, hgt = (GY1 - GY0) * CSSH / H;
+  g.cam.aspect = CSSW / hgt; g.cam.position.set(0, 3.2, 10.8); g.cam.lookAt(0, .9, 0); g.cam.updateProjectionMatrix();
+  R3.setScissorTest(true); R3.setScissor(0, CSSH - top - hgt, CSSW, hgt); R3.setViewport(0, CSSH - top - hgt, CSSW, hgt);
+  R3.render(g.S, g.cam);
+  R3.setScissorTest(false); R3.setViewport(0, 0, CSSW, CSSH);
+}
+const GY0 = 116; let GY1 = 520; // 展厅占的 HUD 坐标范围（高屏手机展厅更高）
+// 性能：0..1，用于雷达 / 条形
+function stats() {
+  return [['极速', .35 + ul('eng') * .13, '#ff9f1c'], ['氮气', .3 + ul('nit') * .14, '#3ef0ff'], ['吸金', .3 + ul('mag') * .1 + ul('luck') * .04, '#ffd23f'], ['耐撞', .3 + ul('arm') * .14, '#7fe7ff']];
+}
+let GAR_TAB = 0, GAR_SEL = 0;
+function garOpen() {
+  GY1 = 520 + Math.round((H - 1280) * .45); const oy = GY1 - 520, ch = 166 + Math.round((H - 1280) * .12);
+  const B = [];
+  B.push({ x: 600, y: 30, w: 84, h: 70, draw: garClose, act: uiBack });
+  [['改装', 0], ['涂装', 1]].forEach(([n, i]) => B.push({ x: 40 + i * 324, y: 556 + oy, w: 316, h: 66, tab: i, name: n, draw: garTabBtn, act: () => { GAR_TAB = i; openUI('garage'); } }));
+  if (GAR_TAB === 0) {
+    UPG.forEach((u, i) => B.push({ x: 40 + (i % 2) * 324, y: 648 + oy + (i >> 1) * (ch + 12), w: 316, h: ch, u, draw: upCard, act: () => buyUp(u.k) }));
+    B[B.length - 1].x = 40; B[B.length - 1].w = 640; // 第 5 张卡横跨整行
+  } else {
+    PAINTS.forEach((p, i) => B.push({ x: 52 + (i % 4) * 158, y: 664 + oy + (i >> 2) * 190, w: 140, h: 172, i, draw: paintChip, act: () => pickPaint(i) }));
+  }
+  G.ui = { type: 'garage', B, t: performance.now() };
+}
+function garClose(b) { hx.beginPath(); hx.arc(b.x + 42, b.y + 35, 32, 0, 7); hx.fillStyle = 'rgba(255,255,255,.12)'; hx.fill(); hx.lineWidth = 3; hx.strokeStyle = 'rgba(255,255,255,.5)'; hx.stroke(); txt('✕', b.x + 42, b.y + 37, 32, '#ffffff'); }
+function garTabBtn(b) {
+  const on = GAR_TAB === b.tab; rr(b.x, b.y, b.w, b.h, 33);
+  if (on) { const g = hx.createLinearGradient(b.x, 0, b.x + b.w, 0); g.addColorStop(0, '#ff9f1c'); g.addColorStop(1, '#ff4fd8'); hx.fillStyle = g; } else hx.fillStyle = 'rgba(255,255,255,.07)';
+  hx.fill(); txt((b.tab ? '🎨 ' : '🔧 ') + b.name, b.x + b.w / 2, b.y + b.h / 2 + 2, 30, on ? '#ffffff' : '#c9cde0', on ? 'rgba(0,0,0,.25)' : null);
+}
+// 改装卡：图标徽章 + 名称 + 5 段等级 + 当前→下一级 + 价格按钮
+function upCard(b) {
+  const u = b.u, l = ul(u.k), max = l >= UMAX, cost = UCOST[l], ok = !max && META.gold >= cost, wide = b.w > 400;
+  hx.save(); hx.shadowColor = 'rgba(0,0,0,.4)'; hx.shadowBlur = 16; hx.shadowOffsetY = 6; rr(b.x, b.y, b.w, b.h, 24);
+  const g = hx.createLinearGradient(b.x, b.y, b.x, b.y + b.h); g.addColorStop(0, '#22263f'); g.addColorStop(1, '#171a2e'); hx.fillStyle = g; hx.fill(); hx.restore();
+  rr(b.x, b.y, b.w, b.h, 24); hx.lineWidth = 2; hx.strokeStyle = max ? u.c : 'rgba(255,255,255,.1)'; hx.stroke();
+  rr(b.x, b.y + 18, 6, b.h - 36, 3); hx.fillStyle = u.c; hx.fill();
+  // 徽章
+  const bx = b.x + 50, by = b.y + 52; hx.save(); hx.shadowColor = u.c; hx.shadowBlur = 18; hx.beginPath(); hx.arc(bx, by, 30, 0, 7); hx.fillStyle = u.c; hx.fill(); hx.restore();
+  txt(u.i, bx, by + 2, 30, '#151726');
+  txt(u.n, b.x + 94, b.y + 36, 27, '#ffffff', null, 'left');
+  for (let k = 0; k < UMAX; k++) { rr(b.x + 94 + k * 26, b.y + 60, 21, 10, 5); hx.fillStyle = k < l ? u.c : 'rgba(255,255,255,.15)'; hx.fill(); }
+  txt('Lv.' + l, b.x + b.w - 20, b.y + 36, 22, max ? u.c : '#c9cde0', null, 'right', true);
+  txt(max ? u.f(l) : '→ ' + u.f(l + 1), b.x + 22, b.y + (wide ? 106 : 98), wide ? 21 : 18, max ? u.c : '#c9cde0', null, 'left');
+  // 价格按钮
+  const pw = wide ? 200 : b.w - 44, px = wide ? b.x + b.w - pw - 22 : b.x + 22, py = b.y + b.h - 50;
+  rr(px, py, pw, 38, 19);
+  if (max) { hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); txt('★ 满级', px + pw / 2, py + 20, 21, u.c); }
+  else { if (ok) { const pg = hx.createLinearGradient(px, 0, px + pw, 0); pg.addColorStop(0, '#7ee081'); pg.addColorStop(1, '#3fc28a'); hx.fillStyle = pg; } else hx.fillStyle = '#3a3e52'; hx.fill(); txt('升级  🪙 ' + cost, px + pw / 2, py + 20, 21, ok ? '#0f2a1a' : '#8a8fa3'); }
+}
+// 涂装：圆形色片 + 小车剪影 + 状态
+function paintChip(b) {
+  const p = PAINTS[b.i], own = META.cars.includes(b.i), on = META.car === b.i, cx = b.x + b.w / 2, cy = b.y + 62;
+  rr(b.x, b.y, b.w, b.h, 22); hx.fillStyle = on ? 'rgba(255,210,63,.12)' : 'rgba(255,255,255,.05)'; hx.fill();
+  hx.lineWidth = on ? 4 : 1.5; hx.strokeStyle = on ? '#ffd23f' : 'rgba(255,255,255,.12)'; hx.stroke();
+  hx.save(); if (own) { hx.shadowColor = p.c; hx.shadowBlur = 20; }
+  const g = hx.createRadialGradient(cx - 14, cy - 14, 6, cx, cy, 44); g.addColorStop(0, '#ffffff'); g.addColorStop(.25, p.c); g.addColorStop(1, shade(p.c, -.45));
+  hx.beginPath(); hx.arc(cx, cy, 42, 0, 7); hx.fillStyle = g; hx.globalAlpha = own ? 1 : .35; hx.fill(); hx.restore();
+  if (!own) txt('🔒', cx, cy + 2, 30, '#ffffff');
+  if (on) { hx.beginPath(); hx.arc(cx + 32, cy - 32, 15, 0, 7); hx.fillStyle = '#ffd23f'; hx.fill(); txt('✓', cx + 32, cy - 31, 20, '#151726'); }
+  txt(p.n, cx, b.y + 124, 23, own ? '#ffffff' : '#9aa0ae');
+  const afford = p.p && META.gold >= p.p;
+  txt(on ? '使用中' : own ? '点击换装' : p.p ? '🪙 ' + p.p : p.short, cx, b.y + 152, p.p || own ? 19 : 16, on ? '#ffd23f' : own ? '#7ee081' : afford ? '#7ee081' : '#8a8fa3');
+}
+function shade(hex, k) { const c = new THREE.Color(hex); c.multiplyScalar(1 + k); return '#' + c.getHexString(); }
+function drawGarage2() {
+  // 背景：下半屏深色渐变，上半屏留给 3D 展厅（透明）
+  hx.clearRect(0, 0, W, H);
+  const g = hx.createLinearGradient(0, GY1 - 40, 0, H); g.addColorStop(0, 'rgba(13,16,34,0)'); g.addColorStop(.08, '#0d1022'); g.addColorStop(1, '#0a0c1a'); hx.fillStyle = g; hx.fillRect(0, GY1 - 40, W, H);
+  hx.fillStyle = '#0d1022'; hx.fillRect(0, 0, W, GY0 - 2);
+  // 顶栏
+  txt('车库', 40, 64, 46, '#ffffff', null, 'left', true);
+  rr(196, 40, 196, 50, 25); hx.fillStyle = 'rgba(255,210,63,.14)'; hx.fill(); hx.lineWidth = 2; hx.strokeStyle = 'rgba(255,210,63,.5)'; hx.stroke();
+  txt('🪙 ' + META.gold, 294, 66, 28, '#ffd23f', null, 'center', true);
+  // 展厅里叠加：涂装名 + 性能条
+  const p = PAINTS[META.car] || PAINTS[0];
+  txt(p.n, 40, GY0 + 40, 30, '#ffffff', 'rgba(0,0,0,.5)', 'left', true); txt('No.1  ·  ' + META.cars.length + '/' + PAINTS.length + ' 涂装', 40, GY0 + 74, 20, '#c9cde0', 'rgba(0,0,0,.5)', 'left');
+  stats().forEach(([n, v, c], i) => { const y = GY1 - 118 + i * 28; txt(n, 470, y, 19, '#c9cde0', 'rgba(0,0,0,.5)', 'right');
+    rr(484, y - 7, 196, 14, 7); hx.fillStyle = 'rgba(0,0,0,.45)'; hx.fill(); rr(484, y - 7, 196 * clamp(v, .05, 1), 14, 7); hx.fillStyle = c; hx.fill(); });
+  txt('← 拖动旋转 →', 40, GY1 - 24, 18, 'rgba(255,255,255,.45)', null, 'left');
+  if (GAR_TAB === 1) txt('涂装只改外观，不影响性能', W / 2, 642 + GY1 - 520, 20, '#8a8fa3');
+}
+// 拖动旋转：在展厅区域按下 → 横向拖动转车
+function garDown(x, y) { if (y > GY0 && y < GY1) { GAR.drag = { x, t: performance.now() }; return true; } return false; }
+function garMove(x) { if (!GAR || !GAR.drag) return; const dx = x - GAR.drag.x; GAR.spin += dx * .012; GAR.vel = dx * .012 / Math.max(.016, (performance.now() - GAR.drag.t) / 1000); GAR.drag = { x, t: performance.now() }; }
+function garUp() { if (GAR) GAR.drag = null; }
+
 // ====================== 局外养成（车库）+ 收集图鉴 + 玩法说明（build.js 内联到 //<!--META--> 处） ======================
 // 金币：赛道金币 ×2 + 名次奖励 + 新星奖励，结算时入账；车库升级 5 项改装、买涂装；图鉴 6 类 48 项，首次解锁送金币
 const UPG = [
@@ -56463,22 +56595,20 @@ function pickPaint(i) {
 
 // ---------------- 界面 ----------------
 let CX_TAB = 0, START_B = [];
-const uiBack = () => { if (G.over) openUI('result'); else if (G.started) openUI('pause'); else G.ui = null; };
+const uiBack = () => { if (G.over) openUI('result'); else if (G.started && G.paused) openUI('pause'); else G.ui = null; };
 const MT = { garage: drawGarage, codex: drawCodex, help: drawHelp };
 const _openUI = openUI;
 openUI = function (type) {
   if (!MT[type]) {
     _openUI(type);
     if (type === 'result') { const y = H / 2 + 470; G.ui.B.push({ x: 70, y, w: 280, h: 76, label: '🔧 车库', c: '#ff9f1c', act: () => openUI('garage') }, { x: 370, y, w: 280, h: 76, label: '📖 图鉴', c: '#7fe7ff', act: () => openUI('codex') }); }
-    if (type === 'pause') { G.ui.B.forEach((b, i) => { b.y = H / 2 - 140 + i * 100; b.h = 84; }); G.ui.B.push({ x: 170, y: H / 2 + 160, w: 380, h: 84, label: '❓ 玩法', c: '#7fe7ff', act: () => openUI('help') }); }
+    if (type === 'pause') { G.ui.B.forEach((b, i) => { b.y = H / 2 - 150 + i * 100; b.h = 84; });
+      [['🔧 车库', '#ff9f1c', 'garage', canUp()], ['📖 图鉴', '#7fe7ff', 'codex', META.cxNew > 0], ['❓ 玩法', '#d9e2f2', 'help', !META.help]].forEach((a, i) => G.ui.B.push({ x: 150 + i * 144, y: H / 2 + 156, w: 132, h: 80, label: a[0], c: a[1], dot: a[3], act: () => openUI(a[2]), draw: dotBtn })); }
     return;
   }
   const B = [];
-  if (type === 'garage') {
-    UPG.forEach((u, i) => B.push({ x: 524, y: H / 2 - 382 + i * 112, w: 140, h: 64, l: ul(u.k), draw: drawBuy, act: () => buyUp(u.k) }));
-    PAINTS.forEach((p, i) => B.push({ x: 48 + (i % 4) * 158, y: H / 2 + 222 + (i >> 2) * 118, w: 148, h: 108, i, draw: drawPaint, act: () => pickPaint(i) }));
-    B.push({ x: 240, y: H / 2 + 458, w: 240, h: 66, label: '返回', c: '#ffd23f', act: uiBack });
-  } else if (type === 'codex') {
+  if (type === 'garage') { if (G.started && !G.over && !G.paused) { G.paused = true; if (AC) AC.suspend(); } garOpen(); return; }
+  if (type === 'codex') {
     META.cxNew = 0; metaSave();
     CX_TABS.forEach((t, i) => B.push({ x: 44 + i * 106, y: H / 2 - 400, w: 98, h: 62, i, draw: drawTab, act: () => { CX_TAB = i; openUI('codex'); } }));
     B.push({ x: 240, y: H / 2 + 396, w: 240, h: 72, label: '返回', c: '#ffd23f', act: uiBack });
@@ -56491,10 +56621,12 @@ openUI = function (type) {
 const _drawUI = drawUI;
 drawUI = function () {
   const U = G.ui;
-  if (!MT[U.type]) { _drawUI(); if (U.type === 'result') drawReward(); return; }
+  if (!MT[U.type]) { const cus = U.B.filter(b => b.draw); U.B = U.B.filter(b => !b.draw); _drawUI(); U.B.push(...cus); cus.forEach(b => b.draw(b)); if (U.type === 'result') drawReward(); return; }
+  if (U.type === 'garage') { drawGarage2(); for (const b of U.B) b.draw ? b.draw(b) : btn(b); return; }
   hx.fillStyle = 'rgba(8,10,20,.72)'; hx.fillRect(0, 0, W, H);
   MT[U.type](); for (const b of U.B) b.draw ? b.draw(b) : btn(b);
 };
+function dotBtn(b) { const l = b.label; b.label = null; btn(b); b.label = l; txt(l, b.x + b.w / 2, b.y + b.h / 2 + 2, 26, '#151726'); if (b.dot) { hx.beginPath(); hx.arc(b.x + b.w - 8, b.y + 8, 10, 0, 7); hx.fillStyle = '#ff3b3b'; hx.fill(); hx.lineWidth = 2; hx.strokeStyle = '#fff'; hx.stroke(); } }
 function drawReward() {
   if (!G.reward) return; const y = H / 2 - 450;
   txt('🪙 +' + G.reward.gold, 630, y + 392, 34, '#ffd23f', '#151726', 'right', true);
@@ -56573,8 +56705,8 @@ function drawHelp() {
   txt(L.tip, W / 2, H / 2 + 278, 22, '#ffffff');
   txt('键盘：空格 踩点 · ← → 变道 · ↑ 道具 · P 暂停', W / 2, H / 2 + 338, 20, '#c9cde0');
 }
-// 开局面板：不再自动铺满操作说明，改成三个入口按钮
-drawStart = function () {
+// 旧开局面板（保留函数，不再调用）
+const drawStartOld = function () {
   const L = LEVELS[G.lv], th = WORLD.th, y = H * .2;
   panel(70, y, 580, 450, th.accent);
   txt('🪙 ' + META.gold, 626, y + 36, 24, '#ffd23f', null, 'right');
@@ -56593,13 +56725,21 @@ drawStart = function () {
   if (!META.help) txt('第一次玩？点 ❓ 看看怎么玩', W / 2, y + 426, 22, '#ffd23f');
   const k = 1 + Math.sin(performance.now() / 160) * .05; hx.save(); hx.translate(W / 2, SY() - 150); hx.scale(k, k); txt('点一下 · 起步!', 0, 0, 58, '#ffd23f', '#151726', 'center', true, 10); hx.restore();
 };
+// 角落快捷按钮：🔧 车库 / 📖 图鉴 / ❓ 玩法（任何时候可点，比赛中会自动暂停）
+function drawQB() {
+  if (G.ui || G.over) return;
+  if (canUp() || META.cxNew > 0) { hx.beginPath(); hx.arc(696, 34, 10, 0, 7); hx.fillStyle = '#ff3b3b'; hx.fill(); hx.lineWidth = 2; hx.strokeStyle = '#fff'; hx.stroke(); }
+  if (!AC && !AUTO) { const a = .6 + .4 * Math.sin(performance.now() / 220); hx.save(); hx.globalAlpha = a; txt('🔊 点一下屏幕开启音乐', W / 2, H * .3, 34, '#ffffff', '#151726', 'center', true, 8); hx.restore(); }
+}
 const _down = down;
 down = function (x, y, id) {
-  if (!G.ui && !G.started) for (const b of START_B) if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) { ensureAC(); sfx('ui'); openUI(b.ui); return; }
+  if (G.ui && G.ui.type === 'garage' && performance.now() - G.ui.t > 250 && garDown(x, y)) return;
   _down(x, y, id);
 };
+const _move = move; move = function (x, y, id) { garMove(x); _move(x, y, id); };
+const _up = up; up = function (id) { garUp(); _up(id); };
 const _frame = frame;
-frame = function (dt) { _frame(dt); drawToasts(); };
+frame = function (dt) { _frame(dt); if (G.ui && G.ui.type === 'garage') { garRender(dt); hx.setTransform(K, 0, 0, K, 0, 0); drawUI(); } else drawQB(); drawToasts(); };
 
 // ---------------- 游戏事件钩子：图鉴解锁 / 改装效果 / 结算发金币 ----------------
 const _reset = reset;
@@ -56638,6 +56778,7 @@ if (!AUTO) checkCars();
 
 // ====================== 启动：打开即站在发车格上 ======================
 reset(Q.has('lv') ? Math.min(NL - 1, +Q.get('lv')) : Math.min(SAVE.last || 0, NL - 1), false);
+if (!AUTO) { startRun(); G.now = -1; } // 打开网页 1 秒后直接倒计时发车
 if (AUTO) { // 演示 / 截图：按固定步长快进
   startRun(); const T = Q.has('res') ? 1e9 : +(Q.get('t') || 10);
   while (!(G.over && G.ui) && G.now < T) step(1 / 60);
@@ -56646,6 +56787,7 @@ if (AUTO) { // 演示 / 截图：按固定步长快进
   if (Q.has('shield')) G.shieldEnd = G.now + 6;
   if (Q.has('lane')) { G.p.lane = +Q.get('lane'); G.p.prevLane = 1; }
   for (let i = 0; i < 40; i++) render3D(1 / 60);
+  if (Q.has('gtab')) GAR_TAB = +Q.get('gtab');
   if (Q.has('ui')) openUI(Q.get('ui'));
   if (Q.has('freeze')) G.paused = true;
 }
