@@ -55035,15 +55035,29 @@ function canvasTex(w, h, draw) { const c = document.createElement('canvas'); c.w
 const THEMES = [
   { sky: ['#3d9bff', '#d6f0ff'], fog: '#cfe9ff', ground: ['#7fcf5c', '#6abb4a', '#8ad866'], road: '#4b5060', curb: ['#ff4b4b', '#ffffff'], line: '#ffffff', mount: ['#6aa38c', '#5b927c'], hemi: ['#ffffff', '#5d7d40'], sun: 2.2, deco: 'trees', accent: '#ffcf3f', lamp: '#ffd23f', clouds: '#ffffff' },
   { sky: ['#ff7a45', '#ffe2a6'], fog: '#ffd29b', ground: ['#e9b676', '#ddA562', '#f1c288'], road: '#5d4c48', curb: ['#2ec4b6', '#ffffff'], line: '#fff3d6', mount: ['#c4643c', '#a9512f'], hemi: ['#fff1d8', '#a0603a'], sun: 2.4, deco: 'cactus', accent: '#2ec4b6', lamp: '#2ec4b6', clouds: '#fff2dd' },
-  { sky: ['#07061c', '#2c1d63'], fog: '#1c1546', ground: ['#16132f', '#1b173a', '#120f28'], road: '#26223f', curb: ['#ff3fd0', '#3ef0ff'], line: '#3ef0ff', mount: ['#2b2463', '#231d52'], hemi: ['#7f7cff', '#20183a'], sun: .7, deco: 'city', accent: '#ff3fd0', lamp: '#3ef0ff', night: true },
+  { sky: ['#07061c', '#2c1d63'], fog: '#1c1546', ground: ['#16132f', '#1b173a', '#120f28'], road: '#26223f', curb: ['#ff3fd0', '#3ef0ff'], line: '#3ef0ff', mount: ['#2b2463', '#231d52'], hemi: ['#7f7cff', '#20183a'], sun: .7, deco: 'city', accent: '#ff3fd0', lamp: '#3ef0ff', night: true, stars: true, synth: true, sunC: '#ff4fd8' },
   { sky: ['#78a8e6', '#f1f7ff'], fog: '#e8f1ff', ground: ['#f5f9ff', '#e4edf8', '#fbfdff'], road: '#535c6e', curb: ['#3a7bff', '#ffffff'], line: '#ffd23f', mount: ['#a7bad3', '#93a9c6'], hemi: ['#ffffff', '#8fa5c0'], sun: 2.0, deco: 'pines', accent: '#3a7bff', lamp: '#ffb347', clouds: '#ffffff', snow: true },
+  // 4 樱花古都（黄昏）
+  { sky: ['#ff8f8b', '#ffe3d2'], fog: '#ffd9cf', ground: ['#9fd17a', '#8cc46a', '#b2dc8c'], road: '#5a5468', curb: ['#e2554f', '#ffffff'], line: '#ffffff', mount: ['#9a86b8', '#8a76a8'], hemi: ['#fff0f0', '#7a6a50'], sun: 2.0, deco: 'sakura', accent: '#ff6fa8', lamp: '#ffb347', clouds: '#fff0f4', sunC: '#fff1c4' },
+  // 5 雨林雷暴（阴天）
+  { sky: ['#26343e', '#76878d'], fog: '#6b7a7c', ground: ['#2f7a3a', '#276b33', '#3a8a44'], road: '#3a3e46', curb: ['#ffd23f', '#2a2a2a'], line: '#ffe9a8', mount: ['#355a45', '#2c4d3a'], hemi: ['#c9d8e0', '#2c4a30'], sun: .9, deco: 'jungle', accent: '#7ee081', lamp: '#ffe9a8', clouds: '#8e9aa1', sunC: '#d9e2e8' },
+  // 6 熔岩火山
+  { sky: ['#160707', '#a3341a'], fog: '#4e1c12', ground: ['#2a2224', '#33292a', '#1f1a1c'], road: '#2c2628', curb: ['#ff5a1f', '#2a2a2a'], line: '#ffb347', mount: ['#3a2a2a', '#2e2222'], hemi: ['#ffb08a', '#4a1a0e'], sun: 1.2, deco: 'lava', accent: '#ff7a2a', lamp: '#ff7a2a', night: true, sunC: '#ff6a2a' },
+  // 7 星际轨道
+  { sky: ['#02010a', '#1b1048'], fog: '#0c0a26', ground: ['#2a2550', '#231f45', '#30295c'], road: '#1c1a33', curb: ['#3ef0ff', '#a55eea'], line: '#a55eea', mount: ['#3a3270', '#2e275e'], hemi: ['#9fb4ff', '#1a1438'], sun: .9, deco: 'space', accent: '#3ef0ff', lamp: '#a55eea', night: true, stars: true, planet: true, sunC: '#bfe9ff' },
 ];
+// 每关一种天气（wx）+ 一个机制（mech）；天气强度跟着音乐段落走，副歌最猛
 const LEVELS = [
-  { name: '晴空环道', bpm: 104, root: 60, sty: 'pop', th: 0, diff: 0, seed: 11, R: 210, rivals: [34, 38, 41, 44, 47] },
-  { name: '沙漠峡谷', bpm: 118, root: 57, sty: 'funk', th: 1, diff: 1, seed: 23, R: 230, rivals: [36, 40, 43, 46, 50] },
-  { name: '霓虹夜城', bpm: 128, root: 57, sty: 'edm', th: 2, diff: 2, seed: 37, R: 220, rivals: [38, 42, 46, 49, 53] },
-  { name: '雪山之巅', bpm: 146, root: 55, sty: 'trap', th: 3, diff: 3, seed: 51, R: 240, rivals: [40, 44, 48, 52, 56] },
+  { name: '晴空环道', bpm: 104, root: 60, sty: 'pop', th: 0, diff: 0, seed: 11, R: 210, rivals: [34, 38, 41, 44, 47], wx: 'breeze', mech: ['gate'], tag: ['🍃 微风', '🌈 彩虹门'], tip: '穿过彩虹门：加速 + 充氮气' },
+  { name: '沙漠峡谷', bpm: 118, root: 57, sty: 'funk', th: 1, diff: 1, seed: 23, R: 230, rivals: [36, 40, 43, 46, 50], wx: 'sand', mech: ['tumble'], tag: ['🌪 沙尘暴', '🌾 风滚草'], tip: '副歌起沙尘暴 · 风滚草会横穿赛道' },
+  { name: '樱花古都', bpm: 112, root: 62, sty: 'citypop', th: 4, diff: 1, seed: 61, R: 220, rivals: [37, 41, 44, 47, 51], wx: 'sakura', mech: ['gust'], tag: ['🌸 樱吹雪', '💨 侧风'], tip: '侧风会把车吹偏一道 · 鼓点上逆风滑=顶风' },
+  { name: '霓虹夜城', bpm: 128, root: 57, sty: 'edm', th: 2, diff: 2, seed: 37, R: 220, rivals: [38, 42, 46, 49, 53], wx: 'rain', mech: ['laser'], tag: ['🌧 夜雨', '🚥 激光门'], tip: '激光门每小节换一次空档 · 走绿灯那道' },
+  { name: '雨林雷暴', bpm: 96, root: 57, sty: 'reggaeton', th: 5, diff: 2, seed: 73, R: 235, rivals: [39, 43, 47, 50, 54], wx: 'storm', mech: ['thunder'], tag: ['⛈ 雷暴', '⚡ 落雷'], tip: '红圈预警一小节 · 下一小节第一拍劈下' },
+  { name: '雪山之巅', bpm: 146, root: 55, sty: 'trap', th: 3, diff: 3, seed: 51, R: 240, rivals: [40, 44, 48, 52, 56], wx: 'blizzard', mech: ['ice'], tag: ['❄ 暴风雪', '🧊 冰面'], tip: '冰面上变道会打滑 · 副歌暴风雪看不清' },
+  { name: '熔岩火山', bpm: 150, root: 52, sty: 'rock', th: 6, diff: 3, seed: 89, R: 230, rivals: [41, 45, 49, 53, 57], wx: 'ash', mech: ['fireball'], tag: ['🌋 火山灰', '☄ 火球'], tip: '火球砸向地上的红圈 · 落地留下熔岩坑' },
+  { name: '星际轨道', bpm: 172, root: 54, sty: 'dnb', th: 7, diff: 3, half: 1, seed: 97, R: 250, rivals: [42, 46, 50, 54, 58], wx: 'meteor', mech: ['ramp', 'meteor'], tag: ['🌠 流星雨', '🛸 跳台'], tip: '低重力跳台能飞过障碍 · 小心陨石' },
 ];
+const NL = LEVELS.length;
 const RIVAL_COL = ['#3d7bff', '#2ecc71', '#ffd23f', '#a55eea', '#ffffff'];
 const RIVAL_NAME = ['蓝闪电', '青蛙王', '大黄蜂', '紫罗兰', '白幽灵'];
 const LAPS = 2, HW = 8, WP = .06, WG = .11, WO = .16;
@@ -55052,10 +55066,16 @@ const laneOf = lat => lat > HW / 3 ? 0 : lat < -HW / 3 ? 2 : 1;
 const V0 = 25, VT = 5;
 
 // ====================== 存档 ======================
-let SAVE = { best: [0, 0, 0, 0], stars: [0, 0, 0, 0], time: [0, 0, 0, 0], rank: [0, 0, 0, 0], last: 0 };
-try { const s = JSON.parse(localStorage.getItem('beatnitro_v1')); if (s && s.best) SAVE = Object.assign(SAVE, s); } catch (e) { }
-function persist() { try { localStorage.setItem('beatnitro_v1', JSON.stringify(SAVE)); } catch (e) { } }
-const unlocked = i => i === 0 || SAVE.stars[i - 1] > 0 || AUTO;
+const z8 = () => Array(NL).fill(0);
+let SAVE = { best: z8(), stars: z8(), time: z8(), rank: z8(), last: 0 };
+try {
+  let s = JSON.parse(localStorage.getItem('beatracer3d_v2'));
+  if (!s) { const o = JSON.parse(localStorage.getItem('beatnitro_v1')); // 旧 4 关存档 → 新关卡序号
+    if (o && o.best) { const map = [0, 1, 3, 5]; s = { last: map[o.last] || 0 }; for (const k of ['best', 'stars', 'time', 'rank']) { s[k] = z8(); map.forEach((n, i) => s[k][n] = (o[k] || [])[i] || 0); } } }
+  if (s && s.best) for (const k in SAVE) if (s[k] != null) SAVE[k] = Array.isArray(SAVE[k]) ? SAVE[k].map((v, i) => s[k][i] || 0) : s[k];
+} catch (e) { }
+function persist() { try { localStorage.setItem('beatracer3d_v2', JSON.stringify(SAVE)); } catch (e) { } }
+const unlocked = i => i === 0 || SAVE.stars[i - 1] > 0 || SAVE.stars[i] > 0 || AUTO;
 
 // ====================== 音乐 + 谱面（按小节即时生成，无限长） ======================
 let SG = null;
@@ -55130,7 +55150,60 @@ const ARR = {
     if (sec === 'b') { for (let i = 0; i < 16; i++) M(st(i), 'hat', 0, 0, .4 + i / 32); if (k24 < 11) b8(0, 14); H('bell', .5); return; } // 最后一小节 808 抽空
     b8(0, 3); b8(3, 4); b8(7, 3, -2); b8(10, 4); b8(14, 2, 5); hats(true); M(st(12), 'ohat', 0, 0, .6); H('bell');
   },
+  citypop(c) { const { sec, M, st, C, B, H, hs } = c, drop = sec === 'drop';
+    C(0, 16, 'pad', -12, sec === 'drop' ? .6 : .9);
+    if (sec === 'intro' || sec === 'brk') { [0, 6, 10].forEach((i, k) => C(i, k ? 3 : 5, 'ep', 0)); H('bell', .5); if (sec === 'brk') M(st(0), 'kick'); return; }
+    [0, 7, 10].forEach(i => M(st(i), 'kick', 0, 0, i ? .75 : 1));
+    [4, 12].forEach(i => { M(st(i), 'snare', 0, 0, .8); if (drop) M(st(i), 'clap', 0, 0, .5); });
+    for (let i = 0; i < 16; i += 2) M(hs(i), 'hat', 0, 0, i % 4 ? .55 : .85); if (drop) [3, 11].forEach(i => M(hs(i), 'shaker', 0, 0, .8));
+    [0, 3, 6, 8, 10, 14].forEach((i, k) => B(i, k === 2 ? 2 : 1.5, 'disco', k === 3 ? 12 : k === 5 ? 7 : 0, .85)); // 跳跃的指弹贝斯
+    [0, 6, 10].forEach((i, k) => C(i, k ? 3 : 5, 'ep', 0, .9)); // 七和弦电钢琴
+    if (drop) { H('synth', .85); [2, 14].forEach(i => C(i, .7, 'stab', 12, .5)); } else if (c.k24 >= 4) H('ep', .6);
+  },
+  reggaeton(c) { const { sec, M, st, C, H, rt, R } = c, drop = sec === 'drop';
+    const dem = v => { [0, 4, 8, 12].forEach(i => M(st(i), 'kick', 0, 0, .9 * v)); [3, 6, 11, 14].forEach(i => M(st(i), 'snare', 0, 0, .55 * v)); }; // 3+3+2 登博律动
+    C(0, 16, 'pad', -12, .8);
+    if (sec === 'intro' || sec === 'brk') { [0, 3, 6, 10, 12].forEach(i => C(i, 1, 'pluck', 0, .4)); if (sec === 'brk') [3, 6, 11, 14].forEach(i => M(st(i), 'rim')); return; }
+    dem(sec === 'b' ? .8 : 1);
+    for (let i = 0; i < 16; i += 2) M(st(i), 'hat', 0, 0, .6); if (drop) [3, 11].forEach(i => M(st(i), 'rim', 0, 0, .7));
+    c.mus.push({ t: st(0), k: 'k808', m: R - 24 + rt, d: 6 * c.S.s16 }); c.mus.push({ t: st(8), k: 'k808', m: R - 24 + rt, d: 6 * c.S.s16, v: .9 });
+    [0, 3, 6, 10, 12].forEach(i => C(i, 1, 'pluck', 0, drop ? .45 : .35)); // 和弦切分
+    if (drop) H('slead', .75); else if (sec === 'a' && c.k24 >= 4) H('bell', .55);
+  },
+  rock(c) { const { sec, M, st, B, H, rt, R } = c, drop = sec === 'drop';
+    const pw = (i, du, v) => [0, 7, 12].forEach(x => M(st(i), 'gtr', R - 12 + rt + x, du * c.S.s16, v)); // 强力和弦
+    if (sec === 'intro') { pw(0, 16, .8); for (let i = 0; i < 16; i += 4) M(st(i), 'ohat', 0, 0, .5); return; }
+    if (sec === 'brk') { for (let i = 0; i < 16; i += 2) M(st(i), 'gtr', R - 12 + rt + (i % 4 ? 7 : 0), c.S.s16 * 1.5, .45); H('slead', .5); return; }
+    (drop ? [0, 3, 8, 10, 11] : [0, 8, 10]).forEach(i => M(st(i), 'kick'));
+    [4, 12].forEach(i => M(st(i), 'snare', 0, 0, 1.1)); if (sec === 'b' && c.k24 === 11) for (let i = 8; i < 16; i++) M(st(i), 'snare', 0, 0, .5 + i / 32);
+    for (let i = 0; i < 16; i += 2) M(st(i), drop ? 'ohat' : 'hat', 0, 0, .7);
+    for (let i = 0; i < 16; i += drop ? 1 : 2) B(i, drop ? .9 : 1.8, 'pluckb', 0, .8); // 八分/十六分音符低音推进
+    if (drop) { for (let i = 0; i < 16; i += 2) pw(i, 1.7, .55); H('slead', .9); } else if (sec === 'b') pw(0, 16, .55); else for (let i = 0; i < 16; i += 2) pw(i, .8, .35);
+  },
+  dnb(c) { const { sec, M, st, C, B, H, k24 } = c, drop = sec === 'drop';
+    C(0, 16, 'pad', -12, .85);
+    if (sec === 'intro' || sec === 'brk') { H('bell', .55); for (let i = 0; i < 16; i += 2) M(st(i), 'hat', 0, 0, .4); return; }
+    (sec === 'a' && k24 < 4 ? [0] : [0, 10]).forEach(i => M(st(i), 'kick')); [4, 12].forEach(i => M(st(i), 'snare', 0, 0, 1)); // 两步碎拍
+    if (drop) { M(st(7), 'snare', 0, 0, .35); M(st(15), 'snare', 0, 0, .4); }
+    for (let i = 0; i < 16; i++) M(st(i), i % 4 === 2 ? 'ohat' : 'hat', 0, 0, i % 2 ? .35 : .65);
+    if (sec === 'b') { B(0, 16, 'reese', 0, .8); H('pluck', .6); return; }
+    B(0, 6, 'reese'); B(8, 3, 'reese', 0, .9); B(12, 4, 'reese', drop ? 12 : 0, .8); // Reese 低音
+    if (drop) H('slead', .8); else H('pluck', .55);
+  },
 };
+Object.assign(STY, {
+  citypop: { name: '城市流行 City Pop', tag: 'CityPop', prog: [5, 4, 2, 9], q: [[0, 4, 7, 11], [0, 4, 7, 10], [0, 3, 7, 10], [0, 3, 7, 10]], oct: 12, pump: 0, swing: .08, // IVmaj7–III7–ii7–vi7
+    hook: [[0, 9, 2], [2, 12, 2], [4, 16, 3], [7, 14, 1], [8, 12, 2], [10, 11, 2], [12, 9, 4], [16, 8, 2], [18, 11, 2], [20, 14, 3], [23, 12, 1], [24, 11, 2], [26, 8, 2], [28, 4, 4],
+      [32, 2, 2], [34, 5, 2], [36, 9, 3], [39, 7, 1], [40, 5, 2], [42, 9, 2], [44, 12, 4], [48, 9, 2], [50, 12, 2], [52, 16, 2], [54, 14, 2], [56, 12, 3], [59, 11, 1], [60, 9, 4]] },
+  reggaeton: { name: '雷鬼动 Reggaeton', tag: 'Reggaeton', prog: [0, 8, 3, 10], q: [[0, 3, 7], [0, 4, 7], [0, 4, 7], [0, 4, 7]], oct: 12, pump: .2, // i–VI–III–VII
+    hook: [[0, 7, 2], [3, 10, 1], [4, 12, 2], [6, 10, 2], [8, 7, 3], [11, 5, 1], [12, 3, 4], [16, 8, 2], [19, 7, 1], [20, 8, 2], [22, 12, 2], [24, 15, 3], [27, 12, 1], [28, 10, 4],
+      [32, 7, 2], [35, 10, 1], [36, 12, 2], [38, 15, 2], [40, 14, 3], [43, 12, 1], [44, 10, 4], [48, 10, 2], [51, 12, 1], [52, 14, 2], [54, 12, 2], [56, 10, 3], [59, 7, 1], [60, 5, 4]] },
+  rock: { name: '摇滚 Rock', tag: 'Rock', prog: [0, 10, 8, 10], q: [[0, 7], [0, 7], [0, 7], [0, 7]], oct: 12, pump: 0, // i–VII–VI–VII 强力和弦
+    hook: [[0, 7, 2], [2, 10, 2], [4, 12, 4], [8, 10, 2], [10, 12, 2], [12, 15, 4], [16, 14, 2], [18, 12, 2], [20, 10, 4], [24, 12, 2], [26, 10, 2], [28, 7, 4],
+      [32, 7, 2], [34, 10, 2], [36, 12, 4], [40, 15, 2], [42, 17, 2], [44, 19, 4], [48, 17, 2], [50, 15, 2], [52, 14, 4], [56, 12, 2], [58, 14, 2], [60, 12, 4]] },
+  dnb: { name: '鼓打贝斯 Drum & Bass', tag: 'DnB', prog: [0, 5, 8, 7], q: [[0, 3, 7, 10], [0, 3, 7], [0, 4, 7, 11], [0, 4, 7]], oct: 12, pump: .3, // i7–iv–VImaj7–V
+    hook: [[0, 7, 6], [6, 10, 2], [8, 12, 8], [16, 8, 6], [22, 12, 2], [24, 15, 8], [32, 12, 6], [38, 15, 2], [40, 17, 8], [48, 19, 4], [52, 17, 4], [56, 14, 8]] },
+});
 function genBar() {
   const S = SG, L = S.L, Y = STY[L.sty], bar = S.bars++, r = RNG(L.seed * 7919 + bar * 104729), d = L.diff, R = L.root;
   const t0 = S.lead + bar * S.bar, st = i => t0 + i * S.s16, ci = bar % 4, rt = Y.prog[ci], ch = Y.q[ci].map(x => x + rt), sec = secOf(bar), k24 = (bar - 2) % 24;
@@ -55153,6 +55226,7 @@ function genBar() {
   if (sec === 'intro') ev = [0, 4, 8, 12].map(s => [s, 0]);
   else if (sec === 'a') { ev = [0, 4, 8, 12].map(s => [s, 0]); if (d >= 1 && r() < .55) ev.push([14, 0]); if (d >= 2 && r() < .5) ev.push([6, 0]); if (d >= 2 && r() < .4) ev.push([10, 0]); if (d >= 3 && r() < .5) ev.push([2, 0]); }
   else if (sec === 'b') ev = bar % 2 ? [[0, 0], [4, 0], [8, 6 + (d >= 2 ? 0 : 0)]] : [[0, 8], [12, 0]].concat(d >= 1 ? [[14, 0]] : []);
+  else if (L.half) ev = sec === 'drop' ? [0, 4, 8, 10, 12].filter((s, i) => i < 3 || r() < .6).map(s => [s, 0]) : [[0, 0], [8, 0]]; // DnB 172：按半速踩
   else if (sec === 'drop') {
     if (d === 0) ev = [0, 4, 8, 12].concat(bar % 2 ? [10] : []).map(s => [s, 0]);
     else if (d === 1) ev = [0, 4, 6, 8, 12, 14].map(s => [s, 0]);
@@ -55252,6 +55326,9 @@ function play(e, t, dest) {
     case 'synth': voice(t, f, du, { osc: [['square', -5], ['sawtooth', 5, .7]], f0: 2400, q: 4, v: .055 * v, s: .7, r: .06, dly: .35, glide: null }); break;
     case 'slead': voice(t, f, du, { osc: [['sawtooth', -14], ['sawtooth', 14], ['sawtooth', 1200, .4]], f0: 7000, f1: 3000, fd: .3, v: .045 * v, s: .8, r: .1, rev: .4, dly: .4 }); break;
     case 'arp': voice(t, f, .09, { osc: [['square', 0]], f0: 3000, f1: 800, fd: .09, v: .028 * v, r: .04, dly: .3 }); break;
+    case 'ep': voice(t, f, du, { osc: [['sine', 0], ['sine', 1200, .3], ['triangle', 2400, .08]], f0: 5000, f1: 1500, fd: .5, v: .055 * v, s: .35, dc: .4, r: .35, rev: .45 }); break;
+    case 'gtr': voice(t, f, du, { osc: [['sawtooth', -9], ['sawtooth', 9], ['square', 0, .7]], f0: 2200, f1: 1400, fd: .2, q: 1.5, v: .035 * v, s: .75, r: .06, rev: .2 }); break;
+    case 'reese': voice(t, f, du, { osc: [['sawtooth', -25], ['sawtooth', 25], ['sine', -1200, .9]], f0: 700, f1: 260, fd: du, q: 4, v: .15 * v, s: .85, a: .02, r: .06 }); break;
   }
 }
 // 引擎声：锯齿波，音高跟速度走
@@ -55320,13 +55397,16 @@ function buildWorld(lv) {
   sg.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
   SCN.add(new THREE.Mesh(sg, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide, fog: false, depthWrite: false })));
   // 太阳/月亮
-  const sun = new THREE.Mesh(new THREE.CircleGeometry(th.night ? 60 : 90, 24), new THREE.MeshBasicMaterial({ color: th.night ? '#ff4fd8' : '#fff6c8', fog: false }));
+  const sun = new THREE.Mesh(new THREE.CircleGeometry(th.night ? 60 : 90, 24), new THREE.MeshBasicMaterial({ color: th.sunC || (th.night ? '#ff4fd8' : '#fff6c8'), fog: false }));
   sun.position.set(-700, th.night ? 260 : 420, -1200); sun.lookAt(0, 0, 0); SCN.add(sun);
-  if (th.night) { // 合成波太阳横条 + 星星
-    for (let i = 0; i < 5; i++) { const b = new THREE.Mesh(new THREE.PlaneGeometry(130, 5 + i), new THREE.MeshBasicMaterial({ color: th.sky[1], fog: false })); b.position.copy(sun.position).add(new THREE.Vector3(0, -8 - i * 11, 2)); b.lookAt(0, 0, 0); SCN.add(b); }
-    const sv = []; for (let i = 0; i < 600; i++) { const a = r() * 6.28, e = .1 + r() * 1.3; sv.push(Math.cos(a) * Math.cos(e) * 1500, Math.sin(e) * 1500, Math.sin(a) * Math.cos(e) * 1500); }
-    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3)); SCN.add(new THREE.Points(g, new THREE.PointsMaterial({ color: '#ffffff', size: 3, sizeAttenuation: false, fog: false })));
-  }
+  if (th.synth) for (let i = 0; i < 5; i++) { const b = new THREE.Mesh(new THREE.PlaneGeometry(130, 5 + i), new THREE.MeshBasicMaterial({ color: th.sky[1], fog: false })); b.position.copy(sun.position).add(new THREE.Vector3(0, -8 - i * 11, 2)); b.lookAt(0, 0, 0); SCN.add(b); } // 合成波太阳横条
+  if (th.stars) { const sv = []; for (let i = 0; i < 700; i++) { const a = r() * 6.28, e = .05 + r() * 1.4; sv.push(Math.cos(a) * Math.cos(e) * 1500, Math.sin(e) * 1500, Math.sin(a) * Math.cos(e) * 1500); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3)); SCN.add(new THREE.Points(g, new THREE.PointsMaterial({ color: '#ffffff', size: 3, sizeAttenuation: false, fog: false }))); }
+  if (th.planet) { // 带光环的巨型行星
+    const pl = new THREE.Group(); pl.add(new THREE.Mesh(new THREE.SphereGeometry(190, 32, 20), new THREE.MeshBasicMaterial({ color: '#6a4cff', fog: false })));
+    pl.add(new THREE.Mesh(new THREE.SphereGeometry(192, 32, 20, 0, 6.3, 0, 1.2), new THREE.MeshBasicMaterial({ color: '#9a7bff', fog: false, transparent: true, opacity: .55 })));
+    const ring = new THREE.Mesh(new THREE.RingGeometry(250, 330, 48), new THREE.MeshBasicMaterial({ color: '#ffd6a8', side: THREE.DoubleSide, transparent: true, opacity: .55, fog: false })); ring.rotation.x = 1.25; pl.add(ring);
+    pl.position.set(900, 420, 900); pl.rotation.z = .35; SCN.add(pl); }
   // 灯光
   SCN.add(new THREE.HemisphereLight(th.hemi[0], th.hemi[1], th.night ? 1.6 : 1.25));
   const dl = new THREE.DirectionalLight(th.night ? '#9a9cff' : '#fff4e0', th.sun);
@@ -55352,7 +55432,8 @@ function buildWorld(lv) {
     if (((i / 5) | 0) % 2 === 0) for (const o of [-HW / 3, HW / 3]) { const p1 = side(i, o - .18), p2 = side(i, o + .18), q1 = side(i + 1, o - .18), q2 = side(i + 1, o + .18); lv2.push(p1[0], .05, p1[1], p2[0], .05, p2[1], q1[0], .05, q1[1], p2[0], .05, p2[1], q2[0], .05, q2[1], q1[0], .05, q1[1]); }
   }
   const mk = (v, c, m) => { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); if (c) g.setAttribute('color', new THREE.Float32BufferAttribute(c, 3)); g.computeVertexNormals(); const o = new THREE.Mesh(g, m); o.receiveShadow = true; SCN.add(o); return o; };
-  mk(rv, rc, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .85, side: THREE.DoubleSide }));
+  const wet = L.wx === 'rain' || L.wx === 'storm'; // 雨天路面反光
+  mk(rv, rc, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: wet ? .32 : .85, metalness: wet ? .35 : 0, side: THREE.DoubleSide }));
   mk(cv, cc, th.night ? new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide }) : new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .6, side: THREE.DoubleSide }));
   mk(lv2, null, th.night ? new THREE.MeshBasicMaterial({ color: th.line, side: THREE.DoubleSide }) : new THREE.MeshStandardMaterial({ color: th.line, roughness: .6, side: THREE.DoubleSide }));
   // 起跑线 + 拱门
@@ -55392,23 +55473,48 @@ function buildWorld(lv) {
     const bmat = new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: '#ffffff', emissiveMap: win, emissiveIntensity: 1.3, roughness: .6, flatShading: true });
     for (const p of spots) { if (distTrack(p.x, p.z) < HW + 16) continue; if (p.h < .8) { const hgt = 14 + Math.pow(p.h, 1.5) * 70 + (p.d > 40 ? 30 : 0); A.push({ x: p.x, z: p.z, y: hgt / 2, sx: 7 + p.s * 5, sy: hgt, sz: 7 + p.s * 5, r: p.rot, c: ['#2a2756', '#332b66', '#1f2a55', '#3b2a5a'][(p.h * 50 | 0) % 4] }); } else B.push({ x: p.x, z: p.z, y: 9, s: 1, r: p.rot }); }
     inst(new THREE.BoxGeometry(1, 1, 1), bmat, A); inst(new THREE.CylinderGeometry(.3, .3, 18, 5), mat('#2f2c55'), B); inst(new THREE.OctahedronGeometry(1.3, 0), new THREE.MeshBasicMaterial({ color: '#ff3fd0' }), B.map(b => ({ x: b.x, z: b.z, y: 18.5 })), false);
+  } else if (D === 'sakura') { // 樱花树 + 塔 + 石灯笼
+    for (const p of spots) { if (p.h < .7) { A.push({ x: p.x, z: p.z, y: 1.6 * p.s, s: p.s, r: p.rot }); B.push({ x: p.x, z: p.z, y: 4.6 * p.s, s: p.s * (1.1 + p.h * .5), r: p.rot, c: ['#ffb7d0', '#ff9fc0', '#ffd0e0', '#f78fb3'][(p.h * 40 | 0) % 4] }); }
+      else if (p.h < .85) C.push({ x: p.x, z: p.z, y: 1, s: p.s, r: p.rot }); else if (p.d > 18) E.push({ x: p.x, z: p.z, s: p.s * 1.3, r: p.rot }); }
+    inst(new THREE.CylinderGeometry(.3, .5, 3.2, 6), mat('#5e3b2e'), A); inst(new THREE.IcosahedronGeometry(2.5, 0), mat('#ffffff'), B);
+    inst(new THREE.BoxGeometry(.7, 2, .7), mat('#c9c3b8'), C); inst(new THREE.ConeGeometry(.8, .5, 4), mat('#8f8a80'), C.map(c => ({ x: c.x, z: c.z, y: 2.2, s: 1, r: .785 })));
+    const pg = mat('#c0392b'), pr = mat('#2d2a33');
+    for (let k = 0; k < 3; k++) { inst(new THREE.BoxGeometry(4 - k, 2.4, 4 - k), pg, E.map(e => ({ x: e.x, z: e.z, y: (1.2 + k * 3) * e.s, s: e.s, r: e.r }))); inst(new THREE.ConeGeometry(4.2 - k, 1.4, 4), pr, E.map(e => ({ x: e.x, z: e.z, y: (3 + k * 3) * e.s, s: e.s, r: e.r + .785 }))); }
+  } else if (D === 'jungle') { // 椰树 + 大叶灌木 + 苔石
+    for (const p of spots) { if (p.h < .55) { const hh = p.s * (1.2 + p.h); A.push({ x: p.x, z: p.z, y: 4 * hh, sx: p.s, sy: hh, sz: p.s, r: p.rot }); for (let k = 0; k < 4; k++) B.push({ x: p.x + Math.cos(p.rot + k * 1.57) * 1.6 * p.s, z: p.z + Math.sin(p.rot + k * 1.57) * 1.6 * p.s, y: 8 * hh, sx: 3.6 * p.s, sy: .5, sz: 1.2 * p.s, r: p.rot + k * 1.57, c: k & 1 ? '#2e8b3a' : '#3fa34d' }); }
+      else if (p.h < .88) C.push({ x: p.x, z: p.z, y: 1.2 * p.s, s: p.s * (1.2 + p.h), r: p.rot, c: ['#1f6b2c', '#2a7a34', '#357f2a'][(p.h * 30 | 0) % 3] }); else E.push({ x: p.x, z: p.z, y: .8, s: p.s * 1.6, r: p.rot, c: '#5d6b5a' }); }
+    inst(new THREE.CylinderGeometry(.3, .45, 8, 6), mat('#7a5a3a'), A); inst(new THREE.BoxGeometry(1, 1, 1), mat('#ffffff'), B); inst(new THREE.IcosahedronGeometry(1.6, 0), mat('#ffffff'), C); inst(new THREE.DodecahedronGeometry(1, 0), mat('#ffffff'), E);
+  } else if (D === 'lava') { // 黑曜石 + 熔岩池 + 冒火岩柱
+    const LP = [];
+    for (const p of spots) { if (p.h < .55) A.push({ x: p.x, z: p.z, y: .8 * p.s, s: p.s * (1.2 + p.h * 2), r: p.rot, c: ['#2a2224', '#3a2e2e', '#1d1719'][(p.h * 30 | 0) % 3] });
+      else if (p.h < .75) B.push({ x: p.x, z: p.z, y: 3 * p.s, sx: p.s, sy: p.s * (1 + p.h), sz: p.s, r: p.rot, c: '#2e2426' }); else if (p.d > 14) LP.push({ x: p.x, z: p.z, y: .08, sx: 4 + p.s * 4, sy: 1, sz: 4 + p.s * 4, r: p.rot }); }
+    inst(new THREE.DodecahedronGeometry(1.2, 0), mat('#ffffff'), A); inst(new THREE.ConeGeometry(1.4, 6, 5), mat('#ffffff'), B);
+    inst(new THREE.CylinderGeometry(1, 1, .15, 9), new THREE.MeshBasicMaterial({ color: '#ff6a1f' }), LP, false);
+    inst(new THREE.IcosahedronGeometry(1, 0), new THREE.MeshBasicMaterial({ color: '#ffb347' }), B.map(b => ({ x: b.x, z: b.z, y: b.y + 3 * b.sy, s: .5 })), false);
+  } else if (D === 'space') { // 能量水晶 + 天线塔 + 悬浮陨石
+    for (const p of spots) { if (p.h < .5) A.push({ x: p.x, z: p.z, y: 2 * p.s, sx: p.s, sy: p.s * (1.5 + p.h * 2), sz: p.s, r: p.rot, c: p.h < .25 ? '#3ef0ff' : '#a55eea' });
+      else if (p.h < .62 && p.d > 15) B.push({ x: p.x, z: p.z, y: 7, s: 1, r: p.rot }); else if (p.h < .9) C.push({ x: p.x, z: p.z, y: 6 + p.h * 30, s: p.s * (1 + p.h * 2), r: p.rot, c: '#4a4270' }); else E.push({ x: p.x, z: p.z, y: .6, s: p.s * 1.5, r: p.rot, c: '#3a3460' }); }
+    inst(new THREE.OctahedronGeometry(1.4, 0), new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: '#7f5cff', emissiveIntensity: .8, roughness: .2, metalness: .3, flatShading: true }), A);
+    inst(new THREE.CylinderGeometry(.2, .35, 14, 5), mat('#5b5684', { metalness: .6 }), B); inst(new THREE.SphereGeometry(.7, 8, 6), new THREE.MeshBasicMaterial({ color: '#ff3b3b' }), B.map(b => ({ x: b.x, z: b.z, y: 14.4 })), false);
+    inst(new THREE.DodecahedronGeometry(1.4, 0), mat('#ffffff'), C); inst(new THREE.DodecahedronGeometry(1, 0), mat('#ffffff'), E);
   } else {
     for (const p of spots) { if (p.h < .8) { const s = p.s * (1 + p.h * .6); A.push({ x: p.x, z: p.z, y: 1.2 * s, s }); B.push({ x: p.x, z: p.z, y: 4.4 * s, s, r: p.rot, c: p.h < .3 ? '#2f6b4f' : '#3a7a5a' }); C.push({ x: p.x, z: p.z, y: 7.6 * s, s: s * .7, r: p.rot, c: '#f6fbff' }); } else E.push({ x: p.x, z: p.z, y: .7, s: p.s * 1.6, r: p.rot, c: '#c9d6e6' }); }
     inst(new THREE.CylinderGeometry(.3, .45, 2.4, 6), mat('#6b4a34'), A); inst(new THREE.ConeGeometry(3, 6, 7), mat('#ffffff'), B); inst(new THREE.ConeGeometry(2.2, 3.4, 7), mat('#ffffff'), C); inst(new THREE.DodecahedronGeometry(1, 0), mat('#ffffff'), E);
   }
   // 远山
   const MA = [], MB = [];
-  for (let i = 0; i < 46; i++) { const a = i / 46 * 6.28 + r() * .1, d = 1050 + r() * 250, h = 120 + r() * (th.night ? 120 : 260); const o = { x: Math.cos(a) * d, z: Math.sin(a) * d, y: h / 2 - 5, sx: 90 + r() * 120, sy: h, sz: 90 + r() * 120, r: r() * 6, c: th.mount[i & 1] }; MA.push(o); if (th.snow || (!th.night && h > 300 && D !== 'cactus')) MB.push({ x: o.x, z: o.z, y: h * .82 - 5, sx: o.sx * .36, sy: h * .36, sz: o.sz * .36, r: o.r, c: '#ffffff' }); }
+  for (let i = 0; i < 46; i++) { const a = i / 46 * 6.28 + r() * .1, d = 1050 + r() * 250, h = 120 + r() * (th.night ? 120 : 260); const o = { x: Math.cos(a) * d, z: Math.sin(a) * d, y: h / 2 - 5, sx: 90 + r() * 120, sy: h, sz: 90 + r() * 120, r: r() * 6, c: th.mount[i & 1] }; MA.push(o); if (D === 'lava' && h > 170) MB.push({ x: o.x, z: o.z, y: h * .9 - 5, sx: o.sx * .22, sy: h * .2, sz: o.sz * .22, r: o.r, c: '#ff5a1f' }); else if (th.snow || (!th.night && h > 300 && D !== 'cactus' && D !== 'jungle')) MB.push({ x: o.x, z: o.z, y: h * .82 - 5, sx: o.sx * .36, sy: h * .36, sz: o.sz * .36, r: o.r, c: '#ffffff' }); }
   inst(new THREE.ConeGeometry(1, 1, 6), new THREE.MeshStandardMaterial({ color: '#ffffff', flatShading: true, roughness: 1 }), MA, false);
-  inst(new THREE.ConeGeometry(1, 1, 6), new THREE.MeshStandardMaterial({ color: '#ffffff', flatShading: true, roughness: 1 }), MB, false);
+  inst(new THREE.ConeGeometry(1, 1, 6), D === 'lava' ? new THREE.MeshBasicMaterial({ color: '#ffffff', fog: false }) : new THREE.MeshStandardMaterial({ color: '#ffffff', flatShading: true, roughness: 1 }), MB, false);
   // 云
   if (th.clouds) { const CL = []; for (let i = 0; i < 26; i++) { const a = r() * 6.28, d = 300 + r() * 900, y = 150 + r() * 160; for (let k = 0; k < 4; k++) CL.push({ x: Math.cos(a) * d + k * 22, z: Math.sin(a) * d + (r() - .5) * 20, y: y + (r() - .5) * 10, s: 14 + r() * 14, r: r() * 6, c: th.clouds }); }
     inst(new THREE.IcosahedronGeometry(1, 0), new THREE.MeshStandardMaterial({ color: '#ffffff', flatShading: true, roughness: 1, emissive: '#ffffff', emissiveIntensity: .25 }), CL, false); }
-  // 雪花
-  if (th.snow) { const sv = []; for (let i = 0; i < 900; i++) sv.push((r() - .5) * 120, r() * 50, (r() - .5) * 120); const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3)); WORLD.snow = new THREE.Points(g, new THREE.PointsMaterial({ color: '#ffffff', size: .45, transparent: true, opacity: .9 })); SCN.add(WORLD.snow); }
+  buildWeather(L, r);
+  WORLD.hemi = SCN.children.find(o => o.isHemisphereLight); WORLD.hemiI = WORLD.hemi.intensity;
   // 速度粒子（氮气时路面两侧飞过的光点）
   { const sv = []; for (let i = 0; i < 160; i++) sv.push((r() - .5) * 30, r() * 8, r() * 90); const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3)); WORLD.streak = new THREE.Points(g, new THREE.PointsMaterial({ color: '#ffffff', size: .35, transparent: true, opacity: 0, depthWrite: false })); SCN.add(WORLD.streak); }
   buildItems(L);
+  buildMech(L, RNG(L.seed * 17 + 3));
 }
 
 // ====================== 道具：金币 / 氮气瓶 / 道具箱 / 加速带 / 路障 ======================
@@ -55533,6 +55639,220 @@ function makeCar(col, num) {
   return g;
 }
 
+// ====================== 天气 + 关卡机制（build.js 内联到 <!--MECH--> 处） ======================
+// 天气强度 wxK：跟着音乐段落走（主歌弱、副歌最强），机制按小节节拍触发，让“听音乐”=“读路况”
+let WX = null, MECH = [], MSTATE = {};
+const secNow = () => SG ? secOf(Math.max(0, Math.floor((G.now - SG.lead) / SG.bar))) : 'intro';
+const barNow = () => Math.floor((G.now - SG.lead) / SG.bar);
+const wxK = () => { const s = secNow(); return s === 'drop' ? 1 : s === 'b' ? .7 : s === 'a' ? .45 : .3; };
+const L_ = () => LEVELS[G.lv];
+
+// ---------------- 天气粒子 ----------------
+function buildWeather(L, r) {
+  WX = { k: L.wx, flash: 0, gust: 0 };
+  const pts = (n, col, size, opa, spread, hgt, blend) => {
+    const v = []; for (let i = 0; i < n; i++) v.push((r() - .5) * spread, r() * hgt, (r() - .5) * spread);
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
+    const p = new THREE.Points(g, new THREE.PointsMaterial({ color: col, size, transparent: true, opacity: opa, depthWrite: false, blending: blend ? THREE.AdditiveBlending : THREE.NormalBlending }));
+    p.frustumCulled = false; SCN.add(p); return p;
+  };
+  const lines = (n, col, len, opa, spread, hgt) => { // 雨丝：竖直短线段
+    const v = []; for (let i = 0; i < n; i++) { const x = (r() - .5) * spread, y = r() * hgt, z = (r() - .5) * spread; v.push(x, y, z, x + .15, y - len, z); }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
+    const l = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: opa, depthWrite: false })); l.frustumCulled = false; SCN.add(l); return l;
+  };
+  const k = L.wx;
+  if (k === 'breeze') WX.p = pts(220, '#ffffff', .35, .7, 120, 30);
+  else if (k === 'sand') { WX.p = pts(1400, '#e9b676', .5, .55, 120, 25); WX.haze = true; }
+  else if (k === 'sakura') { WX.p = pts(700, '#ffb7d0', .55, .95, 120, 35); }
+  else if (k === 'rain' || k === 'storm') { WX.rain = lines(k === 'storm' ? 1500 : 900, k === 'storm' ? '#c9d8e0' : '#9fd7ff', 2.4, .45, 110, 40); WX.splash = pts(300, '#ffffff', .25, .5, 40, .3); }
+  else if (k === 'blizzard') { WX.p = pts(1600, '#ffffff', .5, .95, 120, 50); WX.haze = true; }
+  else if (k === 'ash') { WX.p = pts(900, '#6b5a55', .45, .8, 120, 40); WX.ember = pts(260, '#ff7a2a', .5, 1, 90, 30, true); }
+  else if (k === 'meteor') { WX.p = pts(200, '#bfe9ff', .3, .8, 120, 40, true); WX.stream = []; }
+  WX.fog0 = [SCN.fog.near, SCN.fog.far];
+}
+function renderWeather(rdt, cx, cz, fx, fz) {
+  if (!WX) return; const k = WX.k, i = G.started ? wxK() : .4, now = G.now;
+  const fall = (p, vy, vx, vz, h) => { const a = p.geometry.attributes.position; for (let n = 0; n < a.count; n++) { let y = a.getY(n) - rdt * vy, x = a.getX(n) + rdt * vx, z = a.getZ(n) + rdt * vz;
+      if (y < 0) { y += h; } if (x > 60) x -= 120; else if (x < -60) x += 120; if (z > 60) z -= 120; else if (z < -60) z += 120; a.setXYZ(n, x, y, z); } a.needsUpdate = true; p.position.set(cx, 0, cz); };
+  const wind = WX.gust || 0;
+  if (WX.p) {
+    const sp = { breeze: [2, 6, 1, 30], sand: [1.5, 28 + i * 30, 6, 25], sakura: [3, 8 + wind * 18, 2, 35], blizzard: [8 + i * 6, 14 + i * 22, 4, 50], ash: [2.5, 3, 1, 40], meteor: [0, 0, 0, 40] }[k] || [5, 0, 0, 40];
+    fall(WX.p, sp[0], sp[1] * (fx || 1) * .3 + sp[1] * .7, sp[2], sp[3]);
+    WX.p.material.opacity = (k === 'sand' || k === 'blizzard') ? .25 + i * .6 : WX.p.material.opacity;
+    if (k === 'sakura') WX.p.rotation.y = 0;
+  }
+  if (WX.rain) { fall(WX.rain, 55, 4, 0, 40); WX.rain.material.opacity = .25 + i * .4; }
+  if (WX.splash) { const a = WX.splash.geometry.attributes.position; for (let n = 0; n < a.count; n++) if (Math.random() < .08) a.setXYZ(n, (Math.random() - .5) * 40, .05, (Math.random() - .5) * 40); a.needsUpdate = true; WX.splash.position.set(cx, 0, cz); }
+  if (WX.ember) fall(WX.ember, -3, 1, 1, 30);
+  // 雾 / 能见度：沙尘、暴风雪在副歌最浓
+  if (WX.haze) { const near = lerp(WX.fog0[0], 18, i * .85), far = lerp(WX.fog0[1], 140, i * .9); SCN.fog.near = lerp(SCN.fog.near, near, rdt * 2); SCN.fog.far = lerp(SCN.fog.far, far, rdt * 2); }
+  // 闪电闪屏
+  WX.flash = Math.max(0, WX.flash - rdt * 3);
+  if (WORLD.hemi) WORLD.hemi.intensity = WORLD.hemiI * (k === 'storm' ? .75 : 1) + WX.flash * 3;
+  // 流星：随机划过天空
+  if (k === 'meteor') { if (Math.random() < rdt * (1 + i * 4)) { const m = new THREE.Mesh(MG().streak, MG().streakM); m.position.set(cx + (Math.random() - .5) * 400, 160 + Math.random() * 120, cz + (Math.random() - .5) * 400); m.rotation.set(.6, Math.random() * 6, .9); SCN.add(m); WX.stream.push({ m, t: 0 }); }
+    WX.stream = WX.stream.filter(s => { s.t += rdt; s.m.translateY(-rdt * 260); if (s.t > 1.4) { SCN.remove(s.m); return false; } return true; }); }
+}
+
+// ---------------- 共享几何 ----------------
+let MGC = null;
+function MG() {
+  if (MGC) return MGC;
+  const ringT = canvasTex(128, 128, (g, w, h) => { g.lineWidth = 10; g.strokeStyle = '#ffffff'; g.beginPath(); g.arc(64, 64, 54, 0, 7); g.stroke(); g.lineWidth = 4; g.beginPath(); g.arc(64, 64, 34, 0, 7); g.stroke(); g.beginPath(); g.moveTo(64, 22); g.lineTo(64, 106); g.moveTo(22, 64); g.lineTo(106, 64); g.stroke(); });
+  MGC = {
+    ring: new THREE.PlaneGeometry(5.2, 5.2).rotateX(-Math.PI / 2), ringT,
+    arch: new THREE.TorusGeometry(4.6, .45, 8, 28, Math.PI),
+    tumble: new THREE.IcosahedronGeometry(1.3, 1),
+    post: new THREE.BoxGeometry(.5, 4.6, .5), beam: new THREE.BoxGeometry(5.2, .18, .18),
+    bolt: new THREE.CylinderGeometry(.35, .1, 60, 5, 1, true),
+    fire: new THREE.IcosahedronGeometry(1.4, 1), trail: new THREE.ConeGeometry(1.2, 7, 8, 1, true).rotateX(Math.PI),
+    crater: new THREE.CircleGeometry(2.4, 18).rotateX(-Math.PI / 2),
+    ramp: new THREE.BoxGeometry(5, .5, 7), arrow: new THREE.PlaneGeometry(3, 3).rotateX(-Math.PI / 2),
+    rock: new THREE.DodecahedronGeometry(1.6, 0),
+    ice: new THREE.PlaneGeometry(HW * 2, 30).rotateX(-Math.PI / 2),
+    streak: new THREE.CylinderGeometry(.6, 0, 40, 5), streakM: new THREE.MeshBasicMaterial({ color: '#cfefff', transparent: true, opacity: .8, blending: THREE.AdditiveBlending, depthWrite: false, fog: false }),
+  };
+  return MGC;
+}
+// 在赛道 s / 横向 lat 处放物体
+function putAt(o, s, lat, y) { const p = trk(s); o.position.set(p.x + p.tz * lat, y || 0, p.z - p.tx * lat); o.rotation.y = Math.atan2(p.tx, p.tz); return p; }
+const warnMat = col => new THREE.MeshBasicMaterial({ map: MG().ringT, color: col, transparent: true, depthWrite: false, opacity: 0, side: THREE.DoubleSide });
+
+// ---------------- 机制构建 ----------------
+function buildMech(L, r) {
+  MECH = []; MSTATE = { gustDir: 0, gustT: -99, gustNext: 0, lastBar: -9, warn: [], fire: [], craters: [], slide: 0 };
+  MGC = null; const C = MG(), mm = L.mech;
+  const every = (gap, jit, fn) => { for (let s = 120; s < TRK.L - 80; s += gap + r() * jit) fn(s); };
+  if (mm.includes('gate')) every(170, 80, s => { // 彩虹门：随机一道
+    const lane = r() * 3 | 0, g = new THREE.Group(); const cols = ['#ff4b4b', '#ffd23f', '#7ee081', '#3ef0ff', '#a55eea'];
+    cols.forEach((c, i) => { const a = new THREE.Mesh(C.arch, new THREE.MeshBasicMaterial({ color: c })); a.scale.setScalar(.62 - i * .06); a.position.y = .2; g.add(a); });
+    putAt(g, s, LANES[lane]); SCN.add(g); MECH.push({ k: 'gate', s, lane, o: g, used: -99 }); });
+  if (mm.includes('tumble')) every(130, 70, s => { // 风滚草：在一个小节内横穿赛道
+    const o = mesh(C.tumble, mat('#b88a4a', { roughness: 1 })); o.scale.setScalar(.9); SCN.add(o); MECH.push({ k: 'tumble', s, o, dir: r() < .5 ? 1 : -1, ph: r(), hit: -99 }); });
+  if (mm.includes('laser')) every(150, 60, s => { // 激光门：三道里两道带激光，每小节轮换空档
+    const g = new THREE.Group(); const beams = [];
+    for (let l = 0; l < 3; l++) { const b = new THREE.Group(); for (let y = 0; y < 3; y++) { const m = new THREE.Mesh(C.beam, new THREE.MeshBasicMaterial({ color: '#ff3fd0' })); m.position.set(0, .6 + y * 1.1, 0); b.add(m); } b.position.x = LANES[l]; g.add(b); beams.push(b); }
+    for (const sx of [-HW - .6, HW + .6]) g.add(mesh(C.post, mat('#2f2c55', { metalness: .6 }), sx, 2.3, 0));
+    putAt(g, s, 0); SCN.add(g); MECH.push({ k: 'laser', s, o: g, beams, ph: r() * 3 | 0, hit: -99 }); });
+  if (mm.includes('ramp')) every(190, 60, s => { // 低重力跳台：前方放路障，飞过去
+    const lane = r() * 3 | 0, g = new THREE.Group(), rp = mesh(C.ramp, new THREE.MeshStandardMaterial({ color: '#3ef0ff', emissive: '#1a7a9a', emissiveIntensity: .8, metalness: .5, roughness: .3 }), 0, .1, 0);
+    rp.rotation.x = -.22; g.add(rp); const ar = new THREE.Mesh(C.arrow, new THREE.MeshBasicMaterial({ map: WORLD.padT, transparent: true, depthWrite: false, color: '#bff8ff' })); ar.position.set(0, .55, 0); ar.rotation.x = -.22; g.add(ar);
+    putAt(g, s, LANES[lane]); SCN.add(g); MECH.push({ k: 'ramp', s, lane, o: g, used: -99 }); });
+  if (mm.includes('ice')) every(150, 90, s => { // 冰面：一段路面打滑
+    const o = new THREE.Mesh(C.ice, new THREE.MeshStandardMaterial({ color: '#cfefff', roughness: .05, metalness: .4, transparent: true, opacity: .75, depthWrite: false })); putAt(o, s + 15, 0, .09); o.receiveShadow = true; SCN.add(o); MECH.push({ k: 'ice', s, e: s + 30, o }); });
+  // 动态机制（落雷 / 火球 / 陨石 / 侧风）无需预置，运行时按小节生成
+}
+
+// ---------------- 机制更新（游戏逻辑） ----------------
+function mechUpdate(dt, prevS) {
+  if (!SG || !TRK) return; const P = G.p, now = G.now, L = L_(), bar = barNow(), race = now >= SG.lead && !G.over;
+  // 侧风：副歌 / 堆叠段，每 2 小节一阵，提前一拍出现箭头预警
+  if (L.mech.includes('gust') && race) {
+    const sec = secNow(); if ((sec === 'drop' || sec === 'b') && bar !== MSTATE.lastGust && bar % 2 === 0) { MSTATE.lastGust = bar; MSTATE.gustDir = Math.random() < .5 ? -1 : 1; MSTATE.gustT = SG.lead + (bar + 1) * SG.bar - SG.beat; MSTATE.gustDone = false; }
+    const t = now - MSTATE.gustT; WX.gust = t > 0 && t < SG.beat * 2 ? MSTATE.gustDir : lerp(WX.gust || 0, 0, dt * 3);
+    if (t > SG.beat && !MSTATE.gustDone) { MSTATE.gustDone = true;
+      if (now - (MSTATE.counter || -9) < SG.beat * 1.2) { pop('顶住侧风!', '#bff8ff', 46, -200); addCombo(150); G.boost += 6; }
+      else if (inv()) pop('无视侧风', '#ffffff', 40, -200);
+      else { const nl = clamp(P.lane + MSTATE.gustDir, 0, 2); if (nl !== P.lane) { P.prevLane = P.lane; P.lane = nl; G.shake = .15; pop('被风吹偏!', '#ffb7d0', 44, -200); sfx('swish'); } } }
+  }
+  // 落雷：堆叠段 + 副歌，每小节第 1 拍预警 → 下一小节第 1 拍劈下（预警就是 4 拍）
+  if ((L.mech.includes('thunder') || L.mech.includes('fireball') || L.mech.includes('meteor')) && race && bar !== MSTATE.lastBar) {
+    MSTATE.lastBar = bar; const sec = secNow(), k = L.mech.includes('thunder') ? 'thunder' : L.mech.includes('fireball') ? 'fireball' : 'meteor';
+    const on = k === 'meteor' ? (sec === 'drop' && bar % 2 === 0) : (sec === 'drop' || (sec === 'b' && bar % 2 === 0));
+    if (on) { const n = k === 'fireball' && sec === 'drop' && L.diff >= 3 ? 2 : 1, lanes = [0, 1, 2].sort(() => Math.random() - .5).slice(0, n);
+      const t = SG.lead + (bar + 1) * SG.bar, ahead = P.v * (t - now) + 4; // 落点 = 玩家到时会在的位置
+      for (const l of lanes) { const ring = new THREE.Mesh(MG().ring, warnMat(k === 'thunder' ? '#ffe14a' : '#ff3b3b')); putAt(ring, P.s + ahead, LANES[l], .12); SCN.add(ring);
+        MSTATE.warn.push({ k, s: P.s + ahead, lane: l, t, ring, t0: now }); } }
+  }
+  for (const w of MSTATE.warn) {
+    if (w.fired) continue; const left = w.t - now;
+    if (k2(w) && left < .5 && !w.obj) { // 火球/陨石：从天而降
+      const o = mesh(w.k === 'fireball' ? MG().fire : MG().rock, w.k === 'fireball' ? new THREE.MeshBasicMaterial({ color: '#ff7a2a' }) : mat('#5a5070')); const tr = new THREE.Mesh(MG().trail, new THREE.MeshBasicMaterial({ color: w.k === 'fireball' ? '#ffb347' : '#bfe9ff', transparent: true, opacity: .6, blending: THREE.AdditiveBlending, depthWrite: false })); tr.position.y = 4; o.add(tr); SCN.add(o); w.obj = o; }
+    if (w.obj) { const p = w.ring.position, k = clamp(left / .5, 0, 1); w.obj.position.set(p.x + k * 18, .8 + k * 60, p.z - k * 10); w.obj.rotation.x += dt * 6; }
+    if (left <= 0) { w.fired = true; w.ft = now; strike(w); }
+  }
+  MSTATE.warn = MSTATE.warn.filter(w => { if (w.fired && now - w.ft > .6) { SCN.remove(w.ring); w.ring.material.dispose(); if (w.obj) SCN.remove(w.obj); if (w.bolt) SCN.remove(w.bolt); return false; } return true; });
+  // 熔岩坑：持续 6 秒，开过去会被烫一下
+  for (const c of MSTATE.craters) if (race && now < c.end && now - c.hit > 1 && cross({ s: c.s, lat: LANES[c.lane] }, prevS, P.s, P.lat, 2.2)) { c.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop('护盾隔热', '#7fe7ff', 40, -160); } else { G.boost = 0; G.stall = .35; G.shake = .2; pop('烫!', '#ff7a2a', 50, -160); sfx('stall'); } }
+  MSTATE.craters = MSTATE.craters.filter(c => { if (now > c.end) { SCN.remove(c.o); return false; } return true; });
+  // 静态机制碰撞
+  for (const m of MECH) {
+    if (m.k === 'gate' && race && now - m.used > 3 && cross({ s: m.s, lat: LANES[m.lane] }, prevS, P.s, P.lat, 2.4)) { m.used = now; G.boost += 12; gainEnergy(18); pop('彩虹门!', '#ffd23f', 54, -180); sfx('nitro'); fxAt(m.o.position.x, 2, m.o.position.z, '#ff4fd8', 3); }
+    else if (m.k === 'ramp' && race && now - m.used > 3 && cross({ s: m.s, lat: LANES[m.lane] }, prevS, P.s, P.lat, 2.4)) { m.used = now; P.air = 1.6; P.airT = 0; G.boost += 8; pop('起飞!', '#3ef0ff', 54, -180); sfx('boost'); }
+    else if (m.k === 'tumble' && race && now - m.hit > 2) { const t = mPos(m); if (t && Math.min(fwd(m.s, P.s), fwd(P.s, m.s)) < 2.4 && Math.abs(t.lat - P.lat) < 2 && !(P.air > 0)) { m.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop('撞散!', '#ffffff', 44, -160); G.score += Math.round(150 * mult()); } else { G.boost *= .4; G.shake = .2; pop('被风滚草糊脸', '#d9b27a', 40, -160); sfx('bump'); } fxAt(m.o.position.x, 1, m.o.position.z, '#d9b27a', 2.5); } }
+    else if (m.k === 'laser' && race && now - m.hit > 1.5 && cross({ s: m.s, lat: 0 }, prevS, P.s, 0, 99) && !(P.air > 0)) { const open = (m.ph + Math.max(0, bar)) % 3; if (P.lane !== open) { m.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop('穿过激光', '#7fe7ff', 42, -160); } else { G.stall = .45; G.boost = 0; G.shake = .25; pop('被激光烧到!', '#ff3fd0', 48, -160); sfx('stall'); } } else { pop('完美穿越', '#7ee081', 42, -160); G.score += Math.round(200 * mult()); addCombo(0); } }
+  }
+  // 冰面：变道惯性 —— 冰上换道会“滑”过头一点再回来，车速稍快
+  const onIce = MECH.some(m => m.k === 'ice' && fwd(P.s, m.s) >= 0 && fwd(P.s, m.s) < 30);
+  if (onIce !== MSTATE.ice) { MSTATE.ice = onIce; if (onIce && race) pop('冰面!', '#cfefff', 44, -160); }
+  // 腾空
+  if (P.air > 0) { P.airT += dt; if (P.airT >= P.air) { P.air = 0; G.shake = .2; sfx('bump'); } }
+  // 对手也受机制影响（简化：落雷/火球打在对手所在道上 → 打转）
+}
+const k2 = w => w.k === 'fireball' || w.k === 'meteor';
+function mPos(m) { // 风滚草当前横向位置（按小节周期穿越）
+  if (!SG || G.now < SG.lead) return null; const ph = ((G.now - SG.lead) / (SG.bar * 2) + m.ph) % 1, lat = m.dir * lerp(-HW - 4, HW + 4, ph); return { lat };
+}
+function strike(w) {
+  const P = G.p, ring = w.ring.position, near = Math.min(fwd(w.s, P.s), fwd(P.s, w.s)) < 6, hitMe = near && P.lane === w.lane && !(P.air > 0);
+  if (w.k === 'thunder') { WX.flash = 1; G.zap = .6; sfx('shock'); const b = new THREE.Mesh(MG().bolt, new THREE.MeshBasicMaterial({ color: '#fff7b0', transparent: true, opacity: .95, blending: THREE.AdditiveBlending, depthWrite: false })); b.position.set(ring.x, 30, ring.z); SCN.add(b); w.bolt = b; }
+  else { sfx('smash'); G.shake = Math.max(G.shake, .25); fxAt(ring.x, 1, ring.z, w.k === 'fireball' ? '#ff7a2a' : '#bfe9ff', 4);
+    if (w.k === 'fireball') { const o = new THREE.Mesh(MG().crater, new THREE.MeshBasicMaterial({ color: '#ff5a1f' })); o.position.set(ring.x, .1, ring.z); SCN.add(o); MSTATE.craters.push({ s: w.s, lane: w.lane, o, end: G.now + 6, hit: -9 }); } }
+  for (const c of CARS) if (!c.fin && c.lane === w.lane && Math.min(fwd(w.s, c.s), fwd(c.s, w.s)) < 6) { c.stun = 1.8; fxAt(c.o.position.x, 1.5, c.o.position.z, '#ffe14a', 3); }
+  if (hitMe) { if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop('护盾挡住!', '#7fe7ff', 48, -200); }
+    else { G.stall = .8; G.boost = 0; G.combo = 0; G.energy = Math.max(0, G.energy - 12); G.shake = .45; pop(w.k === 'thunder' ? '被雷劈了!' : '被砸中!', '#ff5a5f', 58, -200); sfx('stall'); } }
+  else if (near) { pop('惊险闪避!', '#7ee081', 46, -200); G.score += Math.round(250 * mult()); G.boost += 5; }
+}
+
+// ---------------- 机制渲染 ----------------
+function renderMech(rdt) {
+  if (!SG) return; const now = G.now, t = performance.now() / 1000, P = G.p, bar = Math.max(0, barNow()), beatPh = ((now - SG.lead) / SG.beat % 1 + 1) % 1, lastBeat = ((Math.floor((now - SG.lead) / SG.beat) % 4) + 4) % 4 === 3;
+  for (const m of MECH) {
+    const near = fwd(m.s, P.s); m.o.visible = near < 300 || near > TRK.L - 30; if (!m.o.visible) continue;
+    if (m.k === 'gate') { m.o.children.forEach((a, i) => a.material.color.offsetHSL(rdt * .2, 0, 0)); m.o.position.y = Math.sin(t * 2 + m.s) * .15; }
+    else if (m.k === 'tumble') { const p = mPos(m); if (p) { putAt(m.o, m.s, p.lat, 1.1 + Math.abs(Math.sin(t * 5 + m.s)) * .8); m.o.rotation.z = -t * 5 * m.dir; m.o.visible = Math.abs(p.lat) < HW + 3; } }
+    else if (m.k === 'laser') { const open = (m.ph + bar) % 3; m.beams.forEach((b, l) => { const on = l !== open; const nextOn = l !== (m.ph + bar + 1) % 3, warn = lastBeat && on !== nextOn; b.visible = on || (warn && beatPh % .25 < .12); b.children.forEach(c => c.material.color.set(warn ? (beatPh % .25 < .12 ? '#ffffff' : '#ff3fd0') : '#ff3fd0')); });
+      if (!m.open) { m.open = new THREE.Mesh(MG().arrow, new THREE.MeshBasicMaterial({ map: WORLD.padT, color: '#7ee081', transparent: true, depthWrite: false })); m.o.add(m.open); } m.open.position.set(LANES[open], .08, -6); m.open.rotation.y = 0; }
+  }
+  for (const w of MSTATE.warn) { const left = w.t - now, k = 1 - clamp(left / SG.bar, 0, 1);
+    w.ring.material.opacity = w.fired ? Math.max(0, .9 - (now - w.ft) * 2) : .35 + .5 * Math.abs(Math.sin(now * (4 + k * 14)));
+    w.ring.scale.setScalar(w.fired ? 1 + (now - w.ft) * 3 : 1.3 - k * .3); w.ring.rotation.y += rdt * 2;
+    if (w.bolt) w.bolt.material.opacity = Math.max(0, .95 - (now - w.ft) * 3); }
+  // 腾空：车身抬起（低重力弧线）
+  if (P.air > 0) { const u = P.airT / P.air; P.o.position.y = Math.sin(u * Math.PI) * 4.5; P.o.userData.body.rotation.x = -.15 + u * .3; }
+  // 侧风箭头 / 冰面提示放在 HUD
+}
+// HUD 叠加层：天气说明 / 侧风预警 / 雷电闪白
+function drawMechHUD() {
+  if (!WX || !SG) return; const L = L_(), now = G.now;
+  if (WX.flash > 0) { hx.fillStyle = 'rgba(255,255,240,' + WX.flash * .55 + ')'; hx.fillRect(0, 0, W, H); }
+  if (WX.k === 'storm') { hx.fillStyle = 'rgba(10,20,30,.12)'; hx.fillRect(0, 0, W, H); }
+  if (WX.k === 'sand' && G.started) { const i = wxK(); hx.fillStyle = 'rgba(214,160,92,' + (i * .28) + ')'; hx.fillRect(0, 0, W, H); }
+  if (WX.k === 'blizzard' && G.started) { const i = wxK(), g = hx.createRadialGradient(W / 2, H / 2, H * .2, W / 2, H / 2, H * .7); g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(240,248,255,' + i * .6 + ')'); hx.fillStyle = g; hx.fillRect(0, 0, W, H); }
+  if (WX.k === 'ash' && G.started) { const g = hx.createLinearGradient(0, H, 0, H * .5); g.addColorStop(0, 'rgba(255,90,30,.18)'); g.addColorStop(1, 'rgba(255,90,30,0)'); hx.fillStyle = g; hx.fillRect(0, 0, W, H); }
+  // 侧风预警：屏幕边缘大箭头
+  if (L.mech.includes('gust') && MSTATE.gustT > 0) { const t = now - MSTATE.gustT; if (t > -SG.beat * 2 && t < SG.beat * 1.5) { const a = t < 0 ? .5 + .5 * Math.sin(now * 30) : 1 - t / (SG.beat * 1.5), d = MSTATE.gustDir;
+      hx.save(); hx.globalAlpha = clamp(a, 0, 1); txt(d > 0 ? '≫≫ 侧风 ≫≫' : '≪≪ 侧风 ≪≪', W / 2, H * .36, 56, '#ffffff', '#c2185b', 'center', true, 10); if (t < 0) txt('反方向滑一下顶住!', W / 2, H * .36 + 56, 28, '#ffe3ee', '#151726'); hx.restore(); } }
+  // 机制提示：开局 3 秒内在顶部显示
+  if (G.started && now > SG.lead && now < SG.lead + 4) { hx.save(); hx.globalAlpha = clamp(SG.lead + 4 - now, 0, 1); const by = H * .5; rr(80, by - 32, 560, 64, 32); hx.fillStyle = 'rgba(10,12,26,.7)'; hx.fill(); txt(L.tag.join('  ·  '), W / 2, by, 30, '#ffffff'); hx.restore(); }
+}
+// 侧风反制：在风来之前 1 拍内朝反方向滑 = 顶住
+function mechLaneHook(d) { if (L_().mech.includes('gust') && d === -MSTATE.gustDir) { const t = G.now - MSTATE.gustT; if (t > -SG.beat * 2 && t < SG.beat) { MSTATE.counter = G.now; return true; } } return false; }
+// 冰面：滑行惯性系数
+const iceSlip = () => MSTATE.ice ? 2.6 : 9;
+// bot 用：某车道前方是否有机制危险
+function mechDanger(l, P) {
+  let v = 0; const now = G.now, bar = Math.max(0, barNow());
+  for (const w of MSTATE.warn) if (!w.fired && w.lane === l && fwd(w.s, P.s) < 60) v -= 8;
+  for (const c of MSTATE.craters) if (c.lane === l && now < c.end && fwd(c.s, P.s) < 40) v -= 5;
+  for (const m of MECH) { const d = fwd(m.s, P.s); if (d < 2 || d > 40) continue;
+    if (m.k === 'gate' && m.lane === l) v += 3; if (m.k === 'ramp' && m.lane === l) v += 1.5;
+    if (m.k === 'laser') { const tArr = d / Math.max(10, P.v), b2 = Math.floor((now + tArr - SG.lead) / SG.bar), open = (m.ph + Math.max(0, b2)) % 3; if (l !== open) v -= 7; } }
+  return v;
+}
+
+
 // ====================== 游戏状态 ======================
 const G = { idle: 0 };
 let CARS = [];
@@ -55547,7 +55867,7 @@ function reset(lv, autoStart) {
   const po = makeCar('#ff3b3b', '1'); SCN.add(po);
   Object.assign(G, { started: false, paused: false, over: false, ui: null, result: null, now: 0, prev: 0,
     score: 0, combo: 0, maxCombo: 0, energy: 0, nitroEnd: -1, boost: 0, stall: 0, cnt: { p: 0, g: 0, o: 0, m: 0 }, ni: 0, hold: null,
-    p: { o: po, s: -36, lane: 1, prevLane: 1, lat: 0, v: 0, yaw: 0, drift: 0 }, lapT: [], lap: 0, finT: 0, rank: 6, pops: [], flash: 0, shake: 0, comboPop: 0, overtakes: 0, endAt: 0, camInit: false,
+    p: { o: po, s: -36, lane: 1, prevLane: 1, lat: 0, v: 0, yaw: 0, drift: 0, air: 0, airT: 0 }, lapT: [], lap: 0, finT: 0, rank: 6, pops: [], flash: 0, shake: 0, comboPop: 0, overtakes: 0, endAt: 0, camInit: false,
     item: null, itemPop: 0, shieldEnd: -1, magnetEnd: -1, invEnd: -1, coins: 0, bumpCD: 0, pend: null, zap: 0, botT: 0 });
   if (autoStart) startRun();
 }
@@ -55598,6 +55918,7 @@ function press(id) {
 function laneShift(d, id) {
   if (G.pend && (id == null || G.pend.id === id)) G.pend = null;
   if (!G.started || G.over || G.paused) return;
+  if (mechLaneHook(d)) { sfx('swish'); return; }
   const P = G.p, nl = clamp(P.lane + d, 0, 2); if (nl === P.lane) return;
   P.prevLane = P.lane; P.lane = nl; sfx('swish');
 }
@@ -55662,10 +55983,10 @@ function update(dt) {
     for (const b of BARS) if (!hid(b) && cross(b, s0, c.s, c.lat, 2.4)) { c.stun = 1.2; b.hitT = now; }
   }
   // 玩家变道
-  const ol = P.lat; P.lat += (LANES[P.lane] - P.lat) * Math.min(1, dt * 9); P.yaw = (P.lat - ol) / Math.max(dt, 1e-3) * .02;
+  const ol = P.lat; P.lat += (LANES[P.lane] - P.lat) * Math.min(1, dt * iceSlip()); P.yaw = (P.lat - ol) / Math.max(dt, 1e-3) * .02;
   // 撞车：护盾 / 氮气 / 火箭 时把对手撞开，否则自己被顶住
   G.bumpCD = Math.max(0, G.bumpCD - dt);
-  if (race) for (const c of CARS) { const ds = c.s - P.s; if (Math.abs(ds) > 4.4 || Math.abs(c.lat - P.lat) > 2.2 || G.bumpCD > 0) continue;
+  if (race) for (const c of CARS) { const ds = c.s - P.s; if (Math.abs(ds) > 4.4 || Math.abs(c.lat - P.lat) > 2.2 || G.bumpCD > 0 || P.air > 0) continue;
     G.bumpCD = .5;
     if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; c.stun = 2; c.v *= .6; if (ds > 0) c.s = P.s + 4.5; G.score += Math.round(300 * mult()); pop('撞飞! ' + c.name, '#7fe7ff', 48, -200); sfx('smash'); G.shake = .25; fxAt(c.o.position.x, 1, c.o.position.z, '#7fe7ff', 3); continue; }
     if (Math.abs(ds) < 3 && Math.abs(P.lat - LANES[P.lane]) > .4) P.lane = P.prevLane; // 侧面蹭到：弹回原车道
@@ -55673,10 +55994,12 @@ function update(dt) {
     else { c.v = Math.min(c.v, P.v * .85); c.s = P.s - 4.5; }
     sfx('bump'); G.shake = .2;
   }
+  mechUpdate(dt, prevS);
   // 道具拾取
   if (race) for (const it of ITEMS) { if (hid(it)) continue;
     const mag = it.k === 'coin' && G.now < G.magnetEnd && fwd(it.s, P.s) < 24;
     if (!mag && !cross(it, prevS, P.s, P.lat, it.k === 'bar' ? 2.3 : 2.1)) continue;
+    if (P.air > 0 && it.k !== 'coin' && it.k !== 'box') continue;
     pickup(it);
   }
   if (G.pend && now - G.pend.t > .14) { G.pend = null; stall(); }
@@ -55718,9 +56041,9 @@ function openUI(type) {
     B.push({ x: 170, y: y + 120, w: 380, h: 96, label: '重来', c: '#ffd23f', act: () => reset(G.lv, true) });
     B.push({ x: 170, y: y + 240, w: 380, h: 96, label: '选关', c: '#d9e2f2', act: () => openUI('select') });
   } else {
-    const y0 = H / 2 - 380;
-    LEVELS.forEach((L, i) => B.push({ x: 60, y: y0 + i * 160, w: 600, h: 140, lv: i, c: unlocked(i) ? '#ffffff' : '#9aa0ae', act: () => unlocked(i) && reset(i, true) }));
-    B.push({ x: 230, y: y0 + 660, w: 260, h: 84, label: '返回', c: '#ffd23f', act: () => { if (G.over) openUI('result'); else if (G.started) openUI('pause'); else G.ui = null; } });
+    const y0 = H / 2 - 400;
+    LEVELS.forEach((L, i) => B.push({ x: 48 + (i % 2) * 316, y: y0 + (i >> 1) * 200, w: 304, h: 188, lv: i, c: unlocked(i) ? '#ffffff' : '#9aa0ae', act: () => unlocked(i) && reset(i, true) }));
+    B.push({ x: 230, y: y0 + 812, w: 260, h: 84, label: '返回', c: '#ffd23f', act: () => { if (G.over) openUI('result'); else if (G.started) openUI('pause'); else G.ui = null; } });
   }
   G.ui = { type, B, t: performance.now() };
 }
@@ -55799,7 +56122,7 @@ function render3D(rdt) {
   fm.color.set(now < G.invEnd ? '#ff4fd8' : nitro() ? '#3ef0ff' : G.hold ? '#ff6a2a' : '#ff9a2a');
   for (const f of P.o.userData.flames) { f.visible = !!fl; const k = (inv() ? 1.9 : .7 + Math.min(1, G.boost / 12)) * (.8 + Math.random() * .4); f.scale.set(1, 1, k); }
   const sh = P.o.userData.shield; sh.visible = shield(); if (sh.visible) { sh.rotation.y += rdt * 2; sh.material.opacity = .16 + .08 * Math.sin(now * 8) + (G.shieldEnd - now < 2 ? .1 * Math.sin(now * 30) : 0); }
-  if (G.stall > 0) P.o.position.y = Math.sin(now * 60) * .05;
+  if (G.stall > 0 && !(P.air > 0)) P.o.position.y = Math.sin(now * 60) * .05;
   renderItems(rdt);
   // 追尾相机：速度越快越低越远，FOV 拉宽
   const sp = clamp(P.v / 60, 0, 1.2), back = 8.6 + sp * 2.4, up = 3.8 - sp * .5;
@@ -55817,7 +56140,8 @@ function render3D(rdt) {
   // 路灯跟拍
   const ph = ((now - SG.lead) / SG.beat) % 1, pulse = G.started ? Math.max(0, 1 - (ph < 0 ? ph + 1 : ph) * 3.5) : .5 + .5 * Math.sin(performance.now() / 300);
   WORLD.lampM.color.copy(WORLD.lampC).multiplyScalar(.35 + pulse * (th.night ? 1.6 : 1.2));
-  if (WORLD.snow) { const a = WORLD.snow.geometry.attributes.position; for (let i = 0; i < a.count; i++) { let y = a.getY(i) - rdt * 6; if (y < 0) y += 50; a.setY(i, y); } a.needsUpdate = true; WORLD.snow.position.set(cx0, 0, cz0); }
+  renderWeather(rdt, cx0, cz0, fx, fz);
+  renderMech(rdt);
   const st = WORLD.streak; st.material.opacity = lerp(st.material.opacity, nitro() || G.boost > 10 ? .85 : 0, Math.min(1, rdt * 5));
   if (st.material.opacity > .01) { st.position.set(cx0, 0, cz0); st.rotation.y = Math.atan2(fx, fz); const a = st.geometry.attributes.position; for (let i = 0; i < a.count; i++) { let z = a.getZ(i) - rdt * P.v * 1.5; if (z < -20) z += 110; a.setZ(i, z); if (Math.abs(a.getX(i)) < 4) a.setX(i, a.getX(i) < 0 ? -4 - Math.random() * 10 : 4 + Math.random() * 10); } a.needsUpdate = true; }
   R3.render(SCN, CAM);
@@ -55907,6 +56231,7 @@ function drawHUD(pulse) {
   else if (G.energy > 0) { rr(ex, ey - 13, Math.max(26, ew * G.energy / 100), 26, 13); hx.fillStyle = acc; hx.fill(); }
   rr(ex, ey - 13, ew, 26, 13); hx.lineWidth = 3; hx.strokeStyle = 'rgba(255,255,255,.5)'; hx.stroke();
   txt(nitro() ? 'NITRO ×2' : '氮气', ex + 14, ey - 36, 26, nitro() ? '#3ef0ff' : '#ffffff', '#151726', 'left', true);
+  drawMechHUD();
   drawStrip(pulse, acc);
   drawItemUI();
   txt(G.started && !G.hold ? '点 = 踩鼓点  ·  ← 左右滑 = 变道 →' : '', W / 2, H - 60, 24, 'rgba(255,255,255,.6)');
@@ -55939,13 +56264,14 @@ function drawItemUI() {
 }
 function drawStart() {
   const L = LEVELS[G.lv], th = WORLD.th, y = H * .2;
-  panel(70, y, 580, 560, th.accent);
+  panel(70, y, 580, 620, th.accent);
   txt('节拍飙车 3D', W / 2, y + 74, 72, '#ffffff', null, 'center', true);
   txt('Lv.' + (G.lv + 1) + '  ' + L.name + '  ·  ' + LAPS + ' 圈', W / 2, y + 130, 28, th.accent); txt('♪ ' + STY[L.sty].name + '  ·  ' + L.bpm + ' BPM', W / 2, y + 166, 26, '#ffffff');
   const rows = [['#ffd23f', '●', '鼓点进圈时点屏幕 → 氮气加速'], ['#ff8a3d', '≈', '长条按住漂移，到 ↑ 松手出弯'], ['#3ef0ff', '⇆', '左右滑动变道 · 躲路障吃道具'], ['#ff4fd8', '?', '道具箱：护盾 磁铁 闪电 火箭'], ['#ff5a5f', '!', '乱点会熄火 · 连击越高档位越高']];
   rows.forEach((r, i) => { const yy = y + 225 + i * 58; hx.beginPath(); hx.arc(130, yy, 24, 0, 7); hx.fillStyle = r[0]; hx.fill(); txt(r[1], 130, yy + 1, 28, '#151726'); txt(r[2], 172, yy, 27, '#ffffff', null, 'left'); });
   const best = SAVE.best[G.lv] ? '最佳 ' + SAVE.best[G.lv] + '  ·  ' + fmtT(SAVE.time[G.lv]) + '  ·  ' + '★'.repeat(SAVE.stars[G.lv]) + '☆'.repeat(3 - SAVE.stars[G.lv]) : '目标：6 车混战，冲第一！';
-  txt(best, W / 2, y + 520, 26, '#c9cde0');
+  rr(100, y + 520, 520, 44, 22); hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); txt(L.tag.join('  ') + '：' + L.tip, W / 2, y + 542, L.tip.length > 16 ? 20 : 22, th.accent);
+  txt(best, W / 2, y + 590, 26, '#c9cde0');
   const k = 1 + Math.sin(performance.now() / 160) * .05; hx.save(); hx.translate(W / 2, SY() - 150); hx.scale(k, k); txt('点一下 · 起步!', 0, 0, 58, '#ffd23f', '#151726', 'center', true, 10); hx.restore();
 }
 function drawUI() {
@@ -55965,19 +56291,21 @@ function drawUI() {
     txt('最大连击 ' + G.maxCombo + '    准确率 ' + (R.acc * 100).toFixed(1) + '%', W / 2, y + 740, 28, '#ffffff');
     if (R.stars === 0) txt('前三名才能解锁下一关', W / 2, y + 790, 24, '#ff9f9f');
   } else if (U.type === 'pause') { panel(120, H / 2 - 260, 480, 520, th.accent); txt('暂停', W / 2, H / 2 - 190, 64, '#ffffff'); }
-  else { panel(30, H / 2 - 500, 660, 1000, th.accent); txt('选择赛道', W / 2, H / 2 - 435, 56, '#ffffff'); }
+  else { panel(24, H / 2 - 500, 672, 1010, th.accent); txt('选择赛道', W / 2, H / 2 - 450, 52, '#ffffff'); }
   for (const b of U.B) {
     if (b.lv == null) { btn(b); continue; }
     const L = LEVELS[b.lv], t2 = THEMES[L.th], ok = unlocked(b.lv);
-    hx.save(); rr(b.x, b.y, b.w, b.h, 24); hx.fillStyle = ok ? 'rgba(255,255,255,.1)' : 'rgba(255,255,255,.04)'; hx.fill(); hx.lineWidth = b.lv === G.lv ? 5 : 2; hx.strokeStyle = b.lv === G.lv ? t2.accent : 'rgba(255,255,255,.25)'; hx.stroke(); hx.restore();
-    const g = hx.createLinearGradient(0, b.y + 18, 0, b.y + 122); g.addColorStop(0, t2.sky[0]); g.addColorStop(.6, t2.sky[1]); g.addColorStop(.6, t2.ground[0]); g.addColorStop(1, t2.ground[1]);
-    rr(b.x + 18, b.y + 18, 104, 104, 18); hx.fillStyle = g; hx.fill();
-    hx.beginPath(); hx.moveTo(b.x + 58, b.y + 81); hx.lineTo(b.x + 82, b.y + 81); hx.lineTo(b.x + 110, b.y + 122); hx.lineTo(b.x + 30, b.y + 122); hx.fillStyle = t2.road; hx.fill();
-    txt((b.lv + 1) + '. ' + L.name, b.x + 144, b.y + 46, 36, ok ? '#ffffff' : '#7a7f8c', null, 'left');
-    txt('♪ ' + STY[L.sty].tag + '  ' + L.bpm + ' BPM  ' + '◆'.repeat(L.diff + 1) + '◇'.repeat(3 - L.diff), b.x + 144, b.y + 98, 24, '#c9cde0', null, 'left');
-    if (ok) { txt('★'.repeat(SAVE.stars[b.lv]) + '☆'.repeat(3 - SAVE.stars[b.lv]), b.x + b.w - 24, b.y + 46, 32, '#ffd23f', null, 'right');
-      txt(SAVE.best[b.lv] ? SAVE.best[b.lv] + ' · ' + fmtT(SAVE.time[b.lv]) : '未挑战', b.x + b.w - 24, b.y + 98, 24, '#c9cde0', null, 'right'); }
-    else txt('🔒 上一关前三名解锁', b.x + b.w - 24, b.y + 98, 22, '#7a7f8c', null, 'right');
+    hx.save(); rr(b.x, b.y, b.w, b.h, 22); hx.fillStyle = ok ? 'rgba(255,255,255,.1)' : 'rgba(255,255,255,.04)'; hx.fill(); hx.lineWidth = b.lv === G.lv ? 5 : 2; hx.strokeStyle = b.lv === G.lv ? t2.accent : 'rgba(255,255,255,.25)'; hx.stroke(); hx.restore();
+    const g = hx.createLinearGradient(0, b.y + 14, 0, b.y + 84); g.addColorStop(0, t2.sky[0]); g.addColorStop(.6, t2.sky[1]); g.addColorStop(.6, t2.ground[0]); g.addColorStop(1, t2.ground[1]);
+    rr(b.x + 14, b.y + 14, 70, 70, 14); hx.fillStyle = g; hx.fill();
+    hx.beginPath(); hx.moveTo(b.x + 42, b.y + 58); hx.lineTo(b.x + 56, b.y + 58); hx.lineTo(b.x + 76, b.y + 84); hx.lineTo(b.x + 22, b.y + 84); hx.fillStyle = t2.road; hx.fill();
+    txt((b.lv + 1) + '. ' + L.name, b.x + 98, b.y + 34, 30, ok ? '#ffffff' : '#7a7f8c', null, 'left');
+    txt('♪ ' + STY[L.sty].tag + ' ' + L.bpm, b.x + 98, b.y + 70, 21, '#c9cde0', null, 'left');
+    txt(L.tag.join(' '), b.x + 16, b.y + 112, 21, ok ? t2.accent : '#7a7f8c', null, 'left');
+    txt('◆'.repeat(L.diff + 1) + '◇'.repeat(3 - L.diff), b.x + 16, b.y + 152, 20, '#c9cde0', null, 'left');
+    if (ok) { txt('★'.repeat(SAVE.stars[b.lv]) + '☆'.repeat(3 - SAVE.stars[b.lv]), b.x + b.w - 16, b.y + 150, 26, '#ffd23f', null, 'right');
+      if (SAVE.best[b.lv]) txt(String(SAVE.best[b.lv]), b.x + b.w - 16, b.y + 120, 19, '#c9cde0', null, 'right'); }
+    else txt('🔒 上一关前三', b.x + b.w - 16, b.y + 150, 19, '#7a7f8c', null, 'right');
   }
 }
 
@@ -55991,7 +56319,7 @@ function bot() {
   // 走线：躲路障 / 吃道具（反应时间随 acc 变差）
   const P = G.p; G.botT -= 1 / 60; if (G.botT > 0) return; G.botT = .12 * BOT_ACC;
   const look = 34, val = l => { let v = l === 1 ? .1 : 0; for (const it of ITEMS) { if (it.lane !== l || hid(it)) continue; const d = fwd(it.s, P.s); if (d < 2 || d > look) continue; v += it.k === 'bar' ? (inv() || shield() ? .5 : -9) : it.k === 'box' ? (G.item ? .3 : 2) : it.k === 'nitro' ? 2.5 : it.k === 'pad' ? 1.5 : .4; }
-    for (const c of CARS) if (c.lane === l && c.s - P.s > 2 && c.s - P.s < 16 && c.v < P.v) v -= 1.5; return v - Math.abs(l - P.lane) * .2; };
+    for (const c of CARS) if (c.lane === l && c.s - P.s > 2 && c.s - P.s < 16 && c.v < P.v) v -= 1.5; v += mechDanger(l, P); return v - Math.abs(l - P.lane) * .2; };
   const opts = [P.lane - 1, P.lane, P.lane + 1].filter(l => l >= 0 && l <= 2); const best = opts.reduce((a, b) => val(b) > val(a) ? b : a, P.lane);
   if (best !== P.lane && BR() < 1.1 - BOT_ACC * .15) laneShift(best - P.lane);
   if (G.item && BR() < .05) useItem();
@@ -56017,7 +56345,7 @@ function frame(dt) {
 function loop(t) { const dt = Math.min(.05, (t - last) / 1000); last = t; step(dt); frame(dt); requestAnimationFrame(loop); }
 
 // ====================== 启动：打开即站在发车格上 ======================
-reset(Q.has('lv') ? Math.min(3, +Q.get('lv')) : Math.min(SAVE.last || 0, 3), false);
+reset(Q.has('lv') ? Math.min(NL - 1, +Q.get('lv')) : Math.min(SAVE.last || 0, NL - 1), false);
 if (AUTO) { // 演示 / 截图：按固定步长快进
   startRun(); const T = Q.has('res') ? 1e9 : +(Q.get('t') || 10);
   while (!(G.over && G.ui) && G.now < T) step(1 / 60);
