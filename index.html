@@ -3,13 +3,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#101220">
-<title>节拍氮气 · 3D</title>
+<title>节拍飙车 · 3D</title>
 <style>
 html,body{margin:0;height:100%;background:#101220;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 canvas{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);touch-action:none;display:block}
 </style></head><body>
 <canvas id="g3" aria-hidden="true"></canvas>
-<canvas id="hud" role="img" aria-label="节拍氮气：跟着鼓点点击屏幕给赛车加速，长条按住漂移，抢第一名"></canvas>
+<canvas id="hud" role="img" aria-label="节拍飙车 3D：跟着鼓点点击屏幕给赛车加速，长条按住漂移，抢第一名"></canvas>
 <script>var THREE=(function(){var exports={};
 /**
  * @license
@@ -55039,10 +55039,10 @@ const THEMES = [
   { sky: ['#78a8e6', '#f1f7ff'], fog: '#e8f1ff', ground: ['#f5f9ff', '#e4edf8', '#fbfdff'], road: '#535c6e', curb: ['#3a7bff', '#ffffff'], line: '#ffd23f', mount: ['#a7bad3', '#93a9c6'], hemi: ['#ffffff', '#8fa5c0'], sun: 2.0, deco: 'pines', accent: '#3a7bff', lamp: '#ffb347', clouds: '#ffffff', snow: true },
 ];
 const LEVELS = [
-  { name: '晴空环道', bpm: 104, root: 60, th: 0, diff: 0, seed: 11, R: 210, rivals: [34, 38, 41, 44, 47] },
-  { name: '沙漠峡谷', bpm: 118, root: 62, th: 1, diff: 1, seed: 23, R: 230, rivals: [36, 40, 43, 46, 50] },
-  { name: '霓虹夜城', bpm: 132, root: 57, th: 2, diff: 2, seed: 37, R: 220, rivals: [38, 42, 46, 49, 53] },
-  { name: '雪山之巅', bpm: 146, root: 59, th: 3, diff: 3, seed: 51, R: 240, rivals: [40, 44, 48, 52, 56] },
+  { name: '晴空环道', bpm: 104, root: 60, sty: 'pop', th: 0, diff: 0, seed: 11, R: 210, rivals: [34, 38, 41, 44, 47] },
+  { name: '沙漠峡谷', bpm: 118, root: 57, sty: 'funk', th: 1, diff: 1, seed: 23, R: 230, rivals: [36, 40, 43, 46, 50] },
+  { name: '霓虹夜城', bpm: 128, root: 57, sty: 'edm', th: 2, diff: 2, seed: 37, R: 220, rivals: [38, 42, 46, 49, 53] },
+  { name: '雪山之巅', bpm: 146, root: 55, sty: 'trap', th: 3, diff: 3, seed: 51, R: 240, rivals: [40, 44, 48, 52, 56] },
 ];
 const RIVAL_COL = ['#3d7bff', '#2ecc71', '#ffd23f', '#a55eea', '#ffffff'];
 const RIVAL_NAME = ['蓝闪电', '青蛙王', '大黄蜂', '紫罗兰', '白幽灵'];
@@ -55064,24 +55064,90 @@ function newSong(L) {
   const beat = 60 / L.bpm;
   return { L, beat, s16: beat / 4, bar: beat * 4, lead: beat * 4 + .2, bars: 0, notes: [], mus: [] };
 }
+// ---- 曲风：每关一首原创编曲，按主流曲风写鼓型 / 和弦进行 / 贝斯 / 主旋律 hook ----
+// hook: [4 小节内的 16 分步, 相对主音的半音, 时值(16 分)]，与和弦循环 bar%4 对齐
+const STY = {
+  pop: { name: '流行 Pop', tag: 'Pop', prog: [0, 7, 9, 5], q: [[0, 4, 7], [0, 4, 7], [0, 3, 7], [0, 4, 7]], oct: 12, pump: 0, // I–V–vi–IV
+    hook: [[0, 4, 2], [2, 7, 2], [4, 12, 3], [7, 11, 1], [8, 7, 2], [10, 4, 2], [12, 2, 2], [14, 4, 2], [16, 2, 4], [22, 7, 2], [24, 11, 3], [27, 9, 1], [28, 7, 4],
+      [32, 0, 2], [34, 4, 2], [36, 9, 3], [39, 7, 1], [40, 4, 2], [42, 9, 2], [44, 12, 4], [48, 9, 2], [50, 7, 2], [52, 5, 2], [54, 4, 2], [56, 5, 3], [59, 4, 1], [60, 2, 4]] },
+  funk: { name: '迪斯科放克 Disco Funk', tag: 'Funk', prog: [0, 5, 0, 10], q: [[0, 3, 7, 10], [0, 4, 7, 10], [0, 3, 7, 10], [0, 4, 7, 10]], oct: 0, pump: .45, swing: .14, // i7–IV7 多利亚律动
+    hook: [[0, 12, 1], [3, 15, 1], [6, 17, 1], [7, 19, 2], [10, 22, 1], [11, 24, 2], [14, 22, 2], [16, 21, 1], [19, 19, 1], [22, 17, 1], [23, 19, 2], [26, 21, 1], [27, 24, 2], [30, 26, 2],
+      [32, 12, 1], [35, 15, 1], [38, 17, 1], [39, 19, 2], [42, 22, 1], [43, 24, 1], [44, 27, 2], [46, 26, 2], [48, 24, 1], [50, 22, 2], [52, 19, 1], [54, 22, 1], [55, 24, 2], [58, 26, 1], [59, 29, 3]] },
+  edm: { name: '电子 EDM', tag: 'EDM', prog: [0, 8, 3, 10], q: [[0, 3, 7], [0, 4, 7], [0, 4, 7], [0, 4, 7]], oct: 0, pump: .7, // i–VI–III–VII
+    hook: [[0, 12, 2], [2, 12, 2], [4, 15, 2], [6, 12, 2], [8, 19, 3], [11, 17, 1], [12, 15, 2], [14, 12, 2], [16, 12, 2], [18, 12, 2], [20, 15, 2], [22, 12, 2], [24, 20, 3], [27, 19, 1], [28, 15, 4],
+      [32, 10, 2], [34, 10, 2], [36, 15, 2], [38, 10, 2], [40, 19, 3], [43, 17, 1], [44, 15, 2], [46, 14, 2], [48, 14, 2], [50, 14, 2], [52, 17, 2], [54, 14, 2], [56, 22, 3], [59, 19, 1], [60, 17, 4]] },
+  trap: { name: '嘻哈 Trap', tag: 'Trap', prog: [0, 8, 5, 7], q: [[0, 3, 7], [0, 4, 7], [0, 3, 7], [0, 4, 7]], oct: 0, pump: 0, // i–VI–iv–V 和声小调
+    hook: [[0, 12, 3], [3, 15, 3], [6, 19, 2], [10, 17, 2], [12, 15, 4], [16, 15, 3], [19, 12, 3], [22, 20, 2], [26, 19, 2], [28, 15, 4],
+      [32, 12, 3], [35, 17, 3], [38, 20, 2], [42, 17, 2], [44, 12, 4], [48, 14, 3], [51, 11, 3], [54, 19, 2], [58, 14, 2], [60, 11, 4]] },
+};
+// 各曲风的编曲（c: 本小节上下文）
+const ARR = {
+  pop(c) { const { sec, M, st, C, B, H } = c, drop = sec === 'drop';
+    if (sec === 'intro') { C(0, 16, 'pad', -12); [0, 6, 8, 14].forEach((i, k) => C(i, k % 2 ? 2 : 6, 'keys', 0)); M(st(0), 'kick'); M(st(8), 'kick'); for (let i = 0; i < 16; i += 2) M(st(i), 'shaker'); return; }
+    if (sec === 'brk') { C(0, 16, 'pad', -12); [0, 8].forEach(i => C(i, 8, 'keys', 0)); H('bell', .7); M(st(0), 'kick'); return; }
+    (drop ? [0, 4, 8, 12] : sec === 'b' ? [0, 8] : [0, 8, 10]).forEach(i => M(st(i), 'kick'));
+    [4, 12].forEach(i => { M(st(i), 'snare'); if (sec !== 'a') M(st(i), 'clap'); });
+    for (let i = 0; i < 16; i += drop ? 1 : 2) M(st(i), drop && i % 4 === 2 ? 'ohat' : 'hat', 0, 0, drop && i % 2 ? .6 : 1);
+    (drop || sec === 'b' ? [0, 2, 4, 6, 8, 10, 12, 14] : [0, 3, 6, 8, 11, 14]).forEach((i, k) => B(i, 2, 'pluckb', drop && k % 2 ? 12 : 0));
+    [0, 6, 8, 14].forEach((i, k) => C(i, k % 2 ? 2 : 6, 'keys', 0));
+    if (drop) { H('pluck'); C(0, 16, 'pad', -12, .7); }
+    else if (sec === 'a' && c.k24 >= 4) H('bell', .45);
+  },
+  funk(c) { const { sec, M, st, C, B, H, hs } = c, drop = sec === 'drop';
+    if (sec === 'intro') { C(0, 16, 'pad', -12); M(st(0), 'kick'); M(st(8), 'kick'); [2, 6, 10, 14].forEach(i => M(st(i), 'ohat', 0, 0, .7)); [2, 10].forEach(i => C(i, 1, 'stab', 0)); return; }
+    if (sec === 'brk') { C(0, 16, 'pad', -12); B(0, 3, 'disco'); B(10, 2, 'disco', 12); [6, 14].forEach(i => C(i, 1, 'stab', 0)); [4, 12].forEach(i => M(st(i), 'rim')); return; }
+    [0, 4, 8, 12].forEach(i => M(st(i), 'kick')); // 迪斯科四踩
+    [4, 12].forEach(i => { M(st(i), 'clap'); if (drop) M(st(i), 'snare', 0, 0, .7); });
+    for (let i = 0; i < 16; i++) { if (i % 4 === 2) M(hs(i), 'ohat'); else if (drop || i % 2 === 0) M(hs(i), 'hat', 0, 0, i % 2 ? .55 : .9); }
+    for (let i = 0; i < 16; i += 2) B(i, 1.5, 'disco', (i >> 1) % 2 ? 12 : 0); // 八度跳贝斯
+    if (drop) { B(7, .8, 'disco', 12); B(15, .8, 'disco', 10); }
+    (sec === 'b' ? [2, 6, 10, 14] : [2, 5, 10, 13]).forEach(i => C(i, 1, 'stab', 0));
+    if (sec === 'a') for (let i = 0; i < 16; i++) M(hs(i), 'shaker', 0, 0, i % 2 ? .6 : 1);
+    if (drop) { H('synth'); C(0, 16, 'pad', -12, .6); }
+  },
+  edm(c) { const { sec, M, st, C, B, H, k24 } = c, drop = sec === 'drop';
+    if (sec === 'intro') { C(0, 16, 'pad', -12); M(st(0), 'kick'); M(st(8), 'kick'); for (let i = 0; i < 16; i += 2) M(st(i), 'arp', c.R + 12 + c.ch[(i >> 1) % 3], 0, .7); return; }
+    if (sec === 'brk') { C(0, 16, 'pad', -12); [0, 8].forEach(i => C(i, 8, 'keys', 0)); H('pluck', .6); return; }
+    if (sec === 'b') { // 堆叠段：军鼓越滚越密，过滤后的超锯齿和弦
+      if (k24 < 10) [0, 4, 8, 12].forEach(i => M(st(i), 'kick'));
+      const g = [4, 2, 1, .5][k24 - 8]; for (let i = 0; i < 16; i += g) M(st(i), 'snare', 0, 0, .35 + (k24 - 8) * .15 + i / 16 * .15);
+      C(0, 16, 'ssawf', 0); H('pluck', .8); return; }
+    [0, 4, 8, 12].forEach(i => M(st(i), 'kick'));
+    [4, 12].forEach(i => M(st(i), 'clap'));
+    for (let i = 0; i < 16; i++) M(st(i), i % 4 === 2 ? 'ohat' : 'hat', 0, 0, i % 2 ? .5 : .8);
+    [2, 6, 10, 14].forEach(i => B(i, 2, 'sawb')); // 反拍贝斯
+    if (drop) { C(0, 16, 'ssaw', 0); H('slead'); [0, 8].forEach(i => B(i, 1, 'sawb', -12)); }
+    else { C(0, 16, 'pad', -12); for (let i = 0; i < 16; i++) M(st(i), 'arp', c.R + 12 + c.ch[i % 3] + (i % 6 > 2 ? 12 : 0), 0, .6); }
+  },
+  trap(c) { const { sec, M, st, C, H, R, rt, k24 } = c, drop = sec === 'drop';
+    const b8 = (i, d, gl) => { M(st(i), 'kick', 0, 0, .8); c.mus.push({ t: st(i), k: 'k808', m: R - 24 + rt, d: d * c.S.s16, g: gl != null ? R - 24 + rt + gl : null }); };
+    const hats = roll => { for (let i = 0; i < 16; i += 2) M(st(i), 'hat', 0, 0, i % 4 ? .6 : .9);
+      if (roll) { for (let k = 0; k < 3; k++) M(st(6 + k * 2 / 3), 'hat', 0, 0, .5 + k * .1); for (let k = 0; k < 4; k++) M(st(14 + k * .5), 'hat', 0, 0, .45 + k * .12); } };
+    C(0, 16, 'pad', -12, sec === 'brk' || sec === 'intro' ? 1 : .7);
+    if (sec === 'intro' || sec === 'brk') { H('bell', .75); if (sec === 'brk') hats(false); return; }
+    M(st(8), 'clap'); M(st(8), 'snare', 0, 0, .6); // 半拍感：军鼓在第 3 拍
+    if (sec === 'a') { b8(0, 9); b8(10, 5); hats(k24 % 2 === 1); M(st(14), 'rim', 0, 0, .6); if (k24 >= 4) H('bell', .6); return; }
+    if (sec === 'b') { for (let i = 0; i < 16; i++) M(st(i), 'hat', 0, 0, .4 + i / 32); if (k24 < 11) b8(0, 14); H('bell', .5); return; } // 最后一小节 808 抽空
+    b8(0, 3); b8(3, 4); b8(7, 3, -2); b8(10, 4); b8(14, 2, 5); hats(true); M(st(12), 'ohat', 0, 0, .6); H('bell');
+  },
+};
 function genBar() {
-  const S = SG, L = S.L, bar = S.bars++, r = RNG(L.seed * 7919 + bar * 104729), d = L.diff, R = L.root;
-  const prog = [0, 7, 9, 5], chords = [[0, 4, 7], [7, 11, 14], [9, 12, 16], [5, 9, 12]];
-  const t0 = S.lead + bar * S.bar, st = i => t0 + i * S.s16, ci = bar % 4, ch = chords[ci], sec = secOf(bar);
-  const mus = [], M = (t, k, m, du) => mus.push({ t, k, m, d: du });
-  const first = bar === 2 || (bar > 2 && (bar - 2) % 24 === 0 || (bar - 2) % 24 === 8 || (bar - 2) % 24 === 12 || (bar - 2) % 24 === 20);
-  if (first) M(t0, 'crash');
-  const kick = sec === 'drop' ? [0, 4, 8, 12] : sec === 'b' ? [0, 6, 8] : sec === 'brk' ? [0] : sec === 'intro' ? [0, 8] : [0, 8, 10];
-  kick.forEach(i => M(st(i), 'kick'));
-  if (sec !== 'brk' && !(sec === 'intro' && bar === 0)) [4, 12].forEach(i => M(st(i), 'snare'));
-  if (sec === 'drop' && (bar - 2) % 24 === 19) [13, 14, 15].forEach(i => M(st(i), 'snare'));
-  const hs = sec === 'drop' || sec === 'b' ? 1 : 2;
-  if (sec !== 'brk') for (let i = 0; i < 16; i += hs) M(st(i), sec === 'drop' && i % 4 === 2 ? 'ohat' : 'hat');
-  const bs = sec === 'brk' ? 16 : sec === 'a' || sec === 'intro' ? 4 : 2;
-  for (let i = 0; i < 16; i += bs) M(st(i), 'bass', R - 24 + prog[ci], S.s16 * bs * .9);
-  ch.forEach(c => M(t0, 'pad', R - 12 + c, 16 * S.s16));
-  if (sec === 'drop') for (let i = 0; i < 16; i++) M(st(i), 'arp', R + 12 + ch[i % 3] + (i % 6 > 2 ? 12 : 0));
+  const S = SG, L = S.L, Y = STY[L.sty], bar = S.bars++, r = RNG(L.seed * 7919 + bar * 104729), d = L.diff, R = L.root;
+  const t0 = S.lead + bar * S.bar, st = i => t0 + i * S.s16, ci = bar % 4, rt = Y.prog[ci], ch = Y.q[ci].map(x => x + rt), sec = secOf(bar), k24 = (bar - 2) % 24;
+  const mus = [], M = (t, k, m, du, v) => mus.push({ t, k, m, d: du, v });
+  const hook = Y.hook.filter(h => (h[0] >> 4) === ci).map(h => [h[0] & 15, R + Y.oct + h[1], h[2]]);
+  const c = { sec, k24, R, rt, ch, st, M, mus, S, hook,
+    hs: i => st(i + (Y.swing && i % 2 ? Y.swing * 2 : 0)), // 摇摆：偶数后的 16 分音符往后挪
+    C: (i, du, k, oct, v) => ch.forEach(x => M(st(i), k, R + oct + x, du * S.s16, v)),
+    B: (i, du, k, off, v) => M(st(i), k, R - 24 + rt + (off || 0), du * S.s16, v),
+    H: (k, v) => hook.forEach(h => M(st(h[0]), k, h[1], h[2] * S.s16 * .95, v)) };
+  if (bar === 2 || (bar > 2 && [0, 8, 12, 20].includes(k24))) M(t0, 'crash');
+  if (k24 === 12) M(t0, 'impact');
+  if (sec === 'b' && k24 === 8) M(t0, 'riser', 0, S.bar * 4);
+  ARR[L.sty](c);
   mus.sort((a, b) => a.t - b.t); S.mus.push(...mus);
+  // 踩点音高跟着 hook 走：点中音符就是在“弹”主旋律
+  const hm = s => { const h = hook.find(h => h[0] <= s && h[0] + h[2] > s); return h ? h[1] : R + 12 + ch[(s >> 2) % ch.length]; };
   // ---- 谱面：tap 单点 / hold 漂移 ----
   let ev = [];
   if (sec === 'intro') ev = [0, 4, 8, 12].map(s => [s, 0]);
@@ -55096,7 +55162,7 @@ function genBar() {
   let holdEnd = -1;
   for (const [s, len] of ev) {
     if (s < holdEnd) continue;
-    const n = { t: st(s), m: R + 12 + ch[(s >> 2) % 3], j: 0 };
+    const n = { t: st(s), m: hm(s), j: 0 };
     if (bar === 0 && s === 0) n.go = 1;
     if (len) { n.hold = 1; n.t2 = st(s + len); n.tk = 0; holdEnd = s + len + 2; }
     S.notes.push(n);
@@ -55121,17 +55187,71 @@ const mf = m => 440 * Math.pow(2, (m - 69) / 12);
 function env(g, t, a, peak, dec) { g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + dec); }
 function osc(type, f, t, dur, peak, dest, a) { a = a || .005; const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.setValueAtTime(f, t); env(g, t, a, peak, dur); o.connect(g); g.connect(dest); o.start(t); o.stop(t + a + dur + .05); return o; }
 function noise(t, dur, peak, ft, fq, dest) { const s = AC.createBufferSource(); s.buffer = NB; const f = AC.createBiquadFilter(); f.type = ft; f.frequency.value = fq; const g = AC.createGain(); env(g, t, .002, peak, dur); s.connect(f); f.connect(g); g.connect(dest); s.start(t, Math.random() * 1.5); s.stop(t + dur + .05); }
+// 混音：鼓 → BUS；旋律/和声 → MEL（被底鼓侧链压缩“呼吸”）→ BUS；REV 混响 / DLY 延迟作为发送
+let MEL = null, REV = null, DLY = null;
+function mixBus() {
+  BUS = AC.createGain(); BUS.gain.value = .55; BUS.connect(MASTER);
+  MEL = AC.createGain(); MEL.connect(BUS);
+  REV = AC.createConvolver(); const n = AC.sampleRate * 2.2 | 0, ir = AC.createBuffer(2, n, AC.sampleRate);
+  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3.2); }
+  REV.buffer = ir; const rg = AC.createGain(); rg.gain.value = .32; REV.connect(rg); rg.connect(BUS);
+  DLY = AC.createDelay(1); DLY.delayTime.value = SG.beat * .75; const fb = AC.createGain(), lp = AC.createBiquadFilter(); fb.gain.value = .32; lp.type = 'lowpass'; lp.frequency.value = 2600;
+  DLY.connect(lp); lp.connect(fb); fb.connect(DLY); const dg = AC.createGain(); dg.gain.value = .5; lp.connect(dg); dg.connect(BUS);
+}
+// 通用合成声部：多个振荡器（可失谐） → 滤波（带包络） → 增益包络 → 目的地（+ 发送）
+function voice(t, f, du, o) {
+  const g = AC.createGain(), fl = AC.createBiquadFilter(); fl.type = o.ft || 'lowpass'; fl.Q.value = o.q || .7;
+  const f0 = o.f0 || 8000, f1 = o.f1 || f0; fl.frequency.setValueAtTime(f0, t); if (f1 !== f0) fl.frequency.exponentialRampToValueAtTime(f1, t + (o.fd || du));
+  const a = o.a || .005, rel = o.r || .08, pk = o.v || .1, sus = o.s == null ? pk : pk * o.s;
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(pk, t + a);
+  if (sus !== pk) g.gain.exponentialRampToValueAtTime(Math.max(.0001, sus), t + a + (o.dc || .1));
+  g.gain.setValueAtTime(Math.max(.0001, sus), t + Math.max(a, du)); g.gain.exponentialRampToValueAtTime(.0001, t + Math.max(a, du) + rel);
+  for (const [type, det, lv] of o.osc) { const s = AC.createOscillator(), sg = AC.createGain(); s.type = type; s.frequency.setValueAtTime(f, t); s.detune.value = det || 0;
+    if (o.glide) s.frequency.exponentialRampToValueAtTime(o.glide, t + du * .7);
+    if (o.drop) s.frequency.exponentialRampToValueAtTime(f * o.drop, t + .08);
+    sg.gain.value = lv == null ? 1 : lv; s.connect(sg); sg.connect(fl); s.start(t); s.stop(t + Math.max(a, du) + rel + .05); }
+  fl.connect(g); g.connect(o.dest || MEL);
+  if (o.rev) { const s = AC.createGain(); s.gain.value = o.rev; g.connect(s); s.connect(REV); }
+  if (o.dly) { const s = AC.createGain(); s.gain.value = o.dly; g.connect(s); s.connect(DLY); }
+}
+function duck(t, amt) { if (!amt) return; const p = MEL.gain; p.cancelScheduledValues(t); p.setValueAtTime(1 - amt, t); p.linearRampToValueAtTime(1, t + SG.beat * .55); }
 function play(e, t, dest) {
+  const v = e.v == null ? 1 : e.v, f = e.m ? mf(e.m) : 0, du = e.d || .2, Y = STY[SG.L.sty];
   switch (e.k) {
-    case 'kick': { const o = osc('sine', 150, t, .28, .9, dest); o.frequency.exponentialRampToValueAtTime(42, t + .12); break; }
-    case 'snare': noise(t, .16, .4, 'highpass', 1400, dest); osc('triangle', 190, t, .08, .22, dest); break;
-    case 'hat': noise(t, .03, .1, 'highpass', 7500, dest); break;
-    case 'ohat': noise(t, .15, .08, 'highpass', 6500, dest); break;
-    case 'crash': noise(t, 1.1, .16, 'highpass', 4000, dest); break;
+    // ---- 鼓 ----
+    case 'kick': { const o = osc('sine', 160, t, .3, .95 * v, dest); o.frequency.exponentialRampToValueAtTime(44, t + .11); noise(t, .012, .25 * v, 'highpass', 2500, dest); duck(t, Y.pump); break; }
+    case 'k808': { const o = AC.createOscillator(), g = AC.createGain(), ws = AC.createWaveShaper(), cv = new Float32Array(256); for (let i = 0; i < 256; i++) { const x = i / 128 - 1; cv[i] = Math.tanh(x * 1.6); } ws.curve = cv;
+      o.type = 'sine'; o.frequency.setValueAtTime(f * 2.2, t); o.frequency.exponentialRampToValueAtTime(f, t + .05); if (e.g) o.frequency.exponentialRampToValueAtTime(mf(e.g), t + du * .8);
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.22, t + .005); g.gain.setValueAtTime(.22, t + du * .7); g.gain.exponentialRampToValueAtTime(.0001, t + du + .12);
+      o.connect(ws); ws.connect(g); g.connect(dest); o.start(t); o.stop(t + du + .2); break; }
+    case 'snare': noise(t, .17, .38 * v, 'highpass', 1300, dest); osc('triangle', 200, t, .07, .2 * v, dest); noise(t, .17, .3 * v, 'highpass', 1300, REV); break;
+    case 'clap': for (let k = 0; k < 3; k++) noise(t + k * .011, k === 2 ? .16 : .02, .3 * v, 'bandpass', 1500, dest); noise(t, .2, .12 * v, 'bandpass', 1500, REV); break;
+    case 'rim': osc('square', 820, t, .025, .1 * v, dest); noise(t, .02, .1 * v, 'bandpass', 3000, dest); break;
+    case 'hat': noise(t, .03, .09 * v, 'highpass', 8000, dest); break;
+    case 'ohat': noise(t, .16, .07 * v, 'highpass', 7000, dest); break;
+    case 'shaker': noise(t, .04, .045 * v, 'bandpass', 6000, dest); break;
+    case 'crash': noise(t, 1.3, .15, 'highpass', 4500, dest); noise(t, 1.2, .1, 'highpass', 4500, REV); break;
+    case 'impact': { const o = osc('sine', 90, t, 1.2, .6, dest); o.frequency.exponentialRampToValueAtTime(30, t + 1); noise(t, 1.4, .2, 'lowpass', 900, REV); break; }
+    case 'riser': { const s = AC.createBufferSource(); s.buffer = NB; s.loop = true; const fl = AC.createBiquadFilter(), g = AC.createGain(); fl.type = 'bandpass'; fl.Q.value = 2; fl.frequency.setValueAtTime(400, t); fl.frequency.exponentialRampToValueAtTime(7000, t + du);
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.12, t + du); g.gain.exponentialRampToValueAtTime(.0001, t + du + .05); s.connect(fl); fl.connect(g); g.connect(dest); s.start(t); s.stop(t + du + .1); break; }
     case 'stick': osc('square', e.m ? 1760 : 1320, t, .05, .12, dest); break;
-    case 'bass': { const o = AC.createOscillator(), f = AC.createBiquadFilter(), g = AC.createGain(); o.type = 'sawtooth'; o.frequency.value = mf(e.m); f.type = 'lowpass'; f.frequency.setValueAtTime(900, t); f.frequency.exponentialRampToValueAtTime(200, t + e.d); env(g, t, .008, .2, e.d); o.connect(f); f.connect(g); g.connect(dest); o.start(t); o.stop(t + e.d + .1); break; }
-    case 'pad': osc('triangle', mf(e.m), t, e.d, .045, dest, .25); break;
-    case 'arp': osc('square', mf(e.m), t, .08, .03, dest); break;
+    // ---- 贝斯 ----
+    case 'pluckb': voice(t, f, du, { osc: [['sawtooth', 0], ['square', -1200, .5]], f0: 1600, f1: 220, fd: .18, v: .17 * v, s: .5, r: .05 }); break;
+    case 'disco': voice(t, f, du, { osc: [['sawtooth', 0], ['sawtooth', 7, .7]], f0: 1300, f1: 260, fd: .12, q: 5, v: .16 * v, s: .6, r: .04 }); break;
+    case 'sawb': voice(t, f, du, { osc: [['sawtooth', -8], ['sawtooth', 8], ['square', -1200, .6]], f0: 2400, f1: 500, fd: .15, q: 3, v: .14 * v, s: .7, r: .04 }); break;
+    case 'bass': voice(t, f, du, { osc: [['sawtooth', 0]], f0: 900, f1: 200, v: .2, r: .08 }); break;
+    // ---- 和声 ----
+    case 'pad': voice(t, f, du, { osc: [['sawtooth', -10, .5], ['sawtooth', 10, .5], ['triangle', 0]], f0: 900, a: .35, v: .028 * v, r: .5, rev: .8 }); break;
+    case 'keys': voice(t, f, du, { osc: [['triangle', 0], ['sine', 1200, .4]], f0: 3500, f1: 900, fd: .4, v: .05 * v, s: .4, dc: .25, r: .25, rev: .3 }); break;
+    case 'stab': voice(t, f, du, { osc: [['sawtooth', -6], ['square', 6, .6]], f0: 3800, f1: 900, fd: .1, q: 2, v: .045 * v, s: .3, dc: .05, r: .06, rev: .25 }); break;
+    case 'ssaw': voice(t, f, du, { osc: [['sawtooth', -22, .6], ['sawtooth', -8, .6], ['sawtooth', 8, .6], ['sawtooth', 22, .6]], f0: 5200, a: .01, v: .028 * v, r: .2, rev: .5 }); break;
+    case 'ssawf': voice(t, f, du, { osc: [['sawtooth', -18, .6], ['sawtooth', 0, .6], ['sawtooth', 18, .6]], f0: 300, f1: 4200, fd: du, a: .05, v: .026 * v, r: .1, rev: .5 }); break;
+    // ---- 主旋律 ----
+    case 'pluck': voice(t, f, du, { osc: [['sawtooth', -6], ['square', 6, .5]], f0: 6000, f1: 700, fd: .2, v: .07 * v, s: .25, dc: .12, r: .12, rev: .35, dly: .45 }); break;
+    case 'bell': voice(t, f, du, { osc: [['sine', 0], ['sine', 1900, .35], ['triangle', 1200, .25]], f0: 9000, v: .07 * v, s: .2, dc: .35, r: .4, rev: .55, dly: .3 }); break;
+    case 'synth': voice(t, f, du, { osc: [['square', -5], ['sawtooth', 5, .7]], f0: 2400, q: 4, v: .055 * v, s: .7, r: .06, dly: .35, glide: null }); break;
+    case 'slead': voice(t, f, du, { osc: [['sawtooth', -14], ['sawtooth', 14], ['sawtooth', 1200, .4]], f0: 7000, f1: 3000, fd: .3, v: .045 * v, s: .8, r: .1, rev: .4, dly: .4 }); break;
+    case 'arp': voice(t, f, .09, { osc: [['square', 0]], f0: 3000, f1: 800, fd: .09, v: .028 * v, r: .04, dly: .3 }); break;
   }
 }
 // 引擎声：锯齿波，音高跟速度走
@@ -55243,7 +55363,7 @@ function buildWorld(lv) {
   for (const s of [-1, 1]) gate.add(mesh(new THREE.BoxGeometry(1.2, 11, 1.2), gm, s * (HW + 2.4), 5.5, 0));
   gate.add(mesh(new THREE.BoxGeometry(HW * 2 + 6, 2.4, 1.4), gm, 0, 11.2, 0));
   const ban = canvasTex(1024, 128, (g, w, h) => { g.fillStyle = th.accent; g.fillRect(0, 0, w, h); g.fillStyle = '#111'; for (let i = 0; i < 32; i++) g.fillRect(i * 32, (i & 1) * 8, 16, 8), g.fillRect(i * 32 + 16, h - 8 - (i & 1) * 8, 16, 8);
-    g.font = '900 78px ' + F; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#111'; g.fillText('BEAT  NITRO  ·  节拍氮气', w / 2, h / 2 + 4); });
+    g.font = '900 78px ' + F; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#111'; g.fillText('BEAT  RACER  ·  节拍飙车', w / 2, h / 2 + 4); });
   const bm = new THREE.MeshBasicMaterial({ map: ban, side: THREE.DoubleSide });
   for (const s of [-1, 1]) { const b = new THREE.Mesh(new THREE.PlaneGeometry(HW * 2 + 5, 2.1), bm); b.position.set(0, 11.2, s * .72); if (s < 0) b.rotation.y = Math.PI; gate.add(b); }
   gate.position.set(s0.x, 0, s0.z); gate.rotation.y = hd; gate.traverse(o => { if (o.isMesh) o.castShadow = true; }); SCN.add(gate);
@@ -55435,7 +55555,7 @@ function startRun() {
   if (G.started) return; G.started = true; G.now = 0; G.prev = 0; SP = 0;
   for (let i = 0; i < 4; i++) SG.mus.unshift({ t: SG.lead - (4 - i) * SG.beat, k: 'stick', m: i === 3 ? 1 : 0 });
   SG.mus.sort((a, b) => a.t - b.t);
-  if (AC) { BUS = AC.createGain(); BUS.gain.value = .55; BUS.connect(MASTER); T0 = AC.currentTime + .08; engineOn(); }
+  if (AC) { mixBus(); T0 = AC.currentTime + .08; engineOn(); }
 }
 const nitro = () => G.now < G.nitroEnd;
 const mult = () => (1 + Math.min(G.combo, 100) / 50) * (nitro() ? 2 : 1);
@@ -55820,10 +55940,10 @@ function drawItemUI() {
 function drawStart() {
   const L = LEVELS[G.lv], th = WORLD.th, y = H * .2;
   panel(70, y, 580, 560, th.accent);
-  txt('节拍氮气', W / 2, y + 74, 72, '#ffffff', null, 'center', true);
-  txt('Lv.' + (G.lv + 1) + '  ' + L.name + '  ·  ' + L.bpm + ' BPM  ·  ' + LAPS + ' 圈', W / 2, y + 140, 28, th.accent);
+  txt('节拍飙车 3D', W / 2, y + 74, 72, '#ffffff', null, 'center', true);
+  txt('Lv.' + (G.lv + 1) + '  ' + L.name + '  ·  ' + LAPS + ' 圈', W / 2, y + 130, 28, th.accent); txt('♪ ' + STY[L.sty].name + '  ·  ' + L.bpm + ' BPM', W / 2, y + 166, 26, '#ffffff');
   const rows = [['#ffd23f', '●', '鼓点进圈时点屏幕 → 氮气加速'], ['#ff8a3d', '≈', '长条按住漂移，到 ↑ 松手出弯'], ['#3ef0ff', '⇆', '左右滑动变道 · 躲路障吃道具'], ['#ff4fd8', '?', '道具箱：护盾 磁铁 闪电 火箭'], ['#ff5a5f', '!', '乱点会熄火 · 连击越高档位越高']];
-  rows.forEach((r, i) => { const yy = y + 205 + i * 60; hx.beginPath(); hx.arc(130, yy, 24, 0, 7); hx.fillStyle = r[0]; hx.fill(); txt(r[1], 130, yy + 1, 28, '#151726'); txt(r[2], 172, yy, 27, '#ffffff', null, 'left'); });
+  rows.forEach((r, i) => { const yy = y + 225 + i * 58; hx.beginPath(); hx.arc(130, yy, 24, 0, 7); hx.fillStyle = r[0]; hx.fill(); txt(r[1], 130, yy + 1, 28, '#151726'); txt(r[2], 172, yy, 27, '#ffffff', null, 'left'); });
   const best = SAVE.best[G.lv] ? '最佳 ' + SAVE.best[G.lv] + '  ·  ' + fmtT(SAVE.time[G.lv]) + '  ·  ' + '★'.repeat(SAVE.stars[G.lv]) + '☆'.repeat(3 - SAVE.stars[G.lv]) : '目标：6 车混战，冲第一！';
   txt(best, W / 2, y + 520, 26, '#c9cde0');
   const k = 1 + Math.sin(performance.now() / 160) * .05; hx.save(); hx.translate(W / 2, SY() - 150); hx.scale(k, k); txt('点一下 · 起步!', 0, 0, 58, '#ffd23f', '#151726', 'center', true, 10); hx.restore();
@@ -55854,7 +55974,7 @@ function drawUI() {
     rr(b.x + 18, b.y + 18, 104, 104, 18); hx.fillStyle = g; hx.fill();
     hx.beginPath(); hx.moveTo(b.x + 58, b.y + 81); hx.lineTo(b.x + 82, b.y + 81); hx.lineTo(b.x + 110, b.y + 122); hx.lineTo(b.x + 30, b.y + 122); hx.fillStyle = t2.road; hx.fill();
     txt((b.lv + 1) + '. ' + L.name, b.x + 144, b.y + 46, 36, ok ? '#ffffff' : '#7a7f8c', null, 'left');
-    txt(L.bpm + ' BPM  ' + '◆'.repeat(L.diff + 1) + '◇'.repeat(3 - L.diff), b.x + 144, b.y + 98, 24, '#c9cde0', null, 'left');
+    txt('♪ ' + STY[L.sty].tag + '  ' + L.bpm + ' BPM  ' + '◆'.repeat(L.diff + 1) + '◇'.repeat(3 - L.diff), b.x + 144, b.y + 98, 24, '#c9cde0', null, 'left');
     if (ok) { txt('★'.repeat(SAVE.stars[b.lv]) + '☆'.repeat(3 - SAVE.stars[b.lv]), b.x + b.w - 24, b.y + 46, 32, '#ffd23f', null, 'right');
       txt(SAVE.best[b.lv] ? SAVE.best[b.lv] + ' · ' + fmtT(SAVE.time[b.lv]) : '未挑战', b.x + b.w - 24, b.y + 98, 24, '#c9cde0', null, 'right'); }
     else txt('🔒 上一关前三名解锁', b.x + b.w - 24, b.y + 98, 22, '#7a7f8c', null, 'right');
