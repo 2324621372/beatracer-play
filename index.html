@@ -55003,6 +55003,30 @@ return exports;})();</script>
 <script>
 'use strict';
 const Q = new URLSearchParams(location.search), AUTO = Q.has('auto');
+// ====================== 中英双语（build.cjs 内联到 'use strict' 之后） ======================
+// 构建时把源码里每个中文字符串字面量改写成 TT_('中文')；TT_ 按当前语言返回中文原文或 tools/en.json 里的英文。
+// 默认语言由构建决定：中文页 zh；/en/ 页与 Riffle 平台版 en。玩家在暂停菜单 / 结算页切换后记住选择。
+// 切换时保存选择并重新载入页面，所有文字（含表格、场景横幅、字体）都按新语言重新初始化，不会残留旧语言。
+const I18N = { def: 'zh', en: {} };
+I18N.en = {"    准确率 ":"    Accuracy ","   超车 ×":"   Passes ×","  ⏱新纪录":"  ⏱ New best"," · 开局护盾":" · Start shield"," · 点我":" · Tap"," 升到 ":" → Lv."," 名":""," 圈":" laps"," 曲目":" track"," 涂装":" paints"," 秒 · 充能 +":"s · charge +"," 秒 · 范围 ":"s · range "," 米":"m"," 级":"","10 秒内挡一次撞击":"Blocks one hit for 10s","100 连击":"100 combo","2.5 秒无敌冲刺":"2.5s invincible dash","8 条赛道都跑完过":"Finish all 8 tracks","← 拖动旋转 →":"← Drag to rotate →","≪≪ 侧风 ≪≪":"≪≪ CROSSWIND ≪≪","≫≫ 侧风 ≫≫":"≫≫ CROSSWIND ≫≫","☄ 火球":"☄ Fireballs","★ 满级":"★ MAX","⚡ 落雷":"⚡ Lightning","⛈ 雷暴":"⛈ Thunderstorm","❄ 暴风雪":"❄ Blizzard","❓ 玩法":"❓ Help","❓ 玩法说明":"❓ How to Play","一场不熄火、不被撞停":"No stalls or crashes in a race","一场吃到 150 枚金币":"Grab 150 coins in a race","一场打出 100 连击":"Hit a 100 combo in a race","一场打出 50 连击":"Hit a 50 combo in a race","一场超车 8 次":"Pass 8 cars in a race","下一关":"Next","中游霸主，直线很猛":"Rules the midfield, fast on straights","乱点会熄火 · 连击越高档位越高":"Random taps stall you · combos raise your gear","乱点会熄火，连击越高档位越高":"Random taps stall you; combos raise your gear","从最后一位发车，但从不放弃":"Starts last, never gives up","任意改装升到满级":"Max out any upgrade","任意赛道拿到第 1 名":"Finish 1st on any track","低重力跳台能飞过障碍 · 小心陨石":"Ramps fly you over hazards · watch for meteors","使用中":"Equipped","侧风会把车吹偏一道 · 鼓点上逆风滑=顶风":"Gusts push you a lane · swipe into the wind to hold","全勤":"Grand Tour","冠军!":"WINNER!","冰面!":"ICE!","冰面上变道会打滑 · 副歌暴风雪看不清":"You slide on ice · the chorus brings a whiteout","前三名才能解锁下一关":"Finish top 3 to unlock the next track","前三名解锁下一关，金币去车库改装":"Top 3 unlocks the next track; spend coins in the garage","副歌起沙尘暴 · 风滚草会横穿赛道":"Sandstorm in the chorus · tumbleweeds cross the road","加速带":"Boost Pad","加速带!":"BOOST PAD!","升级":"Upgrade","升级  🪙 ":"Upgrade  🪙 ","升级后：":"Next: ","反方向滑一下顶住!":"Swipe the other way to hold!","发车的 GO 鼓点打中":"Hit the GO beat at the start","只改外观，不影响性能":"Cosmetic only, no stat change","名":"POS","含名次奖励 +":"Incl. place bonus +","吸金":"Coins","嘻哈 Trap":"Hip-Hop Trap","圈 ":"LAP ","在赛道上碰到它":"Find it on the track","城市流行 City Pop":"City Pop","大黄蜂":"Hornet","天蓝":"Sky","完美穿越":"CLEAN PASS","完美起步":"Perfect Start","完美起步!":"PERFECT START!","完赛 ":"Finish ","对手":"Rivals","左右滑动变道 · 躲路障吃道具":"Swipe to change lanes · dodge and grab","左右滑动变道，躲路障吃道具":"Swipe left or right to change lanes","已拥有，可以在车库换装":"Owned, equip it in the garage","已满级：":"Maxed: ","开上去立刻加速":"Drive over it for instant speed","引擎":"Engine","彩虹门!":"RAINBOW GATE!","得分":"Score","惊险闪避!":"CLOSE CALL!","成就":"Badges","成就 ":"Badge: ","打出 100 连击":"Hit a 100 combo","把附近的金币吸过来":"Pulls nearby coins to you","护盾":"Shield","护盾挡住!":"SHIELD BLOCK!","护盾挡住了!":"SHIELD BLOCK!","护盾隔热":"SHIELDED","拿满 24 颗星":"Collect all 24 stars","按住…  到 ↑ 松手":"Hold…  release at ↑","摇滚 Rock":"Rock","撞上会熄火，氮气或火箭能撞碎":"Stalls you on hit; nitro or rocket smashes it","撞散!":"SMASHED!","撞碎!":"SMASH!","撞路障!":"BARRIER HIT!","撞飞! ":"KNOCKOUT! ","改装":"Upgrades","改装大师":"Tuner","新纪录!":"NEW BEST!","无视侧风":"WIND PROOF","星际轨道":"Star Orbit","星际轨道拿到第 1 名":"Finish 1st on Star Orbit","星际轨道第1":"1st on Star Orbit","晴空环道":"Sunny Loop","暂停":"Paused","暗夜":"Midnight","曲目":"Music","最佳 ":"Best ","最后一圈!":"FINAL LAP!","最大连击 ":"Max combo ","最快单圈 ":"Best lap ","本关 · ":"This track · ","极速":"Speed","档":"GEAR","樱花古都":"Sakura Town","樱花古都拿到第 1 名":"Finish 1st on Sakura Town","樱花古都第1":"1st on Sakura Town","橙光":"Tangerine","比赛中赢过它":"Beat it in a race","氮气":"Nitro","氮气 ":"Nitro ","氮气 +34":"NITRO +34","氮气瓶":"Nitro Can","氮气罐":"Nitro Tank","沙漠峡谷":"Desert Canyon","流行 Pop":"Pop","涂装":"Paint","涂装只改外观，不影响性能":"Paint is cosmetic, stats stay the same","涡轮出弯!":"TURBO EXIT!","满 24 星":"All 24 stars","满星":"All Stars","漂移完成":"DRIFT DONE","漂移断了":"DRIFT BROKEN","激光门每小节换一次空档 · 走绿灯那道":"Laser gates shift every bar · take the green lane","火球砸向地上的红圈 · 落地留下熔岩坑":"Fireballs hit the red rings · and leave lava pits","火箭":"Rocket","点 = 踩鼓点  ·  ← 左右滑 = 变道 →":"Tap = hit the beat  ·  ← swipe = change lane →","点一下 · 起步!":"Tap to start!","点击换装":"Tap to equip","烫!":"HOT!","熄火!":"STALL!","熄火时间 −":"Stall time −","熔岩火山":"Lava Volcano","电子 EDM":"EDM","白幽灵":"Ghost","的配乐":" theme","目标：6 车混战，冲第一！":"Goal: beat 5 rivals to 1st!","直接充 34 点氮气":"Instantly adds 34 nitro","知道了":"Got it","磁力线圈":"Magnet Coil","磁铁":"Magnet","磁铁 ":"Magnet ","稳定的追击者，很少失误":"A steady chaser, rarely slips","穿过彩虹门：加速 + 充氮气":"Drive through rainbow gates for boost + nitro","穿过激光":"LASER PROOF","第 ":"P","第一次玩？点 ❓ 看看怎么玩":"First time? Tap ❓ to learn","粉樱":"Blossom","紧咬第一的老二，从不让路":"Always second, never yields","紫罗兰":"Violet","红圈预警一小节 · 下一小节第一拍劈下":"Red rings warn a bar early · strikes land on beat 1","结算时换成车库资金":"Turns into garage cash after the race","结算金币 +":"Race coins +","继续":"Resume","耐撞":"Armor","节拍飙车":"Beat Racer","节拍飙车 3D":"Beat Racer 3D","获得 ":"Got ","蓝闪电":"Blue Bolt","薄荷":"Mint","被激光烧到!":"LASER BURN!","被砸中!":"DIRECT HIT!","被雷劈了!":"ZAPPED!","被风吹偏!":"BLOWN OFF!","被风滚草糊脸":"TUMBLEWEED!","解锁：":"Unlock: ","让前方对手减速打转":"Slows and spins rivals ahead","赛车":"Cars","赛道":"Tracks","赞助商":"Sponsor","赤焰":"Blaze","起飞!":"LIFTOFF!","超车! ":"PASS! ","超车王":"Overtaker","跑完":"Finish ","跑完这条赛道":"Finish this track","路障":"Barrier","车库":"Garage","车库购买 🪙":"Buy in garage 🪙","车速 +":"Top speed +","车队王牌，每条赛道都是最快的那个":"Team ace, fastest on every track","返回":"Back","连击 100":"Combo 100","连击 50":"Combo 50","迪斯科放克 Disco Funk":"Disco Funk","追尾!":"BUMPED!","选关":"Tracks","选择赛道":"Select Track","道具":"Items","道具箱":"Item Box","道具箱：护盾 磁铁 闪电 火箭":"Item boxes: shield, magnet, zap, rocket","道具（拿到后点左下角按钮使用）":"Items (tap the bottom-left button to use)","重来":"Retry","金币":"Coin","金币不够，再跑几场吧":"Not enough coins, race a few more","键盘：空格 踩点 · ← → 变道 · ↑ 道具 · P 暂停":"Keys: Space beat · ← → lanes · ↑ item · P pause","镭射紫":"Laser Violet","长条按住漂移，到 ↑ 松手出弯":"Hold long notes to drift, release at ↑","闪电":"Zap","闪电 ×":"ZAP ×","防滚架":"Roll Cage","随机道具，落后时更容易出攻击道具":"Random item; attack items are likelier when behind","雨林雷暴":"Jungle Storm","雪山之巅":"Snow Peak","零失误":"Flawless","雷鬼动 Reggaeton":"Reggaeton","霓虹夜城":"Neon Night","青蛙王":"Frog King","顶住侧风!":"HELD THE WIND!","首胜":"First Win","黄金":"Gold","鼓打贝斯 Drum & Bass":"Drum & Bass","鼓点进圈时点屏幕 → 加速":"Tap when the beat hits the ring → boost","鼓点进圈时点屏幕 → 氮气加速":"Tap when the beat hits the ring → boost","🌈 彩虹门":"🌈 Rainbow Gates","🌋 火山灰":"🌋 Ash","🌠 流星雨":"🌠 Meteors","🌧 夜雨":"🌧 Night Rain","🌪 沙尘暴":"🌪 Sandstorm","🌸 樱吹雪":"🌸 Petal Storm","🌾 风滚草":"🌾 Tumbleweeds","🍃 微风":"🍃 Breeze","🎨 买下涂装：":"🎨 Bought paint: ","🎨 涂装":"🎨 Paint","🎨 解锁涂装：":"🎨 Paint unlocked: ","🏆 冠军!":"🏆 WINNER!","💨 侧风":"💨 Crosswind","📖 图鉴":"📖 Codex","📖 新图鉴 ×":"📖 New entries ×","🔊 点一下屏幕开启音乐":"🔊 Tap the screen for music","🔒 上一关前三":"🔒 Top 3 on previous","🔧 车库":"🔧 Garage","🚥 激光门":"🚥 Laser Gates","🛸 跳台":"🛸 Ramps","🧊 冰面":"🧊 Ice","：":": "};
+let LANG = I18N.def;
+try { const s = localStorage.getItem('beatracer3d_lang'); if (s === 'zh' || s === 'en') LANG = s; } catch (e) { }
+if (Q.get('lang') === 'zh' || Q.get('lang') === 'en') LANG = Q.get('lang');
+const TT_ = s => LANG === 'en' ? (I18N.en[s] ?? s) : s; // 不叫 T：游戏代码里有局部变量 T
+const LANG_FONT = { zh: '"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif', en: '"Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif' };
+document.documentElement.lang = LANG === 'en' ? 'en' : 'zh-CN';
+document.title = LANG === 'en' ? 'Beat Racer 3D' : '节拍飙车 · 3D';
+document.getElementById('hud').setAttribute('aria-label', TT_('节拍飙车 3D：跟着鼓点点击屏幕给赛车加速，长条按住漂移，抢第一名'));
+function setLang(l) {
+  if ((l !== 'zh' && l !== 'en') || l === LANG) return;
+  try { localStorage.setItem('beatracer3d_lang', l); } catch (e) { }
+  // 重新载入后回到当前赛道重新发车（本局未完成，不计成绩）；URL 里的 ?lang= 会盖过本地选择，切换时去掉它
+  try { if (typeof SAVE !== 'undefined') { SAVE.last = G.lv; persist(); } } catch (e) { }
+  const u = new URL(location.href); u.searchParams.delete('lang');
+  if (u.href !== location.href) location.replace(u.href); else location.reload();
+}
+// 语言按钮：显示“要切换到的语言”，用各自的文字写，不认识当前语言的玩家也能找到
+const LANG_BTN = () => LANG === 'en' ? '🌐 中文' : '🌐 English';
 // ====================== 画布 ======================
 const W = 720; let H = 1280, K = 1, CSSW = 360, CSSH = 640;
 const c3 = document.getElementById('g3'), hc = document.getElementById('hud'), hx = hc.getContext('2d');
@@ -55025,7 +55049,7 @@ addEventListener('resize', resize); resize();
 // ====================== 工具 ======================
 function RNG(s) { return function () { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, lerp = (a, b, t) => a + (b - a) * t;
-const F = '"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif';
+const F = LANG_FONT[LANG]; // 字体跟随语言
 const MC = {};
 function mat(c, o) { const k = c + JSON.stringify(o || {}); return MC[k] || (MC[k] = new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .7, flatShading: true }, o))); }
 function mesh(geo, m, x, y, z, shadow) { const o = new THREE.Mesh(geo, m); o.position.set(x || 0, y || 0, z || 0); o.castShadow = shadow !== false; o.receiveShadow = true; return o; }
@@ -55048,18 +55072,18 @@ const THEMES = [
 ];
 // 每关一种天气（wx）+ 一个机制（mech）；天气强度跟着音乐段落走，副歌最猛
 const LEVELS = [
-  { name: '晴空环道', bpm: 104, root: 60, sty: 'pop', th: 0, diff: 0, seed: 11, R: 210, rivals: [34, 38, 41, 44, 47], wx: 'breeze', mech: ['gate'], tag: ['🍃 微风', '🌈 彩虹门'], tip: '穿过彩虹门：加速 + 充氮气' },
-  { name: '沙漠峡谷', bpm: 118, root: 57, sty: 'funk', th: 1, diff: 1, seed: 23, R: 230, rivals: [36, 40, 43, 46, 50], wx: 'sand', mech: ['tumble'], tag: ['🌪 沙尘暴', '🌾 风滚草'], tip: '副歌起沙尘暴 · 风滚草会横穿赛道' },
-  { name: '樱花古都', bpm: 112, root: 62, sty: 'citypop', th: 4, diff: 1, seed: 61, R: 220, rivals: [37, 41, 44, 47, 51], wx: 'sakura', mech: ['gust'], tag: ['🌸 樱吹雪', '💨 侧风'], tip: '侧风会把车吹偏一道 · 鼓点上逆风滑=顶风' },
-  { name: '霓虹夜城', bpm: 128, root: 57, sty: 'edm', th: 2, diff: 2, seed: 37, R: 220, rivals: [38, 42, 46, 49, 53], wx: 'rain', mech: ['laser'], tag: ['🌧 夜雨', '🚥 激光门'], tip: '激光门每小节换一次空档 · 走绿灯那道' },
-  { name: '雨林雷暴', bpm: 96, root: 57, sty: 'reggaeton', th: 5, diff: 2, seed: 73, R: 235, rivals: [39, 43, 47, 50, 54], wx: 'storm', mech: ['thunder'], tag: ['⛈ 雷暴', '⚡ 落雷'], tip: '红圈预警一小节 · 下一小节第一拍劈下' },
-  { name: '雪山之巅', bpm: 146, root: 55, sty: 'trap', th: 3, diff: 3, seed: 51, R: 240, rivals: [40, 44, 48, 52, 56], wx: 'blizzard', mech: ['ice'], tag: ['❄ 暴风雪', '🧊 冰面'], tip: '冰面上变道会打滑 · 副歌暴风雪看不清' },
-  { name: '熔岩火山', bpm: 150, root: 52, sty: 'rock', th: 6, diff: 3, seed: 89, R: 230, rivals: [41, 45, 49, 53, 57], wx: 'ash', mech: ['fireball'], tag: ['🌋 火山灰', '☄ 火球'], tip: '火球砸向地上的红圈 · 落地留下熔岩坑' },
-  { name: '星际轨道', bpm: 172, root: 54, sty: 'dnb', th: 7, diff: 3, half: 1, seed: 97, R: 250, rivals: [42, 46, 50, 54, 58], wx: 'meteor', mech: ['ramp', 'meteor'], tag: ['🌠 流星雨', '🛸 跳台'], tip: '低重力跳台能飞过障碍 · 小心陨石' },
+  { name: TT_('晴空环道'), bpm: 104, root: 60, sty: 'pop', th: 0, diff: 0, seed: 11, R: 210, rivals: [34, 38, 41, 44, 47], wx: 'breeze', mech: ['gate'], tag: [TT_('🍃 微风'), TT_('🌈 彩虹门')], tip: TT_('穿过彩虹门：加速 + 充氮气') },
+  { name: TT_('沙漠峡谷'), bpm: 118, root: 57, sty: 'funk', th: 1, diff: 1, seed: 23, R: 230, rivals: [36, 40, 43, 46, 50], wx: 'sand', mech: ['tumble'], tag: [TT_('🌪 沙尘暴'), TT_('🌾 风滚草')], tip: TT_('副歌起沙尘暴 · 风滚草会横穿赛道') },
+  { name: TT_('樱花古都'), bpm: 112, root: 62, sty: 'citypop', th: 4, diff: 1, seed: 61, R: 220, rivals: [37, 41, 44, 47, 51], wx: 'sakura', mech: ['gust'], tag: [TT_('🌸 樱吹雪'), TT_('💨 侧风')], tip: TT_('侧风会把车吹偏一道 · 鼓点上逆风滑=顶风') },
+  { name: TT_('霓虹夜城'), bpm: 128, root: 57, sty: 'edm', th: 2, diff: 2, seed: 37, R: 220, rivals: [38, 42, 46, 49, 53], wx: 'rain', mech: ['laser'], tag: [TT_('🌧 夜雨'), TT_('🚥 激光门')], tip: TT_('激光门每小节换一次空档 · 走绿灯那道') },
+  { name: TT_('雨林雷暴'), bpm: 96, root: 57, sty: 'reggaeton', th: 5, diff: 2, seed: 73, R: 235, rivals: [39, 43, 47, 50, 54], wx: 'storm', mech: ['thunder'], tag: [TT_('⛈ 雷暴'), TT_('⚡ 落雷')], tip: TT_('红圈预警一小节 · 下一小节第一拍劈下') },
+  { name: TT_('雪山之巅'), bpm: 146, root: 55, sty: 'trap', th: 3, diff: 3, seed: 51, R: 240, rivals: [40, 44, 48, 52, 56], wx: 'blizzard', mech: ['ice'], tag: [TT_('❄ 暴风雪'), TT_('🧊 冰面')], tip: TT_('冰面上变道会打滑 · 副歌暴风雪看不清') },
+  { name: TT_('熔岩火山'), bpm: 150, root: 52, sty: 'rock', th: 6, diff: 3, seed: 89, R: 230, rivals: [41, 45, 49, 53, 57], wx: 'ash', mech: ['fireball'], tag: [TT_('🌋 火山灰'), TT_('☄ 火球')], tip: TT_('火球砸向地上的红圈 · 落地留下熔岩坑') },
+  { name: TT_('星际轨道'), bpm: 172, root: 54, sty: 'dnb', th: 7, diff: 3, half: 1, seed: 97, R: 250, rivals: [42, 46, 50, 54, 58], wx: 'meteor', mech: ['ramp', 'meteor'], tag: [TT_('🌠 流星雨'), TT_('🛸 跳台')], tip: TT_('低重力跳台能飞过障碍 · 小心陨石') },
 ];
 const NL = LEVELS.length;
 const RIVAL_COL = ['#3d7bff', '#2ecc71', '#ffd23f', '#a55eea', '#ffffff'];
-const RIVAL_NAME = ['蓝闪电', '青蛙王', '大黄蜂', '紫罗兰', '白幽灵'];
+const RIVAL_NAME = [TT_('蓝闪电'), TT_('青蛙王'), TT_('大黄蜂'), TT_('紫罗兰'), TT_('白幽灵')];
 const LAPS = 2, HW = 8, WP = .06, WG = .11, WO = .16;
 const LANES = [HW * 2 / 3, 0, -HW * 2 / 3]; // 0=屏幕左 1=中 2=右（lat 正值在左）
 const laneOf = lat => lat > HW / 3 ? 0 : lat < -HW / 3 ? 2 : 1;
@@ -55087,16 +55111,16 @@ function newSong(L) {
 // ---- 曲风：每关一首原创编曲，按主流曲风写鼓型 / 和弦进行 / 贝斯 / 主旋律 hook ----
 // hook: [4 小节内的 16 分步, 相对主音的半音, 时值(16 分)]，与和弦循环 bar%4 对齐
 const STY = {
-  pop: { name: '流行 Pop', tag: 'Pop', prog: [0, 7, 9, 5], q: [[0, 4, 7], [0, 4, 7], [0, 3, 7], [0, 4, 7]], oct: 12, pump: 0, // I–V–vi–IV
+  pop: { name: TT_('流行 Pop'), tag: 'Pop', prog: [0, 7, 9, 5], q: [[0, 4, 7], [0, 4, 7], [0, 3, 7], [0, 4, 7]], oct: 12, pump: 0, // I–V–vi–IV
     hook: [[0, 4, 2], [2, 7, 2], [4, 12, 3], [7, 11, 1], [8, 7, 2], [10, 4, 2], [12, 2, 2], [14, 4, 2], [16, 2, 4], [22, 7, 2], [24, 11, 3], [27, 9, 1], [28, 7, 4],
       [32, 0, 2], [34, 4, 2], [36, 9, 3], [39, 7, 1], [40, 4, 2], [42, 9, 2], [44, 12, 4], [48, 9, 2], [50, 7, 2], [52, 5, 2], [54, 4, 2], [56, 5, 3], [59, 4, 1], [60, 2, 4]] },
-  funk: { name: '迪斯科放克 Disco Funk', tag: 'Funk', prog: [0, 5, 0, 10], q: [[0, 3, 7, 10], [0, 4, 7, 10], [0, 3, 7, 10], [0, 4, 7, 10]], oct: 0, pump: .45, swing: .14, // i7–IV7 多利亚律动
+  funk: { name: TT_('迪斯科放克 Disco Funk'), tag: 'Funk', prog: [0, 5, 0, 10], q: [[0, 3, 7, 10], [0, 4, 7, 10], [0, 3, 7, 10], [0, 4, 7, 10]], oct: 0, pump: .45, swing: .14, // i7–IV7 多利亚律动
     hook: [[0, 12, 1], [3, 15, 1], [6, 17, 1], [7, 19, 2], [10, 22, 1], [11, 24, 2], [14, 22, 2], [16, 21, 1], [19, 19, 1], [22, 17, 1], [23, 19, 2], [26, 21, 1], [27, 24, 2], [30, 26, 2],
       [32, 12, 1], [35, 15, 1], [38, 17, 1], [39, 19, 2], [42, 22, 1], [43, 24, 1], [44, 27, 2], [46, 26, 2], [48, 24, 1], [50, 22, 2], [52, 19, 1], [54, 22, 1], [55, 24, 2], [58, 26, 1], [59, 29, 3]] },
-  edm: { name: '电子 EDM', tag: 'EDM', prog: [0, 8, 3, 10], q: [[0, 3, 7], [0, 4, 7], [0, 4, 7], [0, 4, 7]], oct: 0, pump: .7, // i–VI–III–VII
+  edm: { name: TT_('电子 EDM'), tag: 'EDM', prog: [0, 8, 3, 10], q: [[0, 3, 7], [0, 4, 7], [0, 4, 7], [0, 4, 7]], oct: 0, pump: .7, // i–VI–III–VII
     hook: [[0, 12, 2], [2, 12, 2], [4, 15, 2], [6, 12, 2], [8, 19, 3], [11, 17, 1], [12, 15, 2], [14, 12, 2], [16, 12, 2], [18, 12, 2], [20, 15, 2], [22, 12, 2], [24, 20, 3], [27, 19, 1], [28, 15, 4],
       [32, 10, 2], [34, 10, 2], [36, 15, 2], [38, 10, 2], [40, 19, 3], [43, 17, 1], [44, 15, 2], [46, 14, 2], [48, 14, 2], [50, 14, 2], [52, 17, 2], [54, 14, 2], [56, 22, 3], [59, 19, 1], [60, 17, 4]] },
-  trap: { name: '嘻哈 Trap', tag: 'Trap', prog: [0, 8, 5, 7], q: [[0, 3, 7], [0, 4, 7], [0, 3, 7], [0, 4, 7]], oct: 0, pump: 0, // i–VI–iv–V 和声小调
+  trap: { name: TT_('嘻哈 Trap'), tag: 'Trap', prog: [0, 8, 5, 7], q: [[0, 3, 7], [0, 4, 7], [0, 3, 7], [0, 4, 7]], oct: 0, pump: 0, // i–VI–iv–V 和声小调
     hook: [[0, 12, 3], [3, 15, 3], [6, 19, 2], [10, 17, 2], [12, 15, 4], [16, 15, 3], [19, 12, 3], [22, 20, 2], [26, 19, 2], [28, 15, 4],
       [32, 12, 3], [35, 17, 3], [38, 20, 2], [42, 17, 2], [44, 12, 4], [48, 14, 3], [51, 11, 3], [54, 19, 2], [58, 14, 2], [60, 11, 4]] },
 };
@@ -55192,16 +55216,16 @@ const ARR = {
   },
 };
 Object.assign(STY, {
-  citypop: { name: '城市流行 City Pop', tag: 'CityPop', prog: [5, 4, 2, 9], q: [[0, 4, 7, 11], [0, 4, 7, 10], [0, 3, 7, 10], [0, 3, 7, 10]], oct: 12, pump: 0, swing: .08, // IVmaj7–III7–ii7–vi7
+  citypop: { name: TT_('城市流行 City Pop'), tag: 'CityPop', prog: [5, 4, 2, 9], q: [[0, 4, 7, 11], [0, 4, 7, 10], [0, 3, 7, 10], [0, 3, 7, 10]], oct: 12, pump: 0, swing: .08, // IVmaj7–III7–ii7–vi7
     hook: [[0, 9, 2], [2, 12, 2], [4, 16, 3], [7, 14, 1], [8, 12, 2], [10, 11, 2], [12, 9, 4], [16, 8, 2], [18, 11, 2], [20, 14, 3], [23, 12, 1], [24, 11, 2], [26, 8, 2], [28, 4, 4],
       [32, 2, 2], [34, 5, 2], [36, 9, 3], [39, 7, 1], [40, 5, 2], [42, 9, 2], [44, 12, 4], [48, 9, 2], [50, 12, 2], [52, 16, 2], [54, 14, 2], [56, 12, 3], [59, 11, 1], [60, 9, 4]] },
-  reggaeton: { name: '雷鬼动 Reggaeton', tag: 'Reggaeton', prog: [0, 8, 3, 10], q: [[0, 3, 7], [0, 4, 7], [0, 4, 7], [0, 4, 7]], oct: 12, pump: .2, // i–VI–III–VII
+  reggaeton: { name: TT_('雷鬼动 Reggaeton'), tag: 'Reggaeton', prog: [0, 8, 3, 10], q: [[0, 3, 7], [0, 4, 7], [0, 4, 7], [0, 4, 7]], oct: 12, pump: .2, // i–VI–III–VII
     hook: [[0, 7, 2], [3, 10, 1], [4, 12, 2], [6, 10, 2], [8, 7, 3], [11, 5, 1], [12, 3, 4], [16, 8, 2], [19, 7, 1], [20, 8, 2], [22, 12, 2], [24, 15, 3], [27, 12, 1], [28, 10, 4],
       [32, 7, 2], [35, 10, 1], [36, 12, 2], [38, 15, 2], [40, 14, 3], [43, 12, 1], [44, 10, 4], [48, 10, 2], [51, 12, 1], [52, 14, 2], [54, 12, 2], [56, 10, 3], [59, 7, 1], [60, 5, 4]] },
-  rock: { name: '摇滚 Rock', tag: 'Rock', prog: [0, 10, 8, 10], q: [[0, 7], [0, 7], [0, 7], [0, 7]], oct: 12, pump: 0, // i–VII–VI–VII 强力和弦
+  rock: { name: TT_('摇滚 Rock'), tag: 'Rock', prog: [0, 10, 8, 10], q: [[0, 7], [0, 7], [0, 7], [0, 7]], oct: 12, pump: 0, // i–VII–VI–VII 强力和弦
     hook: [[0, 7, 2], [2, 10, 2], [4, 12, 4], [8, 10, 2], [10, 12, 2], [12, 15, 4], [16, 14, 2], [18, 12, 2], [20, 10, 4], [24, 12, 2], [26, 10, 2], [28, 7, 4],
       [32, 7, 2], [34, 10, 2], [36, 12, 4], [40, 15, 2], [42, 17, 2], [44, 19, 4], [48, 17, 2], [50, 15, 2], [52, 14, 4], [56, 12, 2], [58, 14, 2], [60, 12, 4]] },
-  dnb: { name: '鼓打贝斯 Drum & Bass', tag: 'DnB', prog: [0, 5, 8, 7], q: [[0, 3, 7, 10], [0, 3, 7], [0, 4, 7, 11], [0, 4, 7]], oct: 12, pump: .3, // i7–iv–VImaj7–V
+  dnb: { name: TT_('鼓打贝斯 Drum & Bass'), tag: 'DnB', prog: [0, 5, 8, 7], q: [[0, 3, 7, 10], [0, 3, 7], [0, 4, 7, 11], [0, 4, 7]], oct: 12, pump: .3, // i7–iv–VImaj7–V
     hook: [[0, 7, 6], [6, 10, 2], [8, 12, 8], [16, 8, 6], [22, 12, 2], [24, 15, 8], [32, 12, 6], [38, 15, 2], [40, 17, 8], [48, 19, 4], [52, 17, 4], [56, 14, 8]] },
 });
 function genBar() {
@@ -55447,7 +55471,7 @@ function buildWorld(lv) {
   for (const s of [-1, 1]) gate.add(mesh(new THREE.BoxGeometry(1.2, 11, 1.2), gm, s * (HW + 2.4), 5.5, 0));
   gate.add(mesh(new THREE.BoxGeometry(HW * 2 + 6, 2.4, 1.4), gm, 0, 11.2, 0));
   const ban = canvasTex(1024, 128, (g, w, h) => { g.fillStyle = th.accent; g.fillRect(0, 0, w, h); g.fillStyle = '#111'; for (let i = 0; i < 32; i++) g.fillRect(i * 32, (i & 1) * 8, 16, 8), g.fillRect(i * 32 + 16, h - 8 - (i & 1) * 8, 16, 8);
-    g.font = '900 78px ' + F; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#111'; g.fillText('BEAT  RACER  ·  节拍飙车', w / 2, h / 2 + 4); });
+    g.font = '900 78px ' + F; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillStyle = '#111'; g.fillText(LANG === 'en' ? 'BEAT  RACER  ·  3D' : 'BEAT  RACER  ·  ' + TT_('节拍飙车'), w / 2, h / 2 + 4); });
   const bm = new THREE.MeshBasicMaterial({ map: ban, side: THREE.DoubleSide });
   for (const s of [-1, 1]) { const b = new THREE.Mesh(new THREE.PlaneGeometry(HW * 2 + 5, 2.1), bm); b.position.set(0, 11.2, s * .72); if (s < 0) b.rotation.y = Math.PI; gate.add(b); }
   gate.position.set(s0.x, 0, s0.z); gate.rotation.y = hd; gate.traverse(o => { if (o.isMesh) o.castShadow = true; }); SCN.add(gate);
@@ -55755,9 +55779,9 @@ function mechUpdate(dt, prevS) {
     const sec = secNow(); if ((sec === 'drop' || sec === 'b') && bar !== MSTATE.lastGust && bar % 2 === 0) { MSTATE.lastGust = bar; MSTATE.gustDir = Math.random() < .5 ? -1 : 1; MSTATE.gustT = SG.lead + (bar + 1) * SG.bar - SG.beat; MSTATE.gustDone = false; }
     const t = now - MSTATE.gustT; WX.gust = t > 0 && t < SG.beat * 2 ? MSTATE.gustDir : lerp(WX.gust || 0, 0, dt * 3);
     if (t > SG.beat && !MSTATE.gustDone) { MSTATE.gustDone = true;
-      if (now - (MSTATE.counter || -9) < SG.beat * 1.2) { pop('顶住侧风!', '#bff8ff', 46, -200); addCombo(150); G.boost += 6; }
-      else if (inv()) pop('无视侧风', '#ffffff', 40, -200);
-      else { const nl = clamp(P.lane + MSTATE.gustDir, 0, 2); if (nl !== P.lane) { P.prevLane = P.lane; P.lane = nl; G.shake = .15; pop('被风吹偏!', '#ffb7d0', 44, -200); sfx('swish'); } } }
+      if (now - (MSTATE.counter || -9) < SG.beat * 1.2) { pop(TT_('顶住侧风!'), '#bff8ff', 46, -200); addCombo(150); G.boost += 6; }
+      else if (inv()) pop(TT_('无视侧风'), '#ffffff', 40, -200);
+      else { const nl = clamp(P.lane + MSTATE.gustDir, 0, 2); if (nl !== P.lane) { P.prevLane = P.lane; P.lane = nl; G.shake = .15; pop(TT_('被风吹偏!'), '#ffb7d0', 44, -200); sfx('swish'); } } }
   }
   // 落雷：堆叠段 + 副歌，每小节第 1 拍预警 → 下一小节第 1 拍劈下（预警就是 4 拍）
   if ((L.mech.includes('thunder') || L.mech.includes('fireball') || L.mech.includes('meteor')) && race && bar !== MSTATE.lastBar) {
@@ -55777,18 +55801,18 @@ function mechUpdate(dt, prevS) {
   }
   MSTATE.warn = MSTATE.warn.filter(w => { if (w.fired && now - w.ft > .6) { SCN.remove(w.ring); w.ring.material.dispose(); if (w.obj) SCN.remove(w.obj); if (w.bolt) SCN.remove(w.bolt); return false; } return true; });
   // 熔岩坑：持续 6 秒，开过去会被烫一下
-  for (const c of MSTATE.craters) if (race && now < c.end && now - c.hit > 1 && cross({ s: c.s, lat: LANES[c.lane] }, prevS, P.s, P.lat, 2.2)) { c.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop('护盾隔热', '#7fe7ff', 40, -160); } else { G.boost = 0; G.stall = .35; G.shake = .2; pop('烫!', '#ff7a2a', 50, -160); sfx('stall'); } }
+  for (const c of MSTATE.craters) if (race && now < c.end && now - c.hit > 1 && cross({ s: c.s, lat: LANES[c.lane] }, prevS, P.s, P.lat, 2.2)) { c.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop(TT_('护盾隔热'), '#7fe7ff', 40, -160); } else { G.boost = 0; G.stall = .35; G.shake = .2; pop(TT_('烫!'), '#ff7a2a', 50, -160); sfx('stall'); } }
   MSTATE.craters = MSTATE.craters.filter(c => { if (now > c.end) { SCN.remove(c.o); return false; } return true; });
   // 静态机制碰撞
   for (const m of MECH) {
-    if (m.k === 'gate' && race && now - m.used > 3 && cross({ s: m.s, lat: LANES[m.lane] }, prevS, P.s, P.lat, 2.4)) { m.used = now; G.boost += 12; gainEnergy(18); pop('彩虹门!', '#ffd23f', 54, -180); sfx('nitro'); fxAt(m.o.position.x, 2, m.o.position.z, '#ff4fd8', 3); }
-    else if (m.k === 'ramp' && race && now - m.used > 3 && cross({ s: m.s, lat: LANES[m.lane] }, prevS, P.s, P.lat, 2.4)) { m.used = now; P.air = 1.6; P.airT = 0; G.boost += 8; pop('起飞!', '#3ef0ff', 54, -180); sfx('boost'); }
-    else if (m.k === 'tumble' && race && now - m.hit > 2) { const t = mPos(m); if (t && Math.min(fwd(m.s, P.s), fwd(P.s, m.s)) < 2.4 && Math.abs(t.lat - P.lat) < 2 && !(P.air > 0)) { m.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop('撞散!', '#ffffff', 44, -160); G.score += Math.round(150 * mult()); } else { G.boost *= .4; G.shake = .2; pop('被风滚草糊脸', '#d9b27a', 40, -160); sfx('bump'); } fxAt(m.o.position.x, 1, m.o.position.z, '#d9b27a', 2.5); } }
-    else if (m.k === 'laser' && race && now - m.hit > 1.5 && cross({ s: m.s, lat: 0 }, prevS, P.s, 0, 99) && !(P.air > 0)) { const open = (m.ph + Math.max(0, bar)) % 3; if (P.lane !== open) { m.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop('穿过激光', '#7fe7ff', 42, -160); } else { G.stall = .45; G.boost = 0; G.shake = .25; pop('被激光烧到!', '#ff3fd0', 48, -160); sfx('stall'); } } else { pop('完美穿越', '#7ee081', 42, -160); G.score += Math.round(200 * mult()); addCombo(0); } }
+    if (m.k === 'gate' && race && now - m.used > 3 && cross({ s: m.s, lat: LANES[m.lane] }, prevS, P.s, P.lat, 2.4)) { m.used = now; G.boost += 12; gainEnergy(18); pop(TT_('彩虹门!'), '#ffd23f', 54, -180); sfx('nitro'); fxAt(m.o.position.x, 2, m.o.position.z, '#ff4fd8', 3); }
+    else if (m.k === 'ramp' && race && now - m.used > 3 && cross({ s: m.s, lat: LANES[m.lane] }, prevS, P.s, P.lat, 2.4)) { m.used = now; P.air = 1.6; P.airT = 0; G.boost += 8; pop(TT_('起飞!'), '#3ef0ff', 54, -180); sfx('boost'); }
+    else if (m.k === 'tumble' && race && now - m.hit > 2) { const t = mPos(m); if (t && Math.min(fwd(m.s, P.s), fwd(P.s, m.s)) < 2.4 && Math.abs(t.lat - P.lat) < 2 && !(P.air > 0)) { m.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop(TT_('撞散!'), '#ffffff', 44, -160); G.score += Math.round(150 * mult()); } else { G.boost *= .4; G.shake = .2; pop(TT_('被风滚草糊脸'), '#d9b27a', 40, -160); sfx('bump'); } fxAt(m.o.position.x, 1, m.o.position.z, '#d9b27a', 2.5); } }
+    else if (m.k === 'laser' && race && now - m.hit > 1.5 && cross({ s: m.s, lat: 0 }, prevS, P.s, 0, 99) && !(P.air > 0)) { const open = (m.ph + Math.max(0, bar)) % 3; if (P.lane !== open) { m.hit = now; if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop(TT_('穿过激光'), '#7fe7ff', 42, -160); } else { G.stall = .45; G.boost = 0; G.shake = .25; pop(TT_('被激光烧到!'), '#ff3fd0', 48, -160); sfx('stall'); } } else { pop(TT_('完美穿越'), '#7ee081', 42, -160); G.score += Math.round(200 * mult()); addCombo(0); } }
   }
   // 冰面：变道惯性 —— 冰上换道会“滑”过头一点再回来，车速稍快
   const onIce = MECH.some(m => m.k === 'ice' && fwd(P.s, m.s) >= 0 && fwd(P.s, m.s) < 30);
-  if (onIce !== MSTATE.ice) { MSTATE.ice = onIce; if (onIce && race) pop('冰面!', '#cfefff', 44, -160); }
+  if (onIce !== MSTATE.ice) { MSTATE.ice = onIce; if (onIce && race) pop(TT_('冰面!'), '#cfefff', 44, -160); }
   // 腾空
   if (P.air > 0) { P.airT += dt; if (P.airT >= P.air) { P.air = 0; G.shake = .2; sfx('bump'); } }
   // 对手也受机制影响（简化：落雷/火球打在对手所在道上 → 打转）
@@ -55803,9 +55827,9 @@ function strike(w) {
   else { sfx('smash'); G.shake = Math.max(G.shake, .25); fxAt(ring.x, 1, ring.z, w.k === 'fireball' ? '#ff7a2a' : '#bfe9ff', 4);
     if (w.k === 'fireball') { const o = new THREE.Mesh(MG().crater, new THREE.MeshBasicMaterial({ color: '#ff5a1f' })); o.position.set(ring.x, .1, ring.z); SCN.add(o); MSTATE.craters.push({ s: w.s, lane: w.lane, o, end: G.now + 6, hit: -9 }); } }
   for (const c of CARS) if (!c.fin && c.lane === w.lane && Math.min(fwd(w.s, c.s), fwd(c.s, w.s)) < 6) { c.stun = 1.8; fxAt(c.o.position.x, 1.5, c.o.position.z, '#ffe14a', 3); }
-  if (hitMe) { if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop('护盾挡住!', '#7fe7ff', 48, -200); }
-    else { G.stall = .8; G.boost = 0; G.combo = 0; G.energy = Math.max(0, G.energy - 12); G.shake = .45; pop(w.k === 'thunder' ? '被雷劈了!' : '被砸中!', '#ff5a5f', 58, -200); sfx('stall'); } }
-  else if (near) { pop('惊险闪避!', '#7ee081', 46, -200); G.score += Math.round(250 * mult()); G.boost += 5; }
+  if (hitMe) { if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; pop(TT_('护盾挡住!'), '#7fe7ff', 48, -200); }
+    else { G.stall = .8; G.boost = 0; G.combo = 0; G.energy = Math.max(0, G.energy - 12); G.shake = .45; pop(w.k === 'thunder' ? TT_('被雷劈了!') : TT_('被砸中!'), '#ff5a5f', 58, -200); sfx('stall'); } }
+  else if (near) { pop(TT_('惊险闪避!'), '#7ee081', 46, -200); G.score += Math.round(250 * mult()); G.boost += 5; }
 }
 
 // ---------------- 机制渲染 ----------------
@@ -55836,7 +55860,7 @@ function drawMechHUD() {
   if (WX.k === 'ash' && G.started) { const g = hx.createLinearGradient(0, H, 0, H * .5); g.addColorStop(0, 'rgba(255,90,30,.18)'); g.addColorStop(1, 'rgba(255,90,30,0)'); hx.fillStyle = g; hx.fillRect(0, 0, W, H); }
   // 侧风预警：屏幕边缘大箭头
   if (L.mech.includes('gust') && MSTATE.gustT > 0) { const t = now - MSTATE.gustT; if (t > -SG.beat * 2 && t < SG.beat * 1.5) { const a = t < 0 ? .5 + .5 * Math.sin(now * 30) : 1 - t / (SG.beat * 1.5), d = MSTATE.gustDir;
-      hx.save(); hx.globalAlpha = clamp(a, 0, 1); txt(d > 0 ? '≫≫ 侧风 ≫≫' : '≪≪ 侧风 ≪≪', W / 2, H * .36, 56, '#ffffff', '#c2185b', 'center', true, 10); if (t < 0) txt('反方向滑一下顶住!', W / 2, H * .36 + 56, 28, '#ffe3ee', '#151726'); hx.restore(); } }
+      hx.save(); hx.globalAlpha = clamp(a, 0, 1); txt(d > 0 ? TT_('≫≫ 侧风 ≫≫') : TT_('≪≪ 侧风 ≪≪'), W / 2, H * .36, 56, '#ffffff', '#c2185b', 'center', true, 10); if (t < 0) txt(TT_('反方向滑一下顶住!'), W / 2, H * .36 + 56, 28, '#ffe3ee', '#151726'); hx.restore(); } }
   // 机制提示：开局 3 秒内在顶部显示
   if (G.started && now > SG.lead && now < SG.lead + 4) { hx.save(); hx.globalAlpha = clamp(SG.lead + 4 - now, 0, 1); const by = H * .5; rr(80, by - 32, 560, 64, 32); hx.fillStyle = 'rgba(10,12,26,.7)'; hx.fill(); txt(L.tag.join('  ·  '), W / 2, by, 30, '#ffffff'); hx.restore(); }
 }
@@ -55880,7 +55904,7 @@ function startRun() {
   SG.mus.sort((a, b) => a.t - b.t);
   if (AC) { mixBus(); T0 = AC.currentTime + .08; engineOn(); }
 }
-const rankTxt = r => typeof LANG !== 'undefined' ? ['1st', '2nd', '3rd', '4th', '5th', '6th'][r - 1] + ' place' : '第 ' + r + ' 名';
+const rankTxt = r => LANG === 'en' ? ['1st', '2nd', '3rd', '4th', '5th', '6th'][r - 1] + ' place' : TT_('第 ') + r + TT_(' 名');
 const nitro = () => G.now < G.nitroEnd;
 const mult = () => (1 + Math.min(G.combo, 100) / 50) * (nitro() ? 2 : 1);
 const tier = () => G.combo >= 40 ? 4 : G.combo >= 24 ? 3 : G.combo >= 12 ? 2 : G.combo >= 4 ? 1 : 0;
@@ -55891,7 +55915,7 @@ function hit(n, ad, id) {
   const g = ad <= WP ? 'p' : ad <= WG ? 'g' : 'o'; n.j = g; G.cnt[g]++;
   addCombo(g === 'p' ? 300 : g === 'g' ? 180 : 80); gainEnergy(g === 'p' ? 6 : g === 'g' ? 4 : 2);
   G.boost += g === 'p' ? 6 : g === 'g' ? 4 : 2; G.flash = 1;
-  if (n.go && G.now >= SG.lead - WG) { G.boost += 10; pop('完美起步!', '#7ee081', 54, -120); }
+  if (n.go && G.now >= SG.lead - WG) { G.boost += 10; pop(TT_('完美起步!'), '#7ee081', 54, -120); }
   pop(g === 'p' ? 'PERFECT' : g === 'g' ? 'GREAT' : 'GOOD', g === 'p' ? '#ffd23f' : g === 'g' ? '#7ee081' : '#9ecbff', g === 'p' ? 52 : 44);
   sfx('hit', n.m); if (g === 'p') sfx('boost');
   if (n.hold) { G.hold = { n, id }; n.holding = 1; }
@@ -55903,13 +55927,13 @@ function miss(n) {
 }
 function holdEnd(release) {
   const n = G.hold.n, dt = G.now - n.t2; n.done = 1; n.holding = 0; G.hold = null;
-  if (release && Math.abs(dt) <= WG) { G.cnt.p++; addCombo(400); gainEnergy(8); G.boost += 12; pop('涡轮出弯!', '#ff9f1c', 56, -60); sfx('boost'); }
-  else if (!release || dt > -WO) { G.cnt.g++; addCombo(180); pop('漂移完成', '#ffc078', 46, -60); }
-  else { G.cnt.m++; G.combo = 0; pop('漂移断了', '#9a96b0', 42, -60); }
+  if (release && Math.abs(dt) <= WG) { G.cnt.p++; addCombo(400); gainEnergy(8); G.boost += 12; pop(TT_('涡轮出弯!'), '#ff9f1c', 56, -60); sfx('boost'); }
+  else if (!release || dt > -WO) { G.cnt.g++; addCombo(180); pop(TT_('漂移完成'), '#ffc078', 46, -60); }
+  else { G.cnt.m++; G.combo = 0; pop(TT_('漂移断了'), '#9a96b0', 42, -60); }
 }
 function stall() {
   G.combo = 0; G.stall = .7; G.boost = 0; G.energy = Math.max(0, G.energy - 10); G.shake = .3;
-  pop('熄火!', '#ff5a5f', 64, -60); sfx('stall');
+  pop(TT_('熄火!'), '#ff5a5f', 64, -60); sfx('stall');
 }
 function press(id) {
   if (!G.started || G.over || G.paused || G.hold) return;
@@ -55932,26 +55956,26 @@ const fwd = (s, from) => { const L = TRK.L; return ((s - from) % L + L) % L; };
 const hid = it => it.k !== 'pad' && G.now - it.got < 9;
 function cross(it, s0, s1, lat, w) { if (Math.abs(lat - it.lat) > w) return false; const L = TRK.L, k = it.s + L * Math.round((s1 - it.s) / L); return k > s0 - .9 && k <= s1 + .9; }
 const inv = () => nitro() || G.now < G.invEnd, shield = () => G.now < G.shieldEnd;
-const ITEM = { shield: ['🛡️', '护盾', '#7fe7ff'], magnet: ['🧲', '磁铁', '#ff5a5f'], shock: ['⚡', '闪电', '#ffd23f'], rocket: ['🚀', '火箭', '#ff9f1c'] };
+const ITEM = { shield: ['🛡️', TT_('护盾'), '#7fe7ff'], magnet: ['🧲', TT_('磁铁'), '#ff5a5f'], shock: ['⚡', TT_('闪电'), '#ffd23f'], rocket: ['🚀', TT_('火箭'), '#ff9f1c'] };
 function pickup(it) {
   const P = G.p, x = it.x, z = it.z;
   if (it.k === 'coin') { it.got = G.now; G.coins++; G.score += Math.round(50 * mult()); gainEnergy(1.5); sfx('coin'); fxAt(x, 1.1, z, '#ffd23f', .9); }
-  else if (it.k === 'nitro') { it.got = G.now; gainEnergy(34); pop('氮气 +34', '#3ef0ff', 46, -160); sfx('pick'); fxAt(x, 1.2, z, '#3ef0ff', 2); }
-  else if (it.k === 'pad') { if (G.now - it.hitT < 1) return; it.hitT = G.now; G.boost += 14; pop('加速带!', '#7effb0', 50, -160); sfx('boost'); }
+  else if (it.k === 'nitro') { it.got = G.now; gainEnergy(34); pop(TT_('氮气 +34'), '#3ef0ff', 46, -160); sfx('pick'); fxAt(x, 1.2, z, '#3ef0ff', 2); }
+  else if (it.k === 'pad') { if (G.now - it.hitT < 1) return; it.hitT = G.now; G.boost += 14; pop(TT_('加速带!'), '#7effb0', 50, -160); sfx('boost'); }
   else if (it.k === 'box') { it.got = G.now; fxAt(x, 1.4, z, '#ff4fd8', 2.2); sfx('pick');
     if (G.item) { G.score += Math.round(150 * mult()); pop('+' + Math.round(150 * mult()), '#ff4fd8', 40, -160); return; }
     const R = Math.random(), k = G.rank <= 2 ? (R < .35 ? 'shield' : R < .7 ? 'magnet' : R < .8 ? 'shock' : 'rocket') : G.rank >= 4 ? (R < .35 ? 'shock' : R < .75 ? 'rocket' : R < .9 ? 'shield' : 'magnet') : ['shield', 'magnet', 'shock', 'rocket'][R * 4 | 0];
-    G.item = k; G.itemPop = 1; pop('获得 ' + ITEM[k][1], ITEM[k][2], 48, -160); }
+    G.item = k; G.itemPop = 1; pop(TT_('获得 ') + ITEM[k][1], ITEM[k][2], 48, -160); }
   else if (it.k === 'bar') { it.got = G.now; fxAt(x, 1, z, '#ff3b3b', 2.4);
-    if (inv() || shield()) { if (!inv()) { G.shieldEnd = -1; pop('护盾挡住了!', '#7fe7ff', 46, -160); } else pop('撞碎!', '#ffffff', 50, -160); G.score += Math.round(200 * mult()); sfx('smash'); G.shake = .2; }
-    else { G.stall = .6; G.boost = 0; G.energy = Math.max(0, G.energy - 8); G.shake = .35; pop('撞路障!', '#ff5a5f', 60, -160); sfx('stall'); } }
+    if (inv() || shield()) { if (!inv()) { G.shieldEnd = -1; pop(TT_('护盾挡住了!'), '#7fe7ff', 46, -160); } else pop(TT_('撞碎!'), '#ffffff', 50, -160); G.score += Math.round(200 * mult()); sfx('smash'); G.shake = .2; }
+    else { G.stall = .6; G.boost = 0; G.energy = Math.max(0, G.energy - 8); G.shake = .35; pop(TT_('撞路障!'), '#ff5a5f', 60, -160); sfx('stall'); } }
 }
 function useItem() {
   const k = G.item; if (!k || !G.started || G.over || G.paused) return; G.item = null; const P = G.p;
   if (k === 'shield') { G.shieldEnd = G.now + 10; sfx('pick'); }
   else if (k === 'magnet') { G.magnetEnd = G.now + magnetLen(); sfx('pick'); }
   else if (k === 'rocket') { G.invEnd = G.now + 2.5; G.boost += 18; sfx('nitro'); G.shake = .2; }
-  else { let n = 0; for (const c of CARS) if (!c.fin && c.s > P.s && c.s - P.s < 260) { c.stun = 2.4; n++; fxAt(c.o.position.x, 2, c.o.position.z, '#ffd23f', 4); } G.zap = 1; sfx('shock'); if (n) pop('闪电 ×' + n, '#ffd23f', 50, -200); }
+  else { let n = 0; for (const c of CARS) if (!c.fin && c.s > P.s && c.s - P.s < 260) { c.stun = 2.4; n++; fxAt(c.o.position.x, 2, c.o.position.z, '#ffd23f', 4); } G.zap = 1; sfx('shock'); if (n) pop(TT_('闪电 ×') + n, '#ffd23f', 50, -200); }
   pop(ITEM[k][0] + ' ' + ITEM[k][1] + '!', ITEM[k][2], 56, -260, 360);
 }
 function release(id) { if (G.hold && G.hold.id === id) holdEnd(true); }
@@ -55992,9 +56016,9 @@ function update(dt) {
   G.bumpCD = Math.max(0, G.bumpCD - dt);
   if (race) for (const c of CARS) { const ds = c.s - P.s; if (Math.abs(ds) > 4.4 || Math.abs(c.lat - P.lat) > 2.2 || G.bumpCD > 0 || P.air > 0) continue;
     G.bumpCD = .5;
-    if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; c.stun = 2; c.v *= .6; if (ds > 0) c.s = P.s + 4.5; G.score += Math.round(300 * mult()); pop('撞飞! ' + c.name, '#7fe7ff', 48, -200); sfx('smash'); G.shake = .25; fxAt(c.o.position.x, 1, c.o.position.z, '#7fe7ff', 3); continue; }
+    if (inv() || shield()) { if (!inv()) G.shieldEnd = -1; c.stun = 2; c.v *= .6; if (ds > 0) c.s = P.s + 4.5; G.score += Math.round(300 * mult()); pop(TT_('撞飞! ') + c.name, '#7fe7ff', 48, -200); sfx('smash'); G.shake = .25; fxAt(c.o.position.x, 1, c.o.position.z, '#7fe7ff', 3); continue; }
     if (Math.abs(ds) < 3 && Math.abs(P.lat - LANES[P.lane]) > .4) P.lane = P.prevLane; // 侧面蹭到：弹回原车道
-    if (ds > 0) { P.v = Math.min(P.v, c.v * .85); P.s = c.s - 4.5; G.boost *= .5; pop('追尾!', '#ff9f9f', 44, -120); }
+    if (ds > 0) { P.v = Math.min(P.v, c.v * .85); P.s = c.s - 4.5; G.boost *= .5; pop(TT_('追尾!'), '#ff9f9f', 44, -120); }
     else { c.v = Math.min(c.v, P.v * .85); c.s = P.s - 4.5; }
     sfx('bump'); G.shake = .2;
   }
@@ -56008,10 +56032,10 @@ function update(dt) {
   }
   if (G.pend && now - G.pend.t > .14) { G.pend = null; stall(); }
   // 超车
-  if (race) for (const c of CARS) { const ahead = c.s > P.s; if (c.ahead && !ahead) { G.overtakes++; G.score += Math.round(500 * mult()); pop('超车! ' + c.name, '#ffffff', 44, -200); sfx('pass'); } c.ahead = ahead; }
+  if (race) for (const c of CARS) { const ahead = c.s > P.s; if (c.ahead && !ahead) { G.overtakes++; G.score += Math.round(500 * mult()); pop(TT_('超车! ') + c.name, '#ffffff', 44, -200); sfx('pass'); } c.ahead = ahead; }
   G.rank = 1 + CARS.filter(c => c.fin || c.s > P.s).length;
   // 圈数
-  const lap = Math.floor(Math.max(0, P.s) / TRK.L); if (lap > G.lap && !G.over) { G.lapT.push(now - SG.lead); G.lap = lap; if (lap < LAPS) pop('最后一圈!', '#ffd23f', 64, -300, 360); }
+  const lap = Math.floor(Math.max(0, P.s) / TRK.L); if (lap > G.lap && !G.over) { G.lapT.push(now - SG.lead); G.lap = lap; if (lap < LAPS) pop(TT_('最后一圈!'), '#ffd23f', 64, -300, 360); }
   if (!G.over && P.s >= raceDist) finish();
   if (G.over && !G.ui && now >= G.endAt) openUI('result');
   G.drift = G.hold ? 1 : 0;
@@ -56027,7 +56051,7 @@ function finish() {
   G.result = { rank, stars, bonus, bestLap, acc, nb, nt, prevBest: SAVE.best[G.lv], prevTime: SAVE.time[G.lv] };
   if (!AUTO) { if (nb) SAVE.best[G.lv] = G.score; if (nt) SAVE.time[G.lv] = G.finT; SAVE.stars[G.lv] = Math.max(SAVE.stars[G.lv], stars); SAVE.rank[G.lv] = SAVE.rank[G.lv] ? Math.min(SAVE.rank[G.lv], rank) : rank; persist(); }
   sfx('end', rank === 1 ? 72 : 64);
-  pop(rank === 1 ? '冠军!' : rankTxt(rank), rank === 1 ? '#ffd23f' : '#ffffff', 96, -380, 360);
+  pop(rank === 1 ? TT_('冠军!') : rankTxt(rank), rank === 1 ? '#ffd23f' : '#ffffff', 96, -380, 360);
 }
 
 // ====================== UI 面板 ======================
@@ -56035,19 +56059,19 @@ function openUI(type) {
   const B = [];
   if (type === 'result') {
     const y = H / 2 + 330;
-    B.push({ x: 70, y, w: 180, h: 88, label: '重来', c: '#ffd23f', act: () => reset(G.lv, true) });
-    B.push({ x: 270, y, w: 180, h: 88, label: '选关', c: '#d9e2f2', act: () => openUI('select') });
+    B.push({ x: 70, y, w: 180, h: 88, label: TT_('重来'), c: '#ffd23f', act: () => reset(G.lv, true) });
+    B.push({ x: 270, y, w: 180, h: 88, label: TT_('选关'), c: '#d9e2f2', act: () => openUI('select') });
     const nx = G.lv + 1;
-    if (nx < LEVELS.length) B.push({ x: 470, y, w: 180, h: 88, label: '下一关', c: unlocked(nx) ? '#7ee081' : '#7a7f8c', act: () => unlocked(nx) && reset(nx, true) });
+    if (nx < LEVELS.length) B.push({ x: 470, y, w: 180, h: 88, label: TT_('下一关'), c: unlocked(nx) ? '#7ee081' : '#7a7f8c', act: () => unlocked(nx) && reset(nx, true) });
   } else if (type === 'pause') {
     const y = H / 2 - 120;
-    B.push({ x: 170, y, w: 380, h: 96, label: '继续', c: '#7ee081', act: resume });
-    B.push({ x: 170, y: y + 120, w: 380, h: 96, label: '重来', c: '#ffd23f', act: () => reset(G.lv, true) });
-    B.push({ x: 170, y: y + 240, w: 380, h: 96, label: '选关', c: '#d9e2f2', act: () => openUI('select') });
+    B.push({ x: 170, y, w: 380, h: 96, label: TT_('继续'), c: '#7ee081', act: resume });
+    B.push({ x: 170, y: y + 120, w: 380, h: 96, label: TT_('重来'), c: '#ffd23f', act: () => reset(G.lv, true) });
+    B.push({ x: 170, y: y + 240, w: 380, h: 96, label: TT_('选关'), c: '#d9e2f2', act: () => openUI('select') });
   } else {
     const y0 = H / 2 - 400;
     LEVELS.forEach((L, i) => B.push({ x: 48 + (i % 2) * 316, y: y0 + (i >> 1) * 200, w: 304, h: 188, lv: i, c: unlocked(i) ? '#ffffff' : '#9aa0ae', act: () => unlocked(i) && reset(i, true) }));
-    B.push({ x: 230, y: y0 + 812, w: 260, h: 84, label: '返回', c: '#ffd23f', act: () => { if (G.over) openUI('result'); else if (G.started) openUI('pause'); else { G.ui = null; startRun(); } } });
+    B.push({ x: 230, y: y0 + 812, w: 260, h: 84, label: TT_('返回'), c: '#ffd23f', act: () => { if (G.over) openUI('result'); else if (G.started) openUI('pause'); else { G.ui = null; startRun(); } } });
   }
   G.ui = { type, B, t: performance.now() };
 }
@@ -56190,7 +56214,7 @@ function drawStrip(pulse, acc) {
   hx.beginPath(); hx.arc(TX, sy, r, 0, 7); hx.lineWidth = 7; hx.strokeStyle = G.flash > .1 ? acc : '#ffffff'; hx.stroke();
   if (G.flash > 0) { hx.globalAlpha = G.flash * .6; hx.fillStyle = acc; hx.fill(); hx.globalAlpha = 1; }
   hx.beginPath(); hx.arc(TX, sy, 60 + pulse * 8, 0, 7); hx.lineWidth = 2; hx.strokeStyle = 'rgba(255,255,255,.35)'; hx.stroke();
-  if (G.hold) txt('按住…  到 ↑ 松手', W / 2, sy + 92, 30, '#ffc078', '#151726');
+  if (G.hold) txt(TT_('按住…  到 ↑ 松手'), W / 2, sy + 92, 30, '#ffc078', '#151726');
 }
 function drawMinimap() {
   const { P, N } = TRK; let a = 1e9, b = -1e9, c = 1e9, d = -1e9; for (const p of P) { a = Math.min(a, p[0]); b = Math.max(b, p[0]); c = Math.min(c, p[1]); d = Math.max(d, p[1]); }
@@ -56215,11 +56239,11 @@ function drawHUD(pulse) {
   rr(18, 18, 250, 186, 26); hx.fillStyle = top; hx.fill();
   txt(String(G.rank), 40, 82, 104, G.rank === 1 ? '#ffd23f' : '#ffffff', '#151726', 'left', true);
   txt('/6', 40 + (G.rank > 9 ? 120 : 66), 104, 38, '#c9cde0', null, 'left', true);
-  if (typeof LANG === 'undefined') txt('名', 172, 62, 32, '#c9cde0', null, 'left'); else txt('POS', 172, 54, 22, '#c9cde0', null, 'left');
-  txt('圈 ' + Math.min(LAPS, G.lap + 1) + '/' + LAPS, 40, 158, 30, '#ffffff', null, 'left');
+  if (LANG !== 'en') txt(TT_('名'), 172, 62, 32, '#c9cde0', null, 'left'); else txt('POS', 172, 54, 22, '#c9cde0', null, 'left');
+  txt(TT_('圈 ') + Math.min(LAPS, G.lap + 1) + '/' + LAPS, 40, 158, 30, '#ffffff', null, 'left');
   txt(fmtT(G.over ? G.finT : now - SG.lead), 40, 190, 26, '#c9cde0', null, 'left');
   txt(String(G.score), W / 2 + 20, 64, 52, '#ffffff', '#151726', 'center', true);
-  txt('最佳 ' + SAVE.best[G.lv], W / 2 + 20, 108, 24, '#ffd23f', '#151726');
+  txt(TT_('最佳 ') + SAVE.best[G.lv], W / 2 + 20, 108, 24, '#ffd23f', '#151726');
   hx.beginPath(); hx.arc(668, 62, 40, 0, 7); hx.fillStyle = 'rgba(10,12,26,.6)'; hx.fill(); hx.lineWidth = 3; hx.strokeStyle = 'rgba(255,255,255,.6)'; hx.stroke();
   if (G.started) { hx.fillStyle = '#fff'; hx.fillRect(654, 46, 10, 32); hx.fillRect(672, 46, 10, 32); } else txt('≡', 668, 60, 46, '#ffffff');
   drawMinimap();
@@ -56231,16 +56255,16 @@ function drawHUD(pulse) {
   txt(String(kmh), 684, sy - 140, 76, nitro() ? '#3ef0ff' : '#ffffff', '#151726', 'right', true);
   txt('km/h', 684, sy - 92, 26, '#c9cde0', '#151726', 'right');
   for (let i = 0; i < 4; i++) { rr(392 + i * 44, sy - 108, 36, 16, 6); hx.fillStyle = i < tr ? ['#7ee081', '#ffd23f', '#ff9f1c', '#ff4fd8'][i] : 'rgba(255,255,255,.2)'; hx.fill(); }
-  txt('档', 380, sy - 100, 24, '#c9cde0', '#151726', 'right');
+  txt(TT_('档'), 380, sy - 100, 24, '#c9cde0', '#151726', 'right');
   const ex = 30, ew = 300, ey = sy - 100; rr(ex, ey - 13, ew, 26, 13); hx.fillStyle = 'rgba(10,12,26,.6)'; hx.fill();
   if (nitro()) { const l = (G.nitroEnd - now) / nitroLen(); rr(ex, ey - 13, ew * l, 26, 13); hx.fillStyle = '#3ef0ff'; hx.fill(); }
   else if (G.energy > 0) { rr(ex, ey - 13, Math.max(26, ew * G.energy / 100), 26, 13); hx.fillStyle = acc; hx.fill(); }
   rr(ex, ey - 13, ew, 26, 13); hx.lineWidth = 3; hx.strokeStyle = 'rgba(255,255,255,.5)'; hx.stroke();
-  txt(nitro() ? 'NITRO ×2' : '氮气', ex + 14, ey - 36, 26, nitro() ? '#3ef0ff' : '#ffffff', '#151726', 'left', true);
+  txt(nitro() ? 'NITRO ×2' : TT_('氮气'), ex + 14, ey - 36, 26, nitro() ? '#3ef0ff' : '#ffffff', '#151726', 'left', true);
   drawMechHUD();
   drawStrip(pulse, acc);
   drawItemUI();
-  txt(G.started && !G.hold ? '点 = 踩鼓点  ·  ← 左右滑 = 变道 →' : '', W / 2, H - 60, 24, 'rgba(255,255,255,.6)');
+  txt(G.started && !G.hold ? TT_('点 = 踩鼓点  ·  ← 左右滑 = 变道 →') : '', W / 2, H - 60, 24, 'rgba(255,255,255,.6)');
   // 倒计时
   if (G.started && !G.over && now < SG.lead + .5) { const n = Math.ceil((SG.lead - now) / SG.beat);
     if (now < SG.lead && n >= 1 && n <= 3) txt(String(n), W / 2, H * .4, 180, '#ffffff', '#151726', 'center', true, 16);
@@ -56258,7 +56282,7 @@ function drawItemUI() {
   hx.save(); hx.translate(x, y); hx.scale(s, s);
   hx.beginPath(); hx.arc(0, 0, IBR, 0, 7); hx.fillStyle = k ? 'rgba(10,12,26,.75)' : 'rgba(10,12,26,.4)'; hx.fill();
   hx.lineWidth = k ? 6 : 3; hx.strokeStyle = k ? ITEM[k][2] : 'rgba(255,255,255,.3)'; hx.stroke();
-  if (k) { txt(ITEM[k][0], 0, 4, 58, '#ffffff'); txt(ITEM[k][1] + ' · 点我', 0, IBR + 24, 22, ITEM[k][2], '#151726'); }
+  if (k) { txt(ITEM[k][0], 0, 4, 58, '#ffffff'); txt(ITEM[k][1] + TT_(' · 点我'), 0, IBR + 24, 22, ITEM[k][2], '#151726'); }
   else txt('?', 0, 2, 44, 'rgba(255,255,255,.3)');
   hx.restore();
   // 生效中的状态条
@@ -56271,33 +56295,33 @@ function drawItemUI() {
 function drawStart() {
   const L = LEVELS[G.lv], th = WORLD.th, y = H * .2;
   panel(70, y, 580, 620, th.accent);
-  txt('节拍飙车 3D', W / 2, y + 74, 72, '#ffffff', null, 'center', true);
-  txt('Lv.' + (G.lv + 1) + '  ' + L.name + '  ·  ' + LAPS + ' 圈', W / 2, y + 130, 28, th.accent); txt('♪ ' + STY[L.sty].name + '  ·  ' + L.bpm + ' BPM', W / 2, y + 166, 26, '#ffffff');
-  const rows = [['#ffd23f', '●', '鼓点进圈时点屏幕 → 氮气加速'], ['#ff8a3d', '≈', '长条按住漂移，到 ↑ 松手出弯'], ['#3ef0ff', '⇆', '左右滑动变道 · 躲路障吃道具'], ['#ff4fd8', '?', '道具箱：护盾 磁铁 闪电 火箭'], ['#ff5a5f', '!', '乱点会熄火 · 连击越高档位越高']];
+  txt(TT_('节拍飙车 3D'), W / 2, y + 74, 72, '#ffffff', null, 'center', true);
+  txt('Lv.' + (G.lv + 1) + '  ' + L.name + '  ·  ' + LAPS + TT_(' 圈'), W / 2, y + 130, 28, th.accent); txt('♪ ' + STY[L.sty].name + '  ·  ' + L.bpm + ' BPM', W / 2, y + 166, 26, '#ffffff');
+  const rows = [['#ffd23f', '●', TT_('鼓点进圈时点屏幕 → 氮气加速')], ['#ff8a3d', '≈', TT_('长条按住漂移，到 ↑ 松手出弯')], ['#3ef0ff', '⇆', TT_('左右滑动变道 · 躲路障吃道具')], ['#ff4fd8', '?', TT_('道具箱：护盾 磁铁 闪电 火箭')], ['#ff5a5f', '!', TT_('乱点会熄火 · 连击越高档位越高')]];
   rows.forEach((r, i) => { const yy = y + 225 + i * 58; hx.beginPath(); hx.arc(130, yy, 24, 0, 7); hx.fillStyle = r[0]; hx.fill(); txt(r[1], 130, yy + 1, 28, '#151726'); txt(r[2], 172, yy, 27, '#ffffff', null, 'left'); });
-  const best = SAVE.best[G.lv] ? '最佳 ' + SAVE.best[G.lv] + '  ·  ' + fmtT(SAVE.time[G.lv]) + '  ·  ' + '★'.repeat(SAVE.stars[G.lv]) + '☆'.repeat(3 - SAVE.stars[G.lv]) : '目标：6 车混战，冲第一！';
-  rr(100, y + 520, 520, 44, 22); hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); TXT_MAX = 500; txt(L.tag.join('  ') + '：' + L.tip, W / 2, y + 542, 22, th.accent); TXT_MAX = 0;
+  const best = SAVE.best[G.lv] ? TT_('最佳 ') + SAVE.best[G.lv] + '  ·  ' + fmtT(SAVE.time[G.lv]) + '  ·  ' + '★'.repeat(SAVE.stars[G.lv]) + '☆'.repeat(3 - SAVE.stars[G.lv]) : TT_('目标：6 车混战，冲第一！');
+  rr(100, y + 520, 520, 44, 22); hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); TXT_MAX = 500; txt(L.tag.join('  ') + TT_('：') + L.tip, W / 2, y + 542, 22, th.accent); TXT_MAX = 0;
   txt(best, W / 2, y + 590, 26, '#c9cde0');
-  const k = 1 + Math.sin(performance.now() / 160) * .05; hx.save(); hx.translate(W / 2, SY() - 150); hx.scale(k, k); txt('点一下 · 起步!', 0, 0, 58, '#ffd23f', '#151726', 'center', true, 10); hx.restore();
+  const k = 1 + Math.sin(performance.now() / 160) * .05; hx.save(); hx.translate(W / 2, SY() - 150); hx.scale(k, k); txt(TT_('点一下 · 起步!'), 0, 0, 58, '#ffd23f', '#151726', 'center', true, 10); hx.restore();
 }
 function drawUI() {
   const U = G.ui, th = WORLD.th; hx.fillStyle = 'rgba(8,10,20,.55)'; hx.fillRect(0, 0, W, H);
   if (U.type === 'result') {
     const R = G.result, y = H / 2 - 450; panel(40, y, 640, 910, R.rank === 1 ? '#ffd23f' : th.accent);
-    txt(R.rank === 1 ? '🏆 冠军!' : rankTxt(R.rank), W / 2, y + 80, 76, R.rank === 1 ? '#ffd23f' : '#ffffff', null, 'center', true);
+    txt(R.rank === 1 ? TT_('🏆 冠军!') : rankTxt(R.rank), W / 2, y + 80, 76, R.rank === 1 ? '#ffd23f' : '#ffffff', null, 'center', true);
     txt('Lv.' + (G.lv + 1) + ' ' + LEVELS[G.lv].name, W / 2, y + 146, 28, '#c9cde0');
     for (let i = 0; i < 3; i++) txt('★', W / 2 + (i - 1) * 96, y + 230, i === 1 ? 92 : 78, i < R.stars ? '#ffd23f' : 'rgba(255,255,255,.18)');
-    txt('得分', 90, y + 320, 28, '#c9cde0', null, 'left'); txt(String(G.score), 90, y + 380, 70, '#ffffff', null, 'left', true);
-    if (R.nb) { hx.save(); hx.translate(560, y + 330); hx.rotate(.12); rr(-74, -24, 148, 48, 12); hx.fillStyle = '#ff5a5f'; hx.fill(); txt('新纪录!', 0, 1, 28, '#fff'); hx.restore(); }
-    txt('含名次奖励 +' + R.bonus + '   超车 ×' + G.overtakes, 90, y + 432, 24, '#c9cde0', null, 'left');
-    txt('完赛 ' + fmtT(G.finT) + (R.nt ? '  ⏱新纪录' : ''), 90, y + 496, 32, '#ffffff', null, 'left');
-    txt('最快单圈 ' + fmtT(R.bestLap), 90, y + 542, 26, '#c9cde0', null, 'left');
+    txt(TT_('得分'), 90, y + 320, 28, '#c9cde0', null, 'left'); txt(String(G.score), 90, y + 380, 70, '#ffffff', null, 'left', true);
+    if (R.nb) { hx.save(); hx.translate(560, y + 330); hx.rotate(.12); rr(-74, -24, 148, 48, 12); hx.fillStyle = '#ff5a5f'; hx.fill(); txt(TT_('新纪录!'), 0, 1, 28, '#fff'); hx.restore(); }
+    txt(TT_('含名次奖励 +') + R.bonus + TT_('   超车 ×') + G.overtakes, 90, y + 432, 24, '#c9cde0', null, 'left');
+    txt(TT_('完赛 ') + fmtT(G.finT) + (R.nt ? TT_('  ⏱新纪录') : ''), 90, y + 496, 32, '#ffffff', null, 'left');
+    txt(TT_('最快单圈 ') + fmtT(R.bestLap), 90, y + 542, 26, '#c9cde0', null, 'left');
     const c = G.cnt, rows = [['PERFECT', c.p, '#ffd23f'], ['GREAT', c.g, '#7ee081'], ['GOOD', c.o, '#9ecbff'], ['MISS', c.m, '#9a96b0']];
     rows.forEach((r, i) => { const x = 90 + (i % 2) * 290, yy = y + 610 + (i >> 1) * 56; txt(r[0], x, yy, 28, r[2], null, 'left', true); txt(String(r[1]), x + 230, yy, 30, '#ffffff', null, 'right'); });
-    txt('最大连击 ' + G.maxCombo + '    准确率 ' + (R.acc * 100).toFixed(1) + '%', W / 2, y + 740, 28, '#ffffff');
-    if (R.stars === 0) txt('前三名才能解锁下一关', W / 2, y + 790, 24, '#ff9f9f');
-  } else if (U.type === 'pause') { panel(120, H / 2 - 260, 480, 520, th.accent); txt('暂停', W / 2, H / 2 - 190, 64, '#ffffff'); }
-  else { panel(24, H / 2 - 500, 672, 1010, th.accent); txt('选择赛道', W / 2, H / 2 - 450, 52, '#ffffff'); }
+    txt(TT_('最大连击 ') + G.maxCombo + TT_('    准确率 ') + (R.acc * 100).toFixed(1) + '%', W / 2, y + 740, 28, '#ffffff');
+    if (R.stars === 0) txt(TT_('前三名才能解锁下一关'), W / 2, y + 790, 24, '#ff9f9f');
+  } else if (U.type === 'pause') { panel(120, H / 2 - 260, 480, 600, th.accent); txt(TT_('暂停'), W / 2, H / 2 - 190, 64, '#ffffff'); }
+  else { panel(24, H / 2 - 500, 672, 1010, th.accent); txt(TT_('选择赛道'), W / 2, H / 2 - 450, 52, '#ffffff'); }
   for (const b of U.B) {
     if (b.lv == null) { btn(b); continue; }
     const L = LEVELS[b.lv], t2 = THEMES[L.th], ok = unlocked(b.lv);
@@ -56311,7 +56335,7 @@ function drawUI() {
     txt('◆'.repeat(L.diff + 1) + '◇'.repeat(3 - L.diff), b.x + 16, b.y + 152, 20, '#c9cde0', null, 'left');
     if (ok) { txt('★'.repeat(SAVE.stars[b.lv]) + '☆'.repeat(3 - SAVE.stars[b.lv]), b.x + b.w - 16, b.y + 150, 26, '#ffd23f', null, 'right');
       if (SAVE.best[b.lv]) txt(String(SAVE.best[b.lv]), b.x + b.w - 16, b.y + 120, 19, '#c9cde0', null, 'right'); }
-    else { TXT_MAX = b.w - 110; txt('🔒 上一关前三', b.x + b.w - 16, b.y + 150, 19, '#7a7f8c', null, 'right'); TXT_MAX = 0; }
+    else { TXT_MAX = b.w - 110; txt(TT_('🔒 上一关前三'), b.x + b.w - 16, b.y + 150, 19, '#7a7f8c', null, 'right'); TXT_MAX = 0; }
   }
 }
 
@@ -56400,14 +56424,14 @@ function garRender(rdt) {
 const GY0 = 116; let GY1 = 520; // 展厅占的 HUD 坐标范围（高屏手机展厅更高）
 // 性能：0..1，用于雷达 / 条形
 function stats() {
-  return [['极速', .35 + ul('eng') * .13, '#ff9f1c'], ['氮气', .3 + ul('nit') * .14, '#3ef0ff'], ['吸金', .3 + ul('mag') * .1 + ul('luck') * .04, '#ffd23f'], ['耐撞', .3 + ul('arm') * .14, '#7fe7ff']];
+  return [[TT_('极速'), .35 + ul('eng') * .13, '#ff9f1c'], [TT_('氮气'), .3 + ul('nit') * .14, '#3ef0ff'], [TT_('吸金'), .3 + ul('mag') * .1 + ul('luck') * .04, '#ffd23f'], [TT_('耐撞'), .3 + ul('arm') * .14, '#7fe7ff']];
 }
 let GAR_TAB = 0, GAR_SEL = 0;
 function garOpen() {
   GY1 = 520 + Math.round((H - 1280) * .45); const oy = GY1 - 520, ch = 166 + Math.round((H - 1280) * .12);
   const B = [];
   B.push({ x: 600, y: 30, w: 84, h: 70, draw: garClose, act: uiBack });
-  [['改装', 0], ['涂装', 1]].forEach(([n, i]) => B.push({ x: 40 + i * 324, y: 556 + oy, w: 316, h: 66, tab: i, name: n, draw: garTabBtn, act: () => { GAR_TAB = i; openUI('garage'); } }));
+  [[TT_('改装'), 0], [TT_('涂装'), 1]].forEach(([n, i]) => B.push({ x: 40 + i * 324, y: 556 + oy, w: 316, h: 66, tab: i, name: n, draw: garTabBtn, act: () => { GAR_TAB = i; openUI('garage'); } }));
   if (GAR_TAB === 0) {
     UPG.forEach((u, i) => B.push({ x: 40 + (i % 2) * 324, y: 648 + oy + (i >> 1) * (ch + 12), w: 316, h: ch, u, draw: upCard, act: () => buyUp(u.k) }));
     B[B.length - 1].x = 40; B[B.length - 1].w = 640; // 第 5 张卡横跨整行
@@ -56440,8 +56464,8 @@ function upCard(b) {
   // 价格按钮
   const pw = wide ? 200 : b.w - 44, px = wide ? b.x + b.w - pw - 22 : b.x + 22, py = b.y + b.h - 50;
   rr(px, py, pw, 38, 19);
-  if (max) { hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); txt('★ 满级', px + pw / 2, py + 20, 21, u.c); }
-  else { if (ok) { const pg = hx.createLinearGradient(px, 0, px + pw, 0); pg.addColorStop(0, '#7ee081'); pg.addColorStop(1, '#3fc28a'); hx.fillStyle = pg; } else hx.fillStyle = '#3a3e52'; hx.fill(); TXT_MAX = pw - 12; txt('升级  🪙 ' + cost, px + pw / 2, py + 20, 21, ok ? '#0f2a1a' : '#8a8fa3'); TXT_MAX = 0; }
+  if (max) { hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); txt(TT_('★ 满级'), px + pw / 2, py + 20, 21, u.c); }
+  else { if (ok) { const pg = hx.createLinearGradient(px, 0, px + pw, 0); pg.addColorStop(0, '#7ee081'); pg.addColorStop(1, '#3fc28a'); hx.fillStyle = pg; } else hx.fillStyle = '#3a3e52'; hx.fill(); TXT_MAX = pw - 12; txt(TT_('升级  🪙 ') + cost, px + pw / 2, py + 20, 21, ok ? '#0f2a1a' : '#8a8fa3'); TXT_MAX = 0; }
 }
 // 涂装：圆形色片 + 小车剪影 + 状态
 function paintChip(b) {
@@ -56455,7 +56479,7 @@ function paintChip(b) {
   if (on) { hx.beginPath(); hx.arc(cx + 32, cy - 32, 15, 0, 7); hx.fillStyle = '#ffd23f'; hx.fill(); txt('✓', cx + 32, cy - 31, 20, '#151726'); }
   TXT_MAX = b.w - 12; txt(p.n, cx, b.y + 124, 23, own ? '#ffffff' : '#9aa0ae'); TXT_MAX = 0;
   const afford = p.p && META.gold >= p.p;
-  TXT_MAX = b.w - 12; txt(on ? '使用中' : own ? '点击换装' : p.p ? '🪙 ' + p.p : p.short, cx, b.y + 152, p.p || own ? 19 : 16, on ? '#ffd23f' : own ? '#7ee081' : afford ? '#7ee081' : '#8a8fa3'); TXT_MAX = 0;
+  TXT_MAX = b.w - 12; txt(on ? TT_('使用中') : own ? TT_('点击换装') : p.p ? '🪙 ' + p.p : p.short, cx, b.y + 152, p.p || own ? 19 : 16, on ? '#ffd23f' : own ? '#7ee081' : afford ? '#7ee081' : '#8a8fa3'); TXT_MAX = 0;
 }
 function shade(hex, k) { const c = new THREE.Color(hex); c.multiplyScalar(1 + k); return '#' + c.getHexString(); }
 function drawGarage2() {
@@ -56464,16 +56488,16 @@ function drawGarage2() {
   const g = hx.createLinearGradient(0, GY1 - 40, 0, H); g.addColorStop(0, 'rgba(13,16,34,0)'); g.addColorStop(.08, '#0d1022'); g.addColorStop(1, '#0a0c1a'); hx.fillStyle = g; hx.fillRect(0, GY1 - 40, W, H);
   hx.fillStyle = '#0d1022'; hx.fillRect(0, 0, W, GY0 - 2);
   // 顶栏
-  txt('车库', 40, 64, 46, '#ffffff', null, 'left', true);
+  txt(TT_('车库'), 40, 64, 46, '#ffffff', null, 'left', true);
   rr(196, 40, 196, 50, 25); hx.fillStyle = 'rgba(255,210,63,.14)'; hx.fill(); hx.lineWidth = 2; hx.strokeStyle = 'rgba(255,210,63,.5)'; hx.stroke();
   txt('🪙 ' + META.gold, 294, 66, 28, '#ffd23f', null, 'center', true);
   // 展厅里叠加：涂装名 + 性能条
   const p = PAINTS[META.car] || PAINTS[0];
-  txt(p.n, 40, GY0 + 40, 30, '#ffffff', 'rgba(0,0,0,.5)', 'left', true); txt('No.1  ·  ' + META.cars.length + '/' + PAINTS.length + ' 涂装', 40, GY0 + 74, 20, '#c9cde0', 'rgba(0,0,0,.5)', 'left');
+  txt(p.n, 40, GY0 + 40, 30, '#ffffff', 'rgba(0,0,0,.5)', 'left', true); txt('No.1  ·  ' + META.cars.length + '/' + PAINTS.length + TT_(' 涂装'), 40, GY0 + 74, 20, '#c9cde0', 'rgba(0,0,0,.5)', 'left');
   stats().forEach(([n, v, c], i) => { const y = GY1 - 118 + i * 28; txt(n, 470, y, 19, '#c9cde0', 'rgba(0,0,0,.5)', 'right');
     rr(484, y - 7, 196, 14, 7); hx.fillStyle = 'rgba(0,0,0,.45)'; hx.fill(); rr(484, y - 7, 196 * clamp(v, .05, 1), 14, 7); hx.fillStyle = c; hx.fill(); });
-  txt('← 拖动旋转 →', 40, GY1 - 24, 18, 'rgba(255,255,255,.45)', null, 'left');
-  if (GAR_TAB === 1) txt('涂装只改外观，不影响性能', W / 2, 642 + GY1 - 520, 20, '#8a8fa3');
+  txt(TT_('← 拖动旋转 →'), 40, GY1 - 24, 18, 'rgba(255,255,255,.45)', null, 'left');
+  if (GAR_TAB === 1) txt(TT_('涂装只改外观，不影响性能'), W / 2, 642 + GY1 - 520, 20, '#8a8fa3');
 }
 // 拖动旋转：在展厅区域按下 → 横向拖动转车
 function garDown(x, y) { if (y > GY0 && y < GY1) { GAR.drag = { x, t: performance.now() }; return true; } return false; }
@@ -56483,48 +56507,48 @@ function garUp() { if (GAR) GAR.drag = null; }
 // ====================== 局外养成（车库）+ 收集图鉴 + 玩法说明（build.js 内联到 //<!--META--> 处） ======================
 // 金币：赛道金币 ×2 + 名次奖励 + 新星奖励，结算时入账；车库升级 5 项改装、买涂装；图鉴 6 类 48 项，首次解锁送金币
 const UPG = [
-  { k: 'eng', n: '引擎', i: '⚙️', c: '#ff9f1c', f: l => '车速 +' + Math.round(l * .8 * 5.4) + ' km/h' },
-  { k: 'nit', n: '氮气罐', i: '💨', c: '#3ef0ff', f: l => '氮气 ' + (6 + l * .6).toFixed(1) + ' 秒 · 充能 +' + l * 6 + '%' },
-  { k: 'mag', n: '磁力线圈', i: '🧲', c: '#ff5a5f', f: l => '磁铁 ' + (8 + l * 1.5) + ' 秒 · 范围 ' + (24 + l * 4) + ' 米' },
-  { k: 'arm', n: '防滚架', i: '🛡️', c: '#7fe7ff', f: l => '熄火时间 −' + l * 12 + '%' + (l >= 5 ? ' · 开局护盾' : '') },
-  { k: 'luck', n: '赞助商', i: '🍀', c: '#7ee081', f: l => '结算金币 +' + l * 15 + '%' },
+  { k: 'eng', n: TT_('引擎'), i: '⚙️', c: '#ff9f1c', f: l => TT_('车速 +') + Math.round(l * .8 * 5.4) + ' km/h' },
+  { k: 'nit', n: TT_('氮气罐'), i: '💨', c: '#3ef0ff', f: l => TT_('氮气 ') + (6 + l * .6).toFixed(1) + TT_(' 秒 · 充能 +') + l * 6 + '%' },
+  { k: 'mag', n: TT_('磁力线圈'), i: '🧲', c: '#ff5a5f', f: l => TT_('磁铁 ') + (8 + l * 1.5) + TT_(' 秒 · 范围 ') + (24 + l * 4) + TT_(' 米') },
+  { k: 'arm', n: TT_('防滚架'), i: '🛡️', c: '#7fe7ff', f: l => TT_('熄火时间 −') + l * 12 + '%' + (l >= 5 ? TT_(' · 开局护盾') : '') },
+  { k: 'luck', n: TT_('赞助商'), i: '🍀', c: '#7ee081', f: l => TT_('结算金币 +') + l * 15 + '%' },
 ];
 const UMAX = 5, UCOST = [200, 400, 700, 1100, 1600];
 const PAINTS = [
-  { n: '赤焰', c: '#ff3b3b' },
-  { n: '橙光', c: '#ff8a1f', p: 600 },
-  { n: '薄荷', c: '#2ee6a6', p: 900 },
-  { n: '天蓝', c: '#3db8ff', p: 1300 },
-  { n: '粉樱', c: '#ff7ab8', short: '樱花古都第1', cond: '樱花古都拿到第 1 名', ck: () => SAVE.rank[2] === 1 },
-  { n: '暗夜', c: '#2a2d3a', short: '100 连击', cond: '打出 100 连击', ck: () => !!META.cx['ach:combo100'] },
-  { n: '镭射紫', c: '#a55eea', short: '星际轨道第1', cond: '星际轨道拿到第 1 名', ck: () => SAVE.rank[7] === 1 },
-  { n: '黄金', c: '#ffcf3f', short: '满 24 星', cond: '拿满 24 颗星', ck: () => SAVE.stars.reduce((a, b) => a + b, 0) >= 24 },
+  { n: TT_('赤焰'), c: '#ff3b3b' },
+  { n: TT_('橙光'), c: '#ff8a1f', p: 600 },
+  { n: TT_('薄荷'), c: '#2ee6a6', p: 900 },
+  { n: TT_('天蓝'), c: '#3db8ff', p: 1300 },
+  { n: TT_('粉樱'), c: '#ff7ab8', short: TT_('樱花古都第1'), cond: TT_('樱花古都拿到第 1 名'), ck: () => SAVE.rank[2] === 1 },
+  { n: TT_('暗夜'), c: '#2a2d3a', short: TT_('100 连击'), cond: TT_('打出 100 连击'), ck: () => !!META.cx['ach:combo100'] },
+  { n: TT_('镭射紫'), c: '#a55eea', short: TT_('星际轨道第1'), cond: TT_('星际轨道拿到第 1 名'), ck: () => SAVE.rank[7] === 1 },
+  { n: TT_('黄金'), c: '#ffcf3f', short: TT_('满 24 星'), cond: TT_('拿满 24 颗星'), ck: () => SAVE.stars.reduce((a, b) => a + b, 0) >= 24 },
 ];
-const RIVAL_DESC = ['车队王牌，每条赛道都是最快的那个', '紧咬第一的老二，从不让路', '中游霸主，直线很猛', '稳定的追击者，很少失误', '从最后一位发车，但从不放弃'];
+const RIVAL_DESC = [TT_('车队王牌，每条赛道都是最快的那个'), TT_('紧咬第一的老二，从不让路'), TT_('中游霸主，直线很猛'), TT_('稳定的追击者，很少失误'), TT_('从最后一位发车，但从不放弃')];
 const ITEM_CX = [ // [键, 图标, 名称, 颜色, 说明]
-  ['coin', '🪙', '金币', '#ffd23f', '结算时换成车库资金'],
-  ['nitro', '🧪', '氮气瓶', '#3ef0ff', '直接充 34 点氮气'],
-  ['pad', '⏫', '加速带', '#7effb0', '开上去立刻加速'],
-  ['box', '🎁', '道具箱', '#ff4fd8', '随机道具，落后时更容易出攻击道具'],
-  ['bar', '🚧', '路障', '#ff3b3b', '撞上会熄火，氮气或火箭能撞碎'],
-  ['shield', '🛡️', '护盾', '#7fe7ff', '10 秒内挡一次撞击'],
-  ['magnet', '🧲', '磁铁', '#ff5a5f', '把附近的金币吸过来'],
-  ['shock', '⚡', '闪电', '#ffd23f', '让前方对手减速打转'],
-  ['rocket', '🚀', '火箭', '#ff9f1c', '2.5 秒无敌冲刺'],
+  ['coin', '🪙', TT_('金币'), '#ffd23f', TT_('结算时换成车库资金')],
+  ['nitro', '🧪', TT_('氮气瓶'), '#3ef0ff', TT_('直接充 34 点氮气')],
+  ['pad', '⏫', TT_('加速带'), '#7effb0', TT_('开上去立刻加速')],
+  ['box', '🎁', TT_('道具箱'), '#ff4fd8', TT_('随机道具，落后时更容易出攻击道具')],
+  ['bar', '🚧', TT_('路障'), '#ff3b3b', TT_('撞上会熄火，氮气或火箭能撞碎')],
+  ['shield', '🛡️', TT_('护盾'), '#7fe7ff', TT_('10 秒内挡一次撞击')],
+  ['magnet', '🧲', TT_('磁铁'), '#ff5a5f', TT_('把附近的金币吸过来')],
+  ['shock', '⚡', TT_('闪电'), '#ffd23f', TT_('让前方对手减速打转')],
+  ['rocket', '🚀', TT_('火箭'), '#ff9f1c', TT_('2.5 秒无敌冲刺')],
 ];
 const ACH = [ // [键, 图标, 名称, 条件, 奖励金币]
-  ['win', '🏆', '首胜', '任意赛道拿到第 1 名', 300],
-  ['combo50', '🔥', '连击 50', '一场打出 50 连击', 200],
-  ['combo100', '💥', '连击 100', '一场打出 100 连击', 400],
-  ['start', '🚦', '完美起步', '发车的 GO 鼓点打中', 100],
-  ['pass8', '🏁', '超车王', '一场超车 8 次', 250],
-  ['coin150', '💰', '吸金', '一场吃到 150 枚金币', 250],
-  ['clean', '✨', '零失误', '一场不熄火、不被撞停', 400],
-  ['all8', '🗺️', '全勤', '8 条赛道都跑完过', 500],
-  ['star24', '⭐', '满星', '拿满 24 颗星', 800],
-  ['maxup', '🔧', '改装大师', '任意改装升到满级', 300],
+  ['win', '🏆', TT_('首胜'), TT_('任意赛道拿到第 1 名'), 300],
+  ['combo50', '🔥', TT_('连击 50'), TT_('一场打出 50 连击'), 200],
+  ['combo100', '💥', TT_('连击 100'), TT_('一场打出 100 连击'), 400],
+  ['start', '🚦', TT_('完美起步'), TT_('发车的 GO 鼓点打中'), 100],
+  ['pass8', '🏁', TT_('超车王'), TT_('一场超车 8 次'), 250],
+  ['coin150', '💰', TT_('吸金'), TT_('一场吃到 150 枚金币'), 250],
+  ['clean', '✨', TT_('零失误'), TT_('一场不熄火、不被撞停'), 400],
+  ['all8', '🗺️', TT_('全勤'), TT_('8 条赛道都跑完过'), 500],
+  ['star24', '⭐', TT_('满星'), TT_('拿满 24 颗星'), 800],
+  ['maxup', '🔧', TT_('改装大师'), TT_('任意改装升到满级'), 300],
 ];
-const CX_TABS = ['赛车', '曲目', '赛道', '道具', '对手', '成就'];
+const CX_TABS = [TT_('赛车'), TT_('曲目'), TT_('赛道'), TT_('道具'), TT_('对手'), TT_('成就')];
 
 // ---------------- 存档 ----------------
 const META = { gold: 0, up: { eng: 0, nit: 0, mag: 0, arm: 0, luck: 0 }, cars: [0], car: 0, cx: {}, cxNew: 0, help: 0 };
@@ -56557,24 +56581,24 @@ function drawToasts() {
 // ---------------- 图鉴 ----------------
 function cxInfo(cat, id) {
   if (cat === 'item') { const d = ITEM_CX.find(x => x[0] === id); return { name: d[2], r: 30, col: d[3] }; }
-  if (cat === 'song') return { name: STY[LEVELS[id].sty].tag + ' 曲目', r: 80, col: '#ffffff' };
+  if (cat === 'song') return { name: STY[LEVELS[id].sty].tag + TT_(' 曲目'), r: 80, col: '#ffffff' };
   if (cat === 'track') return { name: LEVELS[id].name, r: 80, col: THEMES[LEVELS[id].th].accent };
   if (cat === 'rival') return { name: RIVAL_NAME[id], r: 120, col: RIVAL_COL[id] };
-  const a = ACH.find(x => x[0] === id); return { name: '成就 ' + a[2], r: a[4], col: '#ffd23f' };
+  const a = ACH.find(x => x[0] === id); return { name: TT_('成就 ') + a[2], r: a[4], col: '#ffd23f' };
 }
 function cxU(cat, id) {
   const key = cat + ':' + id; if (META.cx[key] || id == null || id < 0) return;
   const e = cxInfo(cat, id); META.cx[key] = 1; META.cxNew++; META.gold += e.r; G.newCx = (G.newCx || 0) + 1;
   toast('📖 ' + e.name + '  🪙+' + e.r, e.col); metaSave();
 }
-function checkCars() { PAINTS.forEach((p, i) => { if (!META.cars.includes(i) && p.ck && p.ck()) { META.cars.push(i); toast('🎨 解锁涂装：' + p.n, p.c); } }); }
+function checkCars() { PAINTS.forEach((p, i) => { if (!META.cars.includes(i) && p.ck && p.ck()) { META.cars.push(i); toast(TT_('🎨 解锁涂装：') + p.n, p.c); } }); }
 function cxList(tab) {
   const has = (c, i) => !!META.cx[c + ':' + i];
-  if (tab === 0) return PAINTS.map((p, i) => { const own = META.cars.includes(i); return { found: own, icon: '🏎️', col: p.c, name: p.n, desc: META.car === i ? '使用中' : '已拥有，可以在车库换装', hint: p.p ? '车库购买 🪙' + p.p : p.cond }; });
-  if (tab === 1) return LEVELS.map((L, i) => ({ found: has('song', i), icon: '♪', col: THEMES[L.th].accent, name: STY[L.sty].name, desc: L.bpm + ' BPM · ' + L.name + '的配乐', hint: '跑完' + L.name }));
-  if (tab === 2) return LEVELS.map((L, i) => ({ found: has('track', i), icon: Array.from(L.tag[0])[0], col: THEMES[L.th].accent, name: L.name, desc: L.tag.join(' ') + ' · ' + L.tip, hint: '跑完这条赛道' }));
-  if (tab === 3) return ITEM_CX.map(d => ({ found: has('item', d[0]), icon: d[1], col: d[3], name: d[2], desc: d[4], hint: '在赛道上碰到它' }));
-  if (tab === 4) return RIVAL_NAME.map((n, i) => ({ found: has('rival', i), icon: '🏎️', col: RIVAL_COL[i], name: n, desc: RIVAL_DESC[i], hint: '比赛中赢过它' }));
+  if (tab === 0) return PAINTS.map((p, i) => { const own = META.cars.includes(i); return { found: own, icon: '🏎️', col: p.c, name: p.n, desc: META.car === i ? TT_('使用中') : TT_('已拥有，可以在车库换装'), hint: p.p ? TT_('车库购买 🪙') + p.p : p.cond }; });
+  if (tab === 1) return LEVELS.map((L, i) => ({ found: has('song', i), icon: '♪', col: THEMES[L.th].accent, name: STY[L.sty].name, desc: L.bpm + ' BPM · ' + L.name + TT_('的配乐'), hint: TT_('跑完') + L.name }));
+  if (tab === 2) return LEVELS.map((L, i) => ({ found: has('track', i), icon: Array.from(L.tag[0])[0], col: THEMES[L.th].accent, name: L.name, desc: L.tag.join(' ') + ' · ' + L.tip, hint: TT_('跑完这条赛道') }));
+  if (tab === 3) return ITEM_CX.map(d => ({ found: has('item', d[0]), icon: d[1], col: d[3], name: d[2], desc: d[4], hint: TT_('在赛道上碰到它') }));
+  if (tab === 4) return RIVAL_NAME.map((n, i) => ({ found: has('rival', i), icon: '🏎️', col: RIVAL_COL[i], name: n, desc: RIVAL_DESC[i], hint: TT_('比赛中赢过它') }));
   return ACH.map(a => ({ found: has('ach', a[0]), icon: a[1], col: '#ffd23f', name: a[2], desc: a[3] + '  🪙' + a[4], hint: a[3] + '  🪙' + a[4] }));
 }
 function cxCount(tab) { const l = cxList(tab); return [l.filter(e => e.found).length, l.length]; }
@@ -56583,16 +56607,16 @@ function cxCount(tab) { const l = cxList(tab); return [l.filter(e => e.found).le
 function swapCar() { if (!SCN || !G.p) return; const o = G.p.o, n = makeCar(carCol(), '1'); n.position.copy(o.position); n.rotation.copy(o.rotation); SCN.remove(o); SCN.add(n); G.p.o = n; }
 function buyUp(k) {
   const l = ul(k); if (l >= UMAX) return; const c = UCOST[l];
-  if (META.gold < c) { toast('金币不够，再跑几场吧', '#ff9f9f'); return; }
-  META.gold -= c; META.up[k] = l + 1; sfx('pick'); toast(UPG.find(u => u.k === k).n + ' 升到 ' + (l + 1) + ' 级', '#7ee081'); // en: "Engine → Lv.2"
+  if (META.gold < c) { toast(TT_('金币不够，再跑几场吧'), '#ff9f9f'); return; }
+  META.gold -= c; META.up[k] = l + 1; sfx('pick'); toast(UPG.find(u => u.k === k).n + TT_(' 升到 ') + (l + 1) + TT_(' 级'), '#7ee081'); // en: "Engine → Lv.2"
   if (l + 1 >= UMAX) cxU('ach', 'maxup'); metaSave(); openUI('garage');
 }
 function pickPaint(i) {
   const p = PAINTS[i];
   if (!META.cars.includes(i)) {
     if (!p.p) { toast('🔒 ' + p.cond, '#c9cde0'); return; }
-    if (META.gold < p.p) { toast('金币不够，再跑几场吧', '#ff9f9f'); return; }
-    META.gold -= p.p; META.cars.push(i); toast('🎨 买下涂装：' + p.n, p.c);
+    if (META.gold < p.p) { toast(TT_('金币不够，再跑几场吧'), '#ff9f9f'); return; }
+    META.gold -= p.p; META.cars.push(i); toast(TT_('🎨 买下涂装：') + p.n, p.c);
   }
   META.car = i; sfx('pick'); swapCar(); metaSave(); openUI('garage');
 }
@@ -56605,9 +56629,10 @@ const _openUI = openUI;
 openUI = function (type) {
   if (!MT[type]) {
     _openUI(type);
-    if (type === 'result') { const y = H / 2 + 470; G.ui.B.push({ x: 70, y, w: 280, h: 76, label: '🔧 车库', c: '#ff9f1c', act: () => openUI('garage') }, { x: 370, y, w: 280, h: 76, label: '📖 图鉴', c: '#7fe7ff', act: () => openUI('codex') }); }
+    if (type === 'result') { const y = H / 2 + 470; G.ui.B.push({ x: 70, y, w: 280, h: 76, label: TT_('🔧 车库'), c: '#ff9f1c', act: () => openUI('garage') }, { x: 370, y, w: 280, h: 76, label: TT_('📖 图鉴'), c: '#7fe7ff', act: () => openUI('codex') }); }
     if (type === 'pause') { G.ui.B.forEach((b, i) => { b.y = H / 2 - 150 + i * 100; b.h = 84; });
-      [['🔧 车库', '#ff9f1c', 'garage', canUp()], ['📖 图鉴', '#7fe7ff', 'codex', META.cxNew > 0], ['❓ 玩法', '#d9e2f2', 'help', !META.help]].forEach((a, i) => G.ui.B.push({ x: 150 + i * 144, y: H / 2 + 156, w: 132, h: 80, label: a[0], c: a[1], dot: a[3], act: () => openUI(a[2]), draw: dotBtn })); }
+      [[TT_('🔧 车库'), '#ff9f1c', 'garage', canUp()], [TT_('📖 图鉴'), '#7fe7ff', 'codex', META.cxNew > 0], [TT_('❓ 玩法'), '#d9e2f2', 'help', !META.help]].forEach((a, i) => G.ui.B.push({ x: 150 + i * 144, y: H / 2 + 156, w: 132, h: 80, label: a[0], c: a[1], dot: a[3], act: () => openUI(a[2]), draw: dotBtn }));
+      G.ui.B.push({ x: 230, y: H / 2 + 252, w: 260, h: 64, label: LANG_BTN(), c: '#b9c4ff', act: () => setLang(LANG === 'en' ? 'zh' : 'en'), draw: dotBtn }); }
     return;
   }
   const B = [];
@@ -56615,10 +56640,10 @@ openUI = function (type) {
   if (type === 'codex') {
     META.cxNew = 0; metaSave();
     CX_TABS.forEach((t, i) => B.push({ x: 44 + i * 106, y: H / 2 - 400, w: 98, h: 62, i, draw: drawTab, act: () => { CX_TAB = i; openUI('codex'); } }));
-    B.push({ x: 240, y: H / 2 + 396, w: 240, h: 72, label: '返回', c: '#ffd23f', act: uiBack });
+    B.push({ x: 240, y: H / 2 + 396, w: 240, h: 72, label: TT_('返回'), c: '#ffd23f', act: uiBack });
   } else {
     META.help = 1; metaSave();
-    B.push({ x: 240, y: H / 2 + 380, w: 240, h: 72, label: '知道了', c: '#ffd23f', act: uiBack });
+    B.push({ x: 240, y: H / 2 + 380, w: 240, h: 72, label: TT_('知道了'), c: '#ffd23f', act: uiBack });
   }
   G.ui = { type, B, t: performance.now() };
 };
@@ -56634,7 +56659,7 @@ function dotBtn(b) { const l = b.label; b.label = null; btn(b); b.label = l; TXT
 function drawReward() {
   if (!G.reward) return; const y = H / 2 - 450;
   txt('🪙 +' + G.reward.gold, 630, y + 392, 34, '#ffd23f', '#151726', 'right', true);
-  if (G.newCx) txt('📖 新图鉴 ×' + G.newCx, 630, y + 440, 24, '#7fe7ff', null, 'right');
+  if (G.newCx) txt(TT_('📖 新图鉴 ×') + G.newCx, 630, y + 440, 24, '#7fe7ff', null, 'right');
 }
 function wrapTxt(s, x, y, mw, size, col, lh, maxL) {
   hx.font = '900 ' + size + 'px ' + F; let line = '', n = 0;
@@ -56647,7 +56672,7 @@ function wrapTxt(s, x, y, mw, size, col, lh, maxL) {
 }
 function drawGarage() {
   panel(24, H / 2 - 520, 672, 1060, '#ff9f1c');
-  txt('🔧 车库', 60, H / 2 - 468, 48, '#ffffff', null, 'left');
+  txt(TT_('🔧 车库'), 60, H / 2 - 468, 48, '#ffffff', null, 'left');
   txt('🪙 ' + META.gold, 660, H / 2 - 468, 36, '#ffd23f', null, 'right', true);
   UPG.forEach((u, i) => {
     const l = ul(u.k), y = H / 2 - 400 + i * 112;
@@ -56655,16 +56680,16 @@ function drawGarage() {
     hx.beginPath(); hx.arc(90, y + 50, 30, 0, 7); hx.fillStyle = u.c; hx.fill(); txt(u.i, 90, y + 52, 30, '#151726');
     txt(u.n, 134, y + 30, 28, '#ffffff', null, 'left');
     for (let k = 0; k < UMAX; k++) { rr(270 + k * 34, y + 24, 28, 12, 6); hx.fillStyle = k < l ? u.c : 'rgba(255,255,255,.18)'; hx.fill(); }
-    txt((l < UMAX ? '升级后：' + u.f(l + 1) : '已满级：' + u.f(l)), 134, y + 72, 19, l < UMAX ? '#c9cde0' : u.c, null, 'left');
+    txt((l < UMAX ? TT_('升级后：') + u.f(l + 1) : TT_('已满级：') + u.f(l)), 134, y + 72, 19, l < UMAX ? '#c9cde0' : u.c, null, 'left');
   });
-  txt('🎨 涂装', 60, H / 2 + 196, 30, '#ffffff', null, 'left');
-  txt('只改外观，不影响性能', 660, H / 2 + 196, 20, '#c9cde0', null, 'right');
+  txt(TT_('🎨 涂装'), 60, H / 2 + 196, 30, '#ffffff', null, 'left');
+  txt(TT_('只改外观，不影响性能'), 660, H / 2 + 196, 20, '#c9cde0', null, 'right');
 }
 function drawBuy(b) {
   const l = b.l, max = l >= UMAX, cost = UCOST[l], ok = !max && META.gold >= cost;
   rr(b.x, b.y, b.w, b.h, 18); hx.fillStyle = max ? 'rgba(255,255,255,.12)' : ok ? '#7ee081' : '#5a5f6e'; hx.fill();
   if (max) txt('MAX', b.x + b.w / 2, b.y + b.h / 2 + 2, 30, '#ffd23f');
-  else { txt('升级', b.x + b.w / 2, b.y + 20, 20, '#151726'); txt('🪙 ' + cost, b.x + b.w / 2, b.y + 46, 24, ok ? '#151726' : '#d9e2f2'); }
+  else { txt(TT_('升级'), b.x + b.w / 2, b.y + 20, 20, '#151726'); txt('🪙 ' + cost, b.x + b.w / 2, b.y + 46, 24, ok ? '#151726' : '#d9e2f2'); }
 }
 function drawPaint(b) {
   const p = PAINTS[b.i], own = META.cars.includes(b.i), on = META.car === b.i, cx = b.x + b.w / 2, cy = b.y + 38;
@@ -56675,7 +56700,7 @@ function drawPaint(b) {
   hx.globalAlpha = 1;
   TXT_MAX = b.w - 12; txt(p.n, cx, b.y + 72, 22, '#ffffff'); TXT_MAX = 0;
   const afford = p.p && META.gold >= p.p;
-  txt(on ? '使用中' : own ? '点击换装' : p.p ? '🪙 ' + p.p : '🔒 ' + p.short, cx, b.y + 96, 17, on ? '#ffd23f' : own || afford ? '#7ee081' : '#c9cde0');
+  txt(on ? TT_('使用中') : own ? TT_('点击换装') : p.p ? '🪙 ' + p.p : '🔒 ' + p.short, cx, b.y + 96, 17, on ? '#ffd23f' : own || afford ? '#7ee081' : '#c9cde0');
 }
 function drawTab(b) {
   const on = CX_TAB === b.i, [f, n] = cxCount(b.i);
@@ -56686,7 +56711,7 @@ function drawTab(b) {
 function drawCodex() {
   panel(24, H / 2 - 500, 672, 1000, '#7fe7ff');
   let f = 0, tot = 0; for (let t = 0; t < CX_TABS.length; t++) { const [a, b] = cxCount(t); f += a; tot += b; }
-  txt('📖 图鉴', 60, H / 2 - 452, 48, '#ffffff', null, 'left'); txt(f + ' / ' + tot, 660, H / 2 - 452, 34, '#7fe7ff', null, 'right', true);
+  txt(TT_('📖 图鉴'), 60, H / 2 - 452, 48, '#ffffff', null, 'left'); txt(f + ' / ' + tot, 660, H / 2 - 452, 34, '#7fe7ff', null, 'right', true);
   rr(60, H / 2 - 422, 600, 8, 4); hx.fillStyle = 'rgba(255,255,255,.12)'; hx.fill(); if (f) { rr(60, H / 2 - 422, Math.max(8, 600 * f / tot), 8, 4); hx.fillStyle = '#7fe7ff'; hx.fill(); }
   cxList(CX_TAB).forEach((e, i) => {
     const x = 44 + (i % 2) * 320, y = H / 2 - 318 + (i >> 1) * 122;
@@ -56694,46 +56719,46 @@ function drawCodex() {
     hx.beginPath(); hx.arc(x + 46, y + 56, 32, 0, 7); hx.fillStyle = e.found ? e.col : '#2a2d3a'; hx.fill();
     txt(e.found ? e.icon : '?', x + 46, y + 58, 30, e.found ? '#151726' : '#5a5f6e');
     TXT_MAX = 210; txt(e.found ? e.name : '???', x + 90, y + 30, 24, e.found ? '#ffffff' : '#7a7f8c', null, 'left'); TXT_MAX = 0;
-    wrapTxt(e.found ? e.desc : '解锁：' + e.hint, x + 90, y + 62, 210, 17, e.found ? '#c9cde0' : '#7a7f8c', 24, 2);
+    wrapTxt(e.found ? e.desc : TT_('解锁：') + e.hint, x + 90, y + 62, 210, 17, e.found ? '#c9cde0' : '#7a7f8c', 24, 2);
   });
 }
 function drawHelp() {
   const L = LEVELS[G.lv], th = WORLD.th; panel(40, H / 2 - 480, 640, 960, th.accent);
-  txt('❓ 玩法说明', W / 2, H / 2 - 425, 48, '#ffffff');
-  const ops = [['#ffd23f', '●', '鼓点进圈时点屏幕 → 加速'], ['#ff8a3d', '≈', '长条按住漂移，到 ↑ 松手出弯'], ['#3ef0ff', '⇆', '左右滑动变道，躲路障吃道具'], ['#ff5a5f', '!', '乱点会熄火，连击越高档位越高'], ['#7ee081', '★', '前三名解锁下一关，金币去车库改装']];
+  txt(TT_('❓ 玩法说明'), W / 2, H / 2 - 425, 48, '#ffffff');
+  const ops = [['#ffd23f', '●', TT_('鼓点进圈时点屏幕 → 加速')], ['#ff8a3d', '≈', TT_('长条按住漂移，到 ↑ 松手出弯')], ['#3ef0ff', '⇆', TT_('左右滑动变道，躲路障吃道具')], ['#ff5a5f', '!', TT_('乱点会熄火，连击越高档位越高')], ['#7ee081', '★', TT_('前三名解锁下一关，金币去车库改装')]];
   ops.forEach((r, i) => { const yy = H / 2 - 345 + i * 58; hx.beginPath(); hx.arc(100, yy, 24, 0, 7); hx.fillStyle = r[0]; hx.fill(); txt(r[1], 100, yy + 1, 28, '#151726'); TXT_MAX = 510; txt(r[2], 140, yy, 26, '#ffffff', null, 'left'); TXT_MAX = 0; });
-  txt('道具（拿到后点左下角按钮使用）', 80, H / 2 - 40, 26, th.accent, null, 'left');
+  txt(TT_('道具（拿到后点左下角按钮使用）'), 80, H / 2 - 40, 26, th.accent, null, 'left');
   ITEM_CX.slice(5).forEach((d, i) => { const yy = H / 2 + 12 + i * 52; hx.beginPath(); hx.arc(100, yy, 22, 0, 7); hx.fillStyle = d[3]; hx.fill(); txt(d[1], 100, yy + 2, 24, '#151726'); txt(d[2], 140, yy, 25, '#ffffff', null, 'left'); TXT_MAX = 430; txt(d[4], 216, yy, 22, '#c9cde0', null, 'left'); TXT_MAX = 0; });
   rr(80, H / 2 + 222, 560, 78, 20); hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill();
-  txt('本关 · ' + L.name + '  ' + L.tag.join(' '), W / 2, H / 2 + 246, 22, th.accent);
+  txt(TT_('本关 · ') + L.name + '  ' + L.tag.join(' '), W / 2, H / 2 + 246, 22, th.accent);
   txt(L.tip, W / 2, H / 2 + 278, 22, '#ffffff');
-  txt('键盘：空格 踩点 · ← → 变道 · ↑ 道具 · P 暂停', W / 2, H / 2 + 338, 20, '#c9cde0');
+  txt(TT_('键盘：空格 踩点 · ← → 变道 · ↑ 道具 · P 暂停'), W / 2, H / 2 + 338, 20, '#c9cde0');
 }
 // 旧开局面板（保留函数，不再调用）
 const drawStartOld = function () {
   const L = LEVELS[G.lv], th = WORLD.th, y = H * .2;
   panel(70, y, 580, 450, th.accent);
   txt('🪙 ' + META.gold, 626, y + 36, 24, '#ffd23f', null, 'right');
-  txt('节拍飙车 3D', W / 2, y + 88, 68, '#ffffff', null, 'center', true);
-  txt('Lv.' + (G.lv + 1) + '  ' + L.name + '  ·  ' + LAPS + ' 圈', W / 2, y + 148, 28, th.accent);
+  txt(TT_('节拍飙车 3D'), W / 2, y + 88, 68, '#ffffff', null, 'center', true);
+  txt('Lv.' + (G.lv + 1) + '  ' + L.name + '  ·  ' + LAPS + TT_(' 圈'), W / 2, y + 148, 28, th.accent);
   txt('♪ ' + STY[L.sty].name + '  ·  ' + L.bpm + ' BPM', W / 2, y + 186, 24, '#ffffff');
-  rr(100, y + 212, 520, 44, 22); hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); TXT_MAX = 500; txt(L.tag.join('  ') + '：' + L.tip, W / 2, y + 234, 22, th.accent); TXT_MAX = 0;
-  txt(SAVE.best[G.lv] ? '最佳 ' + SAVE.best[G.lv] + '  ·  ' + fmtT(SAVE.time[G.lv]) + '  ·  ' + '★'.repeat(SAVE.stars[G.lv]) + '☆'.repeat(3 - SAVE.stars[G.lv]) : '目标：6 车混战，冲第一！', W / 2, y + 288, 24, '#c9cde0');
-  START_B = [['🔧 车库', '#ff9f1c', 'garage', canUp()], ['📖 图鉴', '#7fe7ff', 'codex', META.cxNew > 0], ['❓ 玩法', '#d9e2f2', 'help', !META.help]]
+  rr(100, y + 212, 520, 44, 22); hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); TXT_MAX = 500; txt(L.tag.join('  ') + TT_('：') + L.tip, W / 2, y + 234, 22, th.accent); TXT_MAX = 0;
+  txt(SAVE.best[G.lv] ? TT_('最佳 ') + SAVE.best[G.lv] + '  ·  ' + fmtT(SAVE.time[G.lv]) + '  ·  ' + '★'.repeat(SAVE.stars[G.lv]) + '☆'.repeat(3 - SAVE.stars[G.lv]) : TT_('目标：6 车混战，冲第一！'), W / 2, y + 288, 24, '#c9cde0');
+  START_B = [[TT_('🔧 车库'), '#ff9f1c', 'garage', canUp()], [TT_('📖 图鉴'), '#7fe7ff', 'codex', META.cxNew > 0], [TT_('❓ 玩法'), '#d9e2f2', 'help', !META.help]]
     .map((a, i) => ({ label: a[0], c: a[1], ui: a[2], dot: a[3], x: 96 + i * 180, y: y + 320, w: 168, h: 80 }));
   for (const b of START_B) {
     hx.save(); hx.shadowColor = 'rgba(0,0,0,.4)'; hx.shadowBlur = 12; hx.shadowOffsetY = 6; rr(b.x, b.y, b.w, b.h, 22); hx.fillStyle = b.c; hx.fill(); hx.restore();
     txt(b.label, b.x + b.w / 2, b.y + b.h / 2 + 2, 30, '#151726');
     if (b.dot) { hx.beginPath(); hx.arc(b.x + b.w - 10, b.y + 10, 11, 0, 7); hx.fillStyle = '#ff3b3b'; hx.fill(); hx.lineWidth = 3; hx.strokeStyle = '#ffffff'; hx.stroke(); }
   }
-  if (!META.help) txt('第一次玩？点 ❓ 看看怎么玩', W / 2, y + 426, 22, '#ffd23f');
-  const k = 1 + Math.sin(performance.now() / 160) * .05; hx.save(); hx.translate(W / 2, SY() - 150); hx.scale(k, k); txt('点一下 · 起步!', 0, 0, 58, '#ffd23f', '#151726', 'center', true, 10); hx.restore();
+  if (!META.help) txt(TT_('第一次玩？点 ❓ 看看怎么玩'), W / 2, y + 426, 22, '#ffd23f');
+  const k = 1 + Math.sin(performance.now() / 160) * .05; hx.save(); hx.translate(W / 2, SY() - 150); hx.scale(k, k); txt(TT_('点一下 · 起步!'), 0, 0, 58, '#ffd23f', '#151726', 'center', true, 10); hx.restore();
 };
 // 角落快捷按钮：🔧 车库 / 📖 图鉴 / ❓ 玩法（任何时候可点，比赛中会自动暂停）
 function drawQB() {
   if (G.ui || G.over) return;
   if (canUp() || META.cxNew > 0) { hx.beginPath(); hx.arc(696, 34, 10, 0, 7); hx.fillStyle = '#ff3b3b'; hx.fill(); hx.lineWidth = 2; hx.strokeStyle = '#fff'; hx.stroke(); }
-  if (!AC && !AUTO) { const a = .6 + .4 * Math.sin(performance.now() / 220); hx.save(); hx.globalAlpha = a; txt('🔊 点一下屏幕开启音乐', W / 2, H * .3, 34, '#ffffff', '#151726', 'center', true, 8); hx.restore(); }
+  if (!AC && !AUTO) { const a = .6 + .4 * Math.sin(performance.now() / 220); hx.save(); hx.globalAlpha = a; txt(TT_('🔊 点一下屏幕开启音乐'), W / 2, H * .3, 34, '#ffffff', '#151726', 'center', true, 8); hx.restore(); }
 }
 const _down = down;
 down = function (x, y, id) {
