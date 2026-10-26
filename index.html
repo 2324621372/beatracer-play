@@ -55008,7 +55008,7 @@ const Q = new URLSearchParams(location.search), AUTO = Q.has('auto');
 // 默认语言由构建决定：中文页 zh；/en/ 页与 Riffle 平台版 en。玩家在暂停菜单 / 结算页切换后记住选择。
 // 切换时保存选择并重新载入页面，所有文字（含表格、场景横幅、字体）都按新语言重新初始化，不会残留旧语言。
 const I18N = { def: 'zh', en: {} };
-I18N.en = {"    准确率 ":"    Accuracy ","   超车 ×":"   Passes ×","  ⏱新纪录":"  ⏱ New best"," · 开局护盾":" · Start shield"," · 点我":" · Tap"," 升到 ":" → Lv."," 名":""," 圈":" laps"," 曲目":" track"," 涂装":" paints"," 秒 · 充能 +":"s · charge +"," 秒 · 范围 ":"s · range "," 米":"m"," 级":"","10 秒内挡一次撞击":"Blocks one hit for 10s","100 连击":"100 combo","2.5 秒无敌冲刺":"2.5s invincible dash","8 条赛道都跑完过":"Finish all 8 tracks","← 拖动旋转 →":"← Drag to rotate →","← 滑到音符的车道 →  ·  压上去时点屏幕":"← swipe to the note's lane →  ·  tap as you hit it","≪≪ 侧风 ≪≪":"≪≪ CROSSWIND ≪≪","≫≫ 侧风 ≫≫":"≫≫ CROSSWIND ≫≫","☄ 火球":"☄ Fireballs","★ 满级":"★ MAX","⚡ 落雷":"⚡ Lightning","⛈ 雷暴":"⛈ Thunderstorm","❄ 暴风雪":"❄ Blizzard","❓ 玩法":"❓ Help","❓ 玩法说明":"❓ How to Play","一场不熄火、不被撞停":"No stalls or crashes in a race","一场吃到 150 枚金币":"Grab 150 coins in a race","一场打出 100 连击":"Hit a 100 combo in a race","一场打出 50 连击":"Hit a 50 combo in a race","一场超车 8 次":"Pass 8 cars in a race","下一关":"Next","中游霸主，直线很猛":"Rules the midfield, fast on straights","从最后一位发车，但从不放弃":"Starts last, never gives up","任意改装升到满级":"Max out any upgrade","任意赛道拿到第 1 名":"Finish 1st on any track","低重力跳台能飞过障碍 · 小心陨石":"Ramps fly you over hazards · watch for meteors","使用中":"Equipped","侧风会把车吹偏一道 · 鼓点上逆风滑=顶风":"Gusts push you a lane · swipe into the wind to hold","全勤":"Grand Tour","冠军!":"WINNER!","冰面!":"ICE!","冰面上变道会打滑 · 副歌暴风雪看不清":"You slide on ice · the chorus brings a whiteout","前三名才能解锁下一关":"Finish top 3 to unlock the next track","前三名解锁下一关，金币去车库改装":"Top 3 unlocks the next track; spend coins in the garage","副歌起沙尘暴 · 风滚草会横穿赛道":"Sandstorm in the chorus · tumbleweeds cross the road","加速带":"Boost Pad","加速带!":"BOOST PAD!","升级":"Upgrade","升级  🪙 ":"Upgrade  🪙 ","升级后：":"Next: ","反方向滑一下顶住!":"Swipe the other way to hold!","发车的 GO 鼓点打中":"Hit the GO beat at the start","只改外观，不影响性能":"Cosmetic only, no stat change","名":"POS","含名次奖励 +":"Incl. place bonus +","吸金":"Coins","嘻哈 Trap":"Hip-Hop Trap","圈 ":"LAP ","在赛道上碰到它":"Find it on the track","城市流行 City Pop":"City Pop","大黄蜂":"Hornet","天蓝":"Sky","完美穿越":"CLEAN PASS","完美起步":"Perfect Start","完美起步!":"PERFECT START!","完赛 ":"Finish ","对手":"Rivals","左右滑动变道 · 躲路障吃道具":"Swipe to change lanes · dodge and grab","已拥有，可以在车库换装":"Owned, equip it in the garage","已满级：":"Maxed: ","开上去立刻加速":"Drive over it for instant speed","引擎":"Engine","彩虹门!":"RAINBOW GATE!","得分":"Score","惊险闪避!":"CLOSE CALL!","成就":"Badges","成就 ":"Badge: ","打出 100 连击":"Hit a 100 combo","把附近的金币吸过来":"Pulls nearby coins to you","护盾":"Shield","护盾挡住!":"SHIELD BLOCK!","护盾挡住了!":"SHIELD BLOCK!","护盾隔热":"SHIELDED","拿满 24 颗星":"Collect all 24 stars","按住…  到 ↑ 松手":"Hold…  release at ↑","摇滚 Rock":"Rock","撞上会熄火，氮气或火箭能撞碎":"Stalls you on hit; nitro or rocket smashes it","撞散!":"SMASHED!","撞碎!":"SMASH!","撞路障!":"BARRIER HIT!","撞飞! ":"KNOCKOUT! ","改装":"Upgrades","改装大师":"Tuner","新纪录!":"NEW BEST!","无视侧风":"WIND PROOF","星际轨道":"Star Orbit","星际轨道拿到第 1 名":"Finish 1st on Star Orbit","星际轨道第1":"1st on Star Orbit","晴空环道":"Sunny Loop","暂停":"Paused","暗夜":"Midnight","曲目":"Music","最佳 ":"Best ","最后一圈!":"FINAL LAP!","最大连击 ":"Max combo ","最快单圈 ":"Best lap ","本关 · ":"This track · ","极速":"Speed","档":"GEAR","樱花古都":"Sakura Town","樱花古都拿到第 1 名":"Finish 1st on Sakura Town","樱花古都第1":"1st on Sakura Town","橙光":"Tangerine","比赛中赢过它":"Beat it in a race","氮气":"Nitro","氮气 ":"Nitro ","氮气 +34":"NITRO +34","氮气瓶":"Nitro Can","氮气罐":"Nitro Tank","沙漠峡谷":"Desert Canyon","没点但开过去也算 GOOD；跟着音符走线就能躲开路障":"Driving over without a tap still counts GOOD; follow the notes to dodge barriers","流行 Pop":"Pop","涂装":"Paint","涂装只改外观，不影响性能":"Paint is cosmetic, stats stay the same","涡轮出弯!":"TURBO EXIT!","滑动把车开进音符所在的车道，压上去时点屏幕":"Swipe into the note's lane, tap as you drive over it","满 24 星":"All 24 stars","满星":"All Stars","漂移完成":"DRIFT DONE","漂移断了":"DRIFT BROKEN","漏拍不减速 · 踩点越准加速越多":"Misses keep cruising speed; better timing gives more boost","漏拍或错道保持巡航，踩点越准加速越多":"Missed notes or wrong lanes keep cruising speed; better timing gives more boost","激光门每小节换一次空档 · 走绿灯那道":"Laser gates shift every bar · take the green lane","火球砸向地上的红圈 · 落地留下熔岩坑":"Fireballs hit the red rings · and leave lava pits","火箭":"Rocket","点一下 · 起步!":"Tap to start!","点击换装":"Tap to equip","烫!":"HOT!","熄火!":"STALL!","熄火时间 −":"Stall time −","熔岩火山":"Lava Volcano","电子 EDM":"EDM","白幽灵":"Ghost","的配乐":" theme","目标：6 车混战，冲第一！":"Goal: beat 5 rivals to 1st!","直接充 34 点氮气":"Instantly adds 34 nitro","知道了":"Got it","磁力线圈":"Magnet Coil","磁铁":"Magnet","磁铁 ":"Magnet ","稳定的追击者，很少失误":"A steady chaser, rarely slips","穿过彩虹门：加速 + 充氮气":"Drive through rainbow gates for boost + nitro","穿过激光":"LASER PROOF","第 ":"P","第一次玩？点 ❓ 看看怎么玩":"First time? Tap ❓ to learn","粉樱":"Blossom","紧咬第一的老二，从不让路":"Always second, never yields","紫罗兰":"Violet","红圈预警一小节 · 下一小节第一拍劈下":"Red rings warn a bar early · strikes land on beat 1","结算时换成车库资金":"Turns into garage cash after the race","结算金币 +":"Race coins +","继续":"Resume","耐撞":"Armor","节拍飙车":"Beat Racer","节拍飙车 3D":"Beat Racer 3D","获得 ":"Got ","蓝闪电":"Blue Bolt","薄荷":"Mint","被激光烧到!":"LASER BURN!","被砸中!":"DIRECT HIT!","被雷劈了!":"ZAPPED!","被风吹偏!":"BLOWN OFF!","被风滚草糊脸":"TUMBLEWEED!","解锁：":"Unlock: ","让前方对手减速打转":"Slows and spins rivals ahead","赛车":"Cars","赛道":"Tracks","赞助商":"Sponsor","赤焰":"Blaze","起飞!":"LIFTOFF!","超车! ":"PASS! ","超车王":"Overtaker","跑完":"Finish ","跑完这条赛道":"Finish this track","路障":"Barrier","车库":"Garage","车库购买 🪙":"Buy in garage 🪙","车速 +":"Top speed +","车队王牌，每条赛道都是最快的那个":"Team ace, fastest on every track","返回":"Back","连击 100":"Combo 100","连击 50":"Combo 50","迪斯科放克 Disco Funk":"Disco Funk","追尾!":"BUMPED!","选关":"Tracks","选择赛道":"Select Track","道具":"Items","道具箱":"Item Box","道具箱：护盾 磁铁 闪电 火箭":"Item boxes: shield, magnet, zap, rocket","道具（拿到后点左下角按钮使用）":"Items (tap the bottom-left button to use)","重来":"Retry","金币":"Coin","金币不够，再跑几场吧":"Not enough coins, race a few more","键盘：空格 踩点 · ← → 变道 · ↑ 道具 · P 暂停":"Keys: Space beat · ← → lanes · ↑ item · P pause","镭射紫":"Laser Violet","长条按住漂移，到 ↑ 松手出弯":"Hold long notes to drift, release at ↑","闪电":"Zap","闪电 ×":"ZAP ×","防滚架":"Roll Cage","随机道具，落后时更容易出攻击道具":"Random item; attack items are likelier when behind","雨林雷暴":"Jungle Storm","雪山之巅":"Snow Peak","零失误":"Flawless","雷鬼动 Reggaeton":"Reggaeton","霓虹夜城":"Neon Night","青蛙王":"Frog King","顶住侧风!":"HELD THE WIND!","首胜":"First Win","黄金":"Gold","鼓打贝斯 Drum & Bass":"Drum & Bass","🌈 彩虹门":"🌈 Rainbow Gates","🌋 火山灰":"🌋 Ash","🌠 流星雨":"🌠 Meteors","🌧 夜雨":"🌧 Night Rain","🌪 沙尘暴":"🌪 Sandstorm","🌸 樱吹雪":"🌸 Petal Storm","🌾 风滚草":"🌾 Tumbleweeds","🍃 微风":"🍃 Breeze","🎨 买下涂装：":"🎨 Bought paint: ","🎨 涂装":"🎨 Paint","🎨 解锁涂装：":"🎨 Paint unlocked: ","🏆 冠军!":"🏆 WINNER!","💨 侧风":"💨 Crosswind","📖 图鉴":"📖 Codex","📖 新图鉴 ×":"📖 New entries ×","🔊 点一下屏幕开启音乐":"🔊 Tap the screen for music","🔒 上一关前三":"🔒 Top 3 on previous","🔧 车库":"🔧 Garage","🚥 激光门":"🚥 Laser Gates","🛸 跳台":"🛸 Ramps","🧊 冰面":"🧊 Ice","：":": "};
+I18N.en = {"    准确率 ":"    Accuracy ","   超车 ×":"   Passes ×","  ⏱新纪录":"  ⏱ New best"," · 开局护盾":" · Start shield"," · 点我":" · Tap"," 升到 ":" → Lv."," 名":""," 圈":" laps"," 曲目":" track"," 涂装":" paints"," 秒 · 充能 +":"s · charge +"," 秒 · 范围 ":"s · range "," 米":"m"," 级":"","10 秒内挡一次撞击":"Blocks one hit for 10s","100 连击":"100 combo","2.5 秒无敌冲刺":"2.5s invincible dash","8 条赛道都跑完过":"Finish all 8 tracks","← 拖动旋转 →":"← Drag to rotate →","≪≪ 侧风 ≪≪":"≪≪ CROSSWIND ≪≪","≫≫ 侧风 ≫≫":"≫≫ CROSSWIND ≫≫","☄ 火球":"☄ Fireballs","★ 满级":"★ MAX","⚡ 落雷":"⚡ Lightning","⛈ 雷暴":"⛈ Thunderstorm","❄ 暴风雪":"❄ Blizzard","❓ 玩法":"❓ Help","❓ 玩法说明":"❓ How to Play","一场不熄火、不被撞停":"No stalls or crashes in a race","一场吃到 150 枚金币":"Grab 150 coins in a race","一场打出 100 连击":"Hit a 100 combo in a race","一场打出 50 连击":"Hit a 50 combo in a race","一场超车 8 次":"Pass 8 cars in a race","一次滑动只换一道，抬手后再换下一道":"One lane per swipe; lift before the next swipe","下一关":"Next","中游霸主，直线很猛":"Rules the midfield, fast on straights","从最后一位发车，但从不放弃":"Starts last, never gives up","任意改装升到满级":"Max out any upgrade","任意赛道拿到第 1 名":"Finish 1st on any track","低重力跳台能飞过障碍 · 小心陨石":"Ramps fly you over hazards · watch for meteors","使用中":"Equipped","侧风会把车吹偏一道 · 鼓点上逆风滑=顶风":"Gusts push you a lane · swipe into the wind to hold","先滑到音符车道，到白色判定线时点击":"Swipe into the note lane, then tap at the white judgment line","全勤":"Grand Tour","冠军!":"WINNER!","冰面!":"ICE!","冰面上变道会打滑 · 副歌暴风雪看不清":"You slide on ice · the chorus brings a whiteout","前三名才能解锁下一关":"Finish top 3 to unlock the next track","前三名解锁下一关，金币去车库改装":"Top 3 unlocks the next track; spend coins in the garage","副歌起沙尘暴 · 风滚草会横穿赛道":"Sandstorm in the chorus · tumbleweeds cross the road","加速带":"Boost Pad","加速带!":"BOOST PAD!","升级":"Upgrade","升级  🪙 ":"Upgrade  🪙 ","升级后：":"Next: ","反方向滑一下顶住!":"Swipe the other way to hold!","发车的 GO 鼓点打中":"Hit the GO beat at the start","只改外观，不影响性能":"Cosmetic only, no stat change","名":"POS","含名次奖励 +":"Incl. place bonus +","吸金":"Coins","嘻哈 Trap":"Hip-Hop Trap","圈 ":"LAP ","在赛道上碰到它":"Find it on the track","城市流行 City Pop":"City Pop","大黄蜂":"Hornet","天蓝":"Sky","完美穿越":"CLEAN PASS","完美起步":"Perfect Start","完美起步!":"PERFECT START!","完赛 ":"Finish ","对手":"Rivals","已拥有，可以在车库换装":"Owned, equip it in the garage","已满级：":"Maxed: ","开上去立刻加速":"Drive over it for instant speed","引擎":"Engine","彩虹门!":"RAINBOW GATE!","得分":"Score","惊险闪避!":"CLOSE CALL!","成就":"Badges","成就 ":"Badge: ","打出 100 连击":"Hit a 100 combo","把附近的金币吸过来":"Pulls nearby coins to you","护盾":"Shield","护盾挡住!":"SHIELD BLOCK!","护盾挡住了!":"SHIELD BLOCK!","护盾隔热":"SHIELDED","拿满 24 颗星":"Collect all 24 stars","按住…  到 ↑ 松手":"Hold…  release at ↑","摇滚 Rock":"Rock","撞上会熄火，氮气或火箭能撞碎":"Stalls you on hit; nitro or rocket smashes it","撞散!":"SMASHED!","撞碎!":"SMASH!","撞路障!":"BARRIER HIT!","撞飞! ":"KNOCKOUT! ","改装":"Upgrades","改装大师":"Tuner","新纪录!":"NEW BEST!","无视侧风":"WIND PROOF","星际轨道":"Star Orbit","星际轨道拿到第 1 名":"Finish 1st on Star Orbit","星际轨道第1":"1st on Star Orbit","晴空环道":"Sunny Loop","暂停":"Paused","暗夜":"Midnight","曲目":"Music","最佳 ":"Best ","最后一圈!":"FINAL LAP!","最大连击 ":"Max combo ","最快单圈 ":"Best lap ","本关 · ":"This track · ","极速":"Speed","档":"GEAR","樱花古都":"Sakura Town","樱花古都拿到第 1 名":"Finish 1st on Sakura Town","樱花古都第1":"1st on Sakura Town","橙光":"Tangerine","比赛中赢过它":"Beat it in a race","氮气":"Nitro","氮气 ":"Nitro ","氮气 +34":"NITRO +34","氮气瓶":"Nitro Can","氮气罐":"Nitro Tank","沙漠峡谷":"Desert Canyon","流行 Pop":"Pop","涂装":"Paint","涂装只改外观，不影响性能":"Paint is cosmetic, stats stay the same","涡轮出弯!":"TURBO EXIT!","满 24 星":"All 24 stars","满星":"All Stars","漂移完成":"DRIFT DONE","漂移断了":"DRIFT BROKEN","漏拍不减速 · 踩点越准加速越多":"Misses keep cruising speed; better timing gives more boost","漏拍保持巡航，踩点越准加速越多":"Misses keep cruising speed; better timing gives more boost","激光门每小节换一次空档 · 走绿灯那道":"Laser gates shift every bar · take the green lane","火球砸向地上的红圈 · 落地留下熔岩坑":"Fireballs hit the red rings · and leave lava pits","火箭":"Rocket","点!":"TAP!","点一下 · 起步!":"Tap to start!","点击换装":"Tap to equip","烫!":"HOT!","熄火!":"STALL!","熄火时间 −":"Stall time −","熔岩火山":"Lava Volcano","电子 EDM":"EDM","白幽灵":"Ghost","的配乐":" theme","目标：6 车混战，冲第一！":"Goal: beat 5 rivals to 1st!","直接充 34 点氮气":"Instantly adds 34 nitro","知道了":"Got it","短滑一次换一道 · 提前看箭头准备":"One lane per short swipe; follow the advance arrow","短滑一次换一道 · 音符到白线时点击":"One short swipe per lane; tap as notes reach the white line","磁力线圈":"Magnet Coil","磁铁":"Magnet","磁铁 ":"Magnet ","稳定的追击者，很少失误":"A steady chaser, rarely slips","穿过彩虹门：加速 + 充氮气":"Drive through rainbow gates for boost + nitro","穿过激光":"LASER PROOF","第 ":"P","第一次玩？点 ❓ 看看怎么玩":"First time? Tap ❓ to learn","粉樱":"Blossom","紧咬第一的老二，从不让路":"Always second, never yields","紫罗兰":"Violet","红圈预警一小节 · 下一小节第一拍劈下":"Red rings warn a bar early · strikes land on beat 1","结算时换成车库资金":"Turns into garage cash after the race","结算金币 +":"Race coins +","继续":"Resume","耐撞":"Armor","节拍飙车":"Beat Racer","节拍飙车 3D":"Beat Racer 3D","获得 ":"Got ","蓝闪电":"Blue Bolt","薄荷":"Mint","被激光烧到!":"LASER BURN!","被砸中!":"DIRECT HIT!","被雷劈了!":"ZAPPED!","被风吹偏!":"BLOWN OFF!","被风滚草糊脸":"TUMBLEWEED!","解锁：":"Unlock: ","让前方对手减速打转":"Slows and spins rivals ahead","赛车":"Cars","赛道":"Tracks","赞助商":"Sponsor","赤焰":"Blaze","起飞!":"LIFTOFF!","超车! ":"PASS! ","超车王":"Overtaker","跑完":"Finish ","跑完这条赛道":"Finish this track","跟着稳定鼓点点击，长条按住漂移":"Tap with the steady beat; hold long notes to drift","路障":"Barrier","车库":"Garage","车库购买 🪙":"Buy in garage 🪙","车速 +":"Top speed +","车队王牌，每条赛道都是最快的那个":"Team ace, fastest on every track","返回":"Back","连击 100":"Combo 100","连击 50":"Combo 50","迪斯科放克 Disco Funk":"Disco Funk","追尾!":"BUMPED!","选关":"Tracks","选择赛道":"Select Track","道具":"Items","道具箱":"Item Box","道具箱：护盾 磁铁 闪电 火箭":"Item boxes: shield, magnet, zap, rocket","道具（拿到后点左下角按钮使用）":"Items (tap the bottom-left button to use)","重来":"Retry","金币":"Coin","金币不够，再跑几场吧":"Not enough coins, race a few more","键盘：← → 换道 · 空格 踩拍 · P 暂停":"Keyboard: Left / Right to steer, Space to tap, P to pause","镭射紫":"Laser Violet","闪电":"Zap","闪电 ×":"ZAP ×","防滚架":"Roll Cage","随机道具，落后时更容易出攻击道具":"Random item; attack items are likelier when behind","雨林雷暴":"Jungle Storm","雪山之巅":"Snow Peak","零失误":"Flawless","雷鬼动 Reggaeton":"Reggaeton","霓虹夜城":"Neon Night","青蛙王":"Frog King","顶住侧风!":"HELD THE WIND!","首胜":"First Win","黄金":"Gold","鼓打贝斯 Drum & Bass":"Drum & Bass","🌈 彩虹门":"🌈 Rainbow Gates","🌋 火山灰":"🌋 Ash","🌠 流星雨":"🌠 Meteors","🌧 夜雨":"🌧 Night Rain","🌪 沙尘暴":"🌪 Sandstorm","🌸 樱吹雪":"🌸 Petal Storm","🌾 风滚草":"🌾 Tumbleweeds","🍃 微风":"🍃 Breeze","🎨 买下涂装：":"🎨 Bought paint: ","🎨 涂装":"🎨 Paint","🎨 解锁涂装：":"🎨 Paint unlocked: ","🏆 冠军!":"🏆 WINNER!","💨 侧风":"💨 Crosswind","📖 图鉴":"📖 Codex","📖 新图鉴 ×":"📖 New entries ×","🔊 点一下屏幕开启音乐":"🔊 Tap the screen for music","🔒 上一关前三":"🔒 Top 3 on previous","🔧 车库":"🔧 Garage","🚥 激光门":"🚥 Laser Gates","🛸 跳台":"🛸 Ramps","🧊 冰面":"🧊 Ice","：":": "};
 let LANG = I18N.def;
 try { const s = localStorage.getItem('beatracer3d_lang'); if (s === 'zh' || s === 'en') LANG = s; } catch (e) { }
 if (Q.get('lang') === 'zh' || Q.get('lang') === 'en') LANG = Q.get('lang');
@@ -55084,7 +55084,7 @@ const LEVELS = [
 const NL = LEVELS.length;
 const RIVAL_COL = ['#3d7bff', '#2ecc71', '#ffd23f', '#a55eea', '#ffffff'];
 const RIVAL_NAME = [TT_('蓝闪电'), TT_('青蛙王'), TT_('大黄蜂'), TT_('紫罗兰'), TT_('白幽灵')];
-const LAPS = 2, HW = 8, WP = .06, WG = .11, WO = .16;
+const LAPS = 2, HW = 8, WP = .12, WG = .22, WO = .30;
 const LANES = [HW * 2 / 3, 0, -HW * 2 / 3]; // 0=屏幕左 1=中 2=右（lat 正值在左）
 const laneOf = lat => lat > HW / 3 ? 0 : lat < -HW / 3 ? 2 : 1;
 const V0 = 25;
@@ -55242,6 +55242,8 @@ function genBar() {
   if (k24 === 12) M(t0, 'impact');
   if (sec === 'b' && k24 === 8) M(t0, 'riser', 0, S.bar * 4);
   ARR[L.sty](c);
+  // A steady audible pulse stays aligned with the chart, including quiet music sections.
+  for (const step of [0, 4, 8, 12]) M(st(step), 'beatguide', step % 8 === 0 ? 1 : 0);
   mus.sort((a, b) => a.t - b.t); S.mus.push(...mus);
   // 踩点音高跟着 hook 走：点中音符就是在“弹”主旋律
   const hm = s => { const h = hook.find(h => h[0] <= s && h[0] + h[2] > s); return h ? h[1] : R + 12 + ch[(s >> 2) % ch.length]; };
@@ -55256,6 +55258,7 @@ function genBar() {
     else if (d === 1) ev = [0, 4, 6, 8, 12, 14].map(s => [s, 0]);
     else { ev = [0, 2, 4, 6, 8, 10, 12, 14].filter((s, i) => i % 4 === 0 || r() > .2).map(s => [s, 0]); if (d >= 3 && r() < .5) ev.push([r() < .5 ? 7 : 13, 0]); }
   } else ev = [[0, 0], [8, 0]];
+  ev = bar % 8 === 7 ? [[0, 8]] : (bar % 4 === 3 ? [0] : [0, 8]).map(s => [s, 0]); // Two beats per note; phrase endings leave space to recover.
   ev.sort((a, b) => a[0] - b[0]);
   let holdEnd = -1;
   for (const [s, len] of ev) {
@@ -55270,16 +55273,16 @@ function genBar() {
 const RIDE_LATE = 0.2;
 const LANE_PACE = [
   { phrase: 16, gap: 0.55 }, // diff 0：约 4 小节换一次道，换道前至少 0.55 s
-  { phrase: 12, gap: 0.45 },
-  { phrase: 10, gap: 0.38 },
-  { phrase: 8, gap: 0.32 },
+  { phrase: 16, gap: 0.45 },
+  { phrase: 12, gap: 0.38 },
+  { phrase: 12, gap: 0.32 },
 ];
 function assignLanes(notes, beat, seed, diff = 0) {
   const r = RNG(seed * 31 + 7), pace = LANE_PACE[Math.max(0, Math.min(3, diff))];
   let lane = 1, target = 1, prevEnd = -9, phraseEnd = 0;
   for (const n of notes) {
     if (n.t >= phraseEnd) {
-      const opts = [0, 1, 2].filter(l => l !== target);
+      const opts = [lane - 1, lane + 1].filter(l => l >= 0 && l <= 2);
       target = opts[(r() * opts.length) | 0];
       phraseEnd = n.t + beat * pace.phrase * (.8 + r() * .4);
     }
@@ -55360,6 +55363,7 @@ function play(e, t, dest) {
     case 'impact': { const o = osc('sine', 90, t, 1.2, .6, dest); o.frequency.exponentialRampToValueAtTime(30, t + 1); noise(t, 1.4, .2, 'lowpass', 900, REV); break; }
     case 'riser': { const s = AC.createBufferSource(); s.buffer = NB; s.loop = true; const fl = AC.createBiquadFilter(), g = AC.createGain(); fl.type = 'bandpass'; fl.Q.value = 2; fl.frequency.setValueAtTime(400, t); fl.frequency.exponentialRampToValueAtTime(7000, t + du);
       g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.12, t + du); g.gain.exponentialRampToValueAtTime(.0001, t + du + .05); s.connect(fl); fl.connect(g); g.connect(dest); s.start(t); s.stop(t + du + .1); break; }
+    case 'beatguide': osc('triangle', e.m ? 1480 : 1120, t, .045, e.m ? .14 : .045, dest); break;
     case 'stick': osc('square', e.m ? 1760 : 1320, t, .05, .12, dest); break;
     // ---- 贝斯 ----
     case 'pluckb': voice(t, f, du, { osc: [['sawtooth', 0], ['square', -1200, .5]], f0: 1600, f1: 220, fd: .18, v: .17 * v, s: .5, r: .05 }); break;
@@ -55955,7 +55959,7 @@ function reset(lv, autoStart) {
   L.rivals.slice().reverse().forEach((v, i) => { const o = makeCar(RIVAL_COL[i], String(i + 2)); SCN.add(o); CARS.push({ o, s: grid[i][1], lane: grid[i][0], lat: LANES[grid[i][0]], yaw: 0, v: 0, base: v, ph: i * 1.7, name: RIVAL_NAME[i], ri: i, col: RIVAL_COL[i], fin: 0, ahead: true, stun: 0, think: 0 }); });
   const po = makeCar(carCol(), '1'); SCN.add(po);
   Object.assign(G, { started: false, paused: false, over: false, ui: null, result: null, now: 0, prev: 0,
-    score: 0, combo: 0, maxCombo: 0, energy: 0, nitroEnd: -1, boost: 0, stall: 0, cnt: { p: 0, g: 0, o: 0, m: 0 }, ni: 0, hold: null,
+    score: 0, combo: 0, maxCombo: 0, energy: 0, nitroEnd: -1, boost: 0, stall: 0, cnt: { p: 0, g: 0, o: 0, m: 0 }, ni: 0, hold: null, lastLaneShift: -99,
     p: { o: po, s: -36, lane: 1, prevLane: 1, lat: 0, v: 0, yaw: 0, drift: 0, air: 0, airT: 0 }, laneLog: [], seq: 0, lapT: [], lap: 0, finT: 0, rank: 6, pops: [], flash: 0, shake: 0, comboPop: 0, overtakes: 0, endAt: 0, camInit: false,
     item: null, itemPop: 0, shieldEnd: -1, magnetEnd: -1, invEnd: -1, coins: 0, bumpCD: 0, pend: null, zap: 0, botT: 0 });
   if (autoStart) startRun();
@@ -56017,9 +56021,11 @@ function press(id) {
 function laneShift(d, id) {
   if (G.pend && (id == null || G.pend.id === id)) G.pend = null;
   if (!G.started || G.over || G.paused) return;
+  if (G.now - (G.lastLaneShift ?? -99) < .18) return;
+  d = Math.sign(d);
   if (mechLaneHook(d)) { sfx('swish'); return; }
   const P = G.p, nl = clamp(P.lane + d, 0, 2); if (nl === P.lane) return;
-  P.prevLane = P.lane; P.lane = nl; sfx('swish'); G.laneLog.push([G.now, nl, ++G.seq]);
+  G.lastLaneShift = G.now; P.prevLane = P.lane; P.lane = nl; sfx('swish'); G.laneLog.push([G.now, nl, ++G.seq]);
 }
 
 // ---- 道具 ----
@@ -56052,8 +56058,8 @@ function useItem() {
 function release(id) { if (G.hold && G.hold.id === id) holdEnd(true); }
 
 function rivalTarget(c) { // 对手速度 = 基础 + 起伏 + 轻度橡皮筋
-  const gap = c.s - G.p.s; let v = c.base * (1 + .05 * Math.sin(G.now * .45 + c.ph));
-  if (gap > 90) v -= 2.5; else if (gap < -70) v += 2; return v;
+  const gap = c.s - G.p.s; let v = c.base * .95 * (1 + .05 * Math.sin(G.now * .45 + c.ph));
+  if (gap > 90) v -= 3; else if (gap < -70) v += 2; return v;
 }
 function update(dt) {
   const now = G.now, ns = SG.notes; genUntil(now + SG.bar * 2);
@@ -56147,27 +56153,31 @@ function openUI(type) {
   }
   G.ui = { type, B, t: performance.now() };
 }
-function pause() { if (G.over || !G.started) return; G.paused = true; if (AC) AC.suspend(); openUI('pause'); }
+function pause() { if (G.over || !G.started) return; G.paused = true; for (const id in PTR) delete PTR[id]; if (AC) AC.suspend(); openUI('pause'); }
 function resume() { G.ui = null; G.paused = false; if (AC) AC.resume(); }
 function uiTap(x, y) { if (performance.now() - G.ui.t < 250) return; for (const b of G.ui.B) if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) { sfx('ui'); b.act(); return; } }
 
 // ====================== 输入：整屏都是“油门鼓” ======================
 function toXY(t) { const r = hc.getBoundingClientRect(); return [(t.clientX - r.left) / r.width * W, (t.clientY - r.top) / r.height * H]; }
 const IBX = 92, IBY = () => HWY_EX ? HWY_EX[1] : SY() - 250, IBR = 58; // 道具按钮：和喷口按钮同一高度，在左侧
-const SWIPE = 46, PTR = {};
+const SWIPE = 76, PTR = {};
 function down(x, y, id) {
   ensureAC();
   if (G.ui) { uiTap(x, y); return; }
   if (Math.hypot(x - 668, y - 62) < 48) { if (G.started && !G.over) pause(); else if (!G.started) startRun(); return; }
   if (!G.started) { startRun(); return; }
   if (G.item && Math.hypot(x - IBX, y - IBY()) < IBR + 10) { useItem(); return; }
+  if (PTR[id]) return;
   PTR[id] = { x, y, used: false };
   press(id);
 }
 // 横向滑动 = 变道（一次滑动换一条道；按住长条时也能滑）
 function move(x, y, id) {
-  const p = PTR[id]; if (!p) return; const dx = x - p.x;
-  if (Math.abs(dx) > SWIPE && Math.abs(dx) > Math.abs(y - p.y) * .8) { laneShift(dx < 0 ? -1 : 1, id); p.x = x; p.y = y; }
+  const p = PTR[id]; if (!p || p.used) return;
+  const dx = x - p.x, dy = y - p.y;
+  if (Math.abs(dx) >= SWIPE && Math.abs(dx) > Math.abs(dy) * 1.4) {
+    p.used = true; laneShift(Math.sign(dx), id);
+  }
 }
 function up(id) { delete PTR[id]; release(id); }
 hc.addEventListener('touchstart', e => { e.preventDefault(); for (const t of e.changedTouches) { const [x, y] = toXY(t); down(x, y, 't' + t.identifier); } }, { passive: false });
@@ -56269,7 +56279,7 @@ const SY = () => H - 175, TX = 150, PPS = 420;
 // ---- 节拍跑道（车道音符）：三条车道的路面上铺着音符，从远处驶来；到点时正好压过车头处的判定线 ----
 // 玩家把车开进音符所在的车道，压上去的那一刻点屏幕：点准 PERFECT / GREAT，没点但开过 GOOD，在别的道上 MISS。
 // 时间 → 距离：音符在“判定线前方 (n.t - now) × HWY_V 米”处。判定规则见 press() / ride()，与服务端一致。
-const HWY_V = 22, HWY_AHEAD = 2.4, HWY_FRONT = 1.2, PV = new THREE.Vector3();
+const HWY_V = 18, HWY_AHEAD = 3.2, HWY_FRONT = 1.2, PV = new THREE.Vector3();
 const LANE_COL = ['#ff5fa2', '#ffd23f', '#3ef0ff']; // 左 / 中 / 右：每条道一种颜色，远处也认得出来
 // 赛道距离 s、横向 lat、高度 y 的点投影到 HUD 坐标；在相机后面返回 null
 function hwyPt(s, lat, y) {
@@ -56292,12 +56302,15 @@ function drawHighway(pulse, acc) {
     const l = hwyPt(S(t), HW, .06), r = hwyPt(S(t), -HW, .06); if (!l || !r) continue;
     hx.beginPath(); hx.moveTo(l[0], l[1]); hx.lineTo(r[0], r[1]); hx.lineWidth = k % 4 === 0 ? 3 : 1.5; hx.strokeStyle = k % 4 === 0 ? 'rgba(255,255,255,.3)' : 'rgba(255,255,255,.12)'; hx.stroke(); }
   // 判定线：横跨三条道；车所在的那一段亮起，按中时闪一下
-  const myLane = laneOf(P.lat);
+  const myLane = P.lane;
+  const beatPhase = ((now - SG.lead) / b % 1 + 1) % 1;
+  const beatGlow = Math.max(0, 1 - beatPhase * 5);
+  const approaching = ns.slice(Math.max(0, G.ni - 2), G.ni + 8).some(n => !n.j && n.lane === myLane && Math.abs(n.t - now) <= WO);
   for (let l = 0; l < 3; l++) {
-    const a = hwyPt(s0, LANES[l] + HW / 3 - .25, .08), c = hwyPt(s0, LANES[l] - HW / 3 + .25, .08); if (!a || !c) continue;
+    const a = hwyPt(s0, LANES[l] + HW / 3 - .25, .6), c = hwyPt(s0, LANES[l] - HW / 3 + .25, .6); if (!a || !c) continue;
     const on = l === myLane;
     hx.beginPath(); hx.moveTo(a[0], a[1]); hx.lineTo(c[0], c[1]);
-    hx.lineWidth = on ? 9 + pulse * 4 + G.flash * 8 : 4; hx.strokeStyle = on ? (G.flash > .1 ? acc : '#ffffff') : 'rgba(255,255,255,.35)'; hx.stroke();
+    hx.lineWidth = on ? 9 + beatGlow * 7 + G.flash * 8 : 4 + beatGlow * 2; hx.strokeStyle = on ? (G.flash > .1 ? acc : approaching ? '#7ee081' : '#ffffff') : 'rgba(255,255,255,' + (.35 + beatGlow * .3) + ')'; hx.stroke();
   }
   // 音符（远的先画）
   const vis = [];
@@ -56310,14 +56323,14 @@ function drawHighway(pulse, acc) {
       hx.beginPath(); let first = true, wid = 0;
       for (let t = Math.max(ta, now - .05); t <= Math.min(n.t2, now + HWY_AHEAD); t += .04) { const q = hwyAt(S(t), lat, .08); if (!q) continue; first ? hx.moveTo(q[0], q[1]) : hx.lineTo(q[0], q[1]); first = false; wid = Math.max(wid, q[2]); }
       hx.lineWidth = Math.max(10, Math.min(56, wid * 2.2)); hx.strokeStyle = n.j === 'm' ? 'rgba(150,150,170,.5)' : n.holding ? 'rgba(255,170,90,.9)' : 'rgba(255,138,61,.72)'; hx.stroke();
-      if (n.t2 - now <= HWY_AHEAD) { const e = hwyAt(S(n.t2), lat, .6); if (e) { const r = clamp(e[2] * 1.3, 12, 40); hx.beginPath(); hx.arc(e[0], e[1], r, 0, 7); hx.fillStyle = '#ffffff'; hx.fill(); hx.lineWidth = 5; hx.strokeStyle = '#ff8a3d'; hx.stroke(); txt('↑', e[0], e[1] + 1, r * 1.2, '#ff8a3d'); } }
-      if (!n.holding && !n.j && n.t >= now - .1) { const q = hwyAt(S(n.t), lat, .6); if (q) { const r = clamp(q[2] * 1.5, 12, 52); hx.beginPath(); hx.arc(q[0], q[1], r, 0, 7); hx.fillStyle = '#ff8a3d'; hx.fill(); hx.lineWidth = 5; hx.strokeStyle = '#fff'; hx.stroke(); txt('≈', q[0], q[1] + 2, r * 1.1, '#fff'); } }
+      if (n.t2 - now <= HWY_AHEAD) { const e = hwyAt(S(n.t2), lat, .6); if (e) { const r = clamp(e[2] * 1.55, 16, 48); hx.beginPath(); hx.arc(e[0], e[1], r, 0, 7); hx.fillStyle = '#ffffff'; hx.fill(); hx.lineWidth = 5; hx.strokeStyle = '#ff8a3d'; hx.stroke(); txt('↑', clamp(e[0], 40, W - 40), e[1] + 1, r * 1.2, '#ff8a3d'); } }
+      if (!n.holding && !n.j && n.t >= now - WO) { const q = hwyAt(S(n.t), lat, .6); if (q) { const r = clamp(q[2] * 2.05, 20, 70); hx.beginPath(); hx.arc(q[0], q[1], r, 0, 7); hx.fillStyle = '#ff8a3d'; hx.fill(); hx.lineWidth = 5; hx.strokeStyle = '#fff'; hx.stroke(); txt('≈', clamp(q[0], 40, W - 40), q[1] + 2, r * 1.1, '#fff'); } }
       continue;
     }
-    if (n.j && n.j !== 'm') continue; if (n.t < now - .1) continue;
+    if (n.j && n.j !== 'm') continue; if (n.t < now - WO) continue;
     const q = hwyAt(S(n.t), lat, .6); if (!q) continue;
     // 音符做成横躺在车道上的“能量门”：一块发光的宽菱形，宽度约等于车道宽
-    const wpx = clamp(q[2] * 2.2, 18, 150), hpx = clamp(q[2] * .9, 8, 54), fade = n.t < now ? clamp(1 - (now - n.t) / .1, 0, 1) : 1;
+    const wpx = clamp(q[2] * 3.1, 30, 200), hpx = clamp(q[2] * 1.65, 16, 92), fade = n.t < now ? clamp(1 - (now - n.t) / WO, 0, 1) : 1;
     hx.globalAlpha = (n.j === 'm' ? .3 : 1) * fade;
     hx.beginPath(); hx.moveTo(q[0] - wpx / 2, q[1]); hx.lineTo(q[0], q[1] - hpx / 2); hx.lineTo(q[0] + wpx / 2, q[1]); hx.lineTo(q[0], q[1] + hpx / 2); hx.closePath();
     hx.fillStyle = n.go ? '#7ee081' : col; hx.fill(); hx.lineWidth = Math.max(2, hpx * .12); hx.strokeStyle = '#ffffff'; hx.stroke();
@@ -56325,18 +56338,19 @@ function drawHighway(pulse, acc) {
   }
   hx.restore();
   // 车上方的小提示：下一个音符在哪条道（左 / 右箭头），帮新手读路
-  const next = ns.slice(G.ni, G.ni + 6).find(n => !n.j && n.t > now);
-  const ex = hwyAt(s0, P.lat, .5);
-  if (ex && next && next.t - now < 1.2 && next.lane !== myLane) {
-    const d = next.lane < myLane ? -1 : 1, ax = ex[0] + d * 70, ay = ex[1] - 60, k = .6 + .4 * Math.sin(performance.now() / 90);
+  const next = ns.slice(G.ni, G.ni + 12).find(n => !n.j && n.t >= now - WO);
+  const ex = hwyAt(s0, P.lat, .6);
+  if (ex && next && next.t - now < 1.8 && next.lane !== myLane) {
+    const d = next.lane < myLane ? -1 : 1, ax = ex[0] + d * 70, ay = ex[1] - 60, k = 1;
     hx.save(); hx.globalAlpha = k; txt(d < 0 ? '◀' : '▶', ax, ay, 46, LANE_COL[next.lane], '#151726'); hx.restore();
   }
   HWY_EX = ex;
+  if (ex && next && next.lane === myLane && Math.abs(next.t - now) <= WO) txt(TT_('点!'), ex[0], ex[1] - 70, 40, '#7ee081', '#151726');
   if (G.hold && ex) txt(TT_('按住…  到 ↑ 松手'), ex[0], ex[1] + 90, 28, '#ffc078', '#151726');
 }
 let HWY_EX = null; // 最近一帧喷口按钮在屏幕上的位置（判定字飘在它上方）
 function drawStrip(pulse, acc) {
-  const sy = SY(), x0 = 30, x1 = 690, now = G.now;
+  const sy = H - 340, x0 = 30, x1 = 690, now = G.now;
   hx.save(); rr(x0, sy - 62, x1 - x0, 124, 62); hx.fillStyle = 'rgba(10,12,26,.62)'; hx.fill(); hx.lineWidth = 3; hx.strokeStyle = 'rgba(255,255,255,.22)'; hx.stroke(); hx.clip();
   // 拍线
   const b = SG.beat, k0 = Math.ceil((now - SG.lead - .5) / b);
@@ -56411,7 +56425,7 @@ function drawHUD(pulse) {
   drawMechHUD();
   if (G.started) drawHighway(pulse, acc);
   drawItemUI();
-  txt(G.started && !G.hold ? TT_('← 滑到音符的车道 →  ·  压上去时点屏幕') : '', W / 2, H - 40, 24, 'rgba(255,255,255,.6)');
+  txt(G.started && !G.hold ? TT_('短滑一次换一道 · 音符到白线时点击') : '', W / 2, H - 40, 24, 'rgba(255,255,255,.6)');
   // 倒计时
   if (G.started && !G.over && now < SG.lead + .5) { const n = Math.ceil((SG.lead - now) / SG.beat);
     if (now < SG.lead && n >= 1 && n <= 3) txt(String(n), W / 2, H * .4, 180, '#ffffff', '#151726', 'center', true, 16);
@@ -56446,7 +56460,7 @@ function drawStart() {
   panel(70, y, 580, 620, th.accent);
   txt(TT_('节拍飙车 3D'), W / 2, y + 74, 72, '#ffffff', null, 'center', true);
   txt('Lv.' + (G.lv + 1) + '  ' + L.name + '  ·  ' + LAPS + TT_(' 圈'), W / 2, y + 130, 28, th.accent); txt('♪ ' + STY[L.sty].name + '  ·  ' + L.bpm + ' BPM', W / 2, y + 166, 26, '#ffffff');
-  const rows = [['#ffd23f', '◆', TT_('滑动把车开进音符所在的车道，压上去时点屏幕')], ['#ff8a3d', '≈', TT_('长条按住漂移，到 ↑ 松手出弯')], ['#3ef0ff', '⇆', TT_('左右滑动变道 · 躲路障吃道具')], ['#ff4fd8', '?', TT_('道具箱：护盾 磁铁 闪电 火箭')], ['#ff5a5f', '!', TT_('漏拍不减速 · 踩点越准加速越多')]];
+  const rows = [['#ffd23f', '◆', TT_('先滑到音符车道，到白色判定线时点击')], ['#ff8a3d', '≈', TT_('跟着稳定鼓点点击，长条按住漂移')], ['#3ef0ff', '⇆', TT_('短滑一次换一道 · 提前看箭头准备')], ['#ff4fd8', '?', TT_('道具箱：护盾 磁铁 闪电 火箭')], ['#ff5a5f', '!', TT_('漏拍不减速 · 踩点越准加速越多')]];
   rows.forEach((r, i) => { const yy = y + 225 + i * 58; hx.beginPath(); hx.arc(130, yy, 24, 0, 7); hx.fillStyle = r[0]; hx.fill(); txt(r[1], 130, yy + 1, 28, '#151726'); txt(r[2], 172, yy, 27, '#ffffff', null, 'left'); });
   const best = SAVE.best[G.lv] ? TT_('最佳 ') + SAVE.best[G.lv] + '  ·  ' + fmtT(SAVE.time[G.lv]) + '  ·  ' + '★'.repeat(SAVE.stars[G.lv]) + '☆'.repeat(3 - SAVE.stars[G.lv]) : TT_('目标：6 车混战，冲第一！');
   rr(100, y + 520, 520, 44, 22); hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill(); TXT_MAX = 500; txt(L.tag.join('  ') + TT_('：') + L.tip, W / 2, y + 542, 22, th.accent); TXT_MAX = 0;
@@ -56714,7 +56728,7 @@ if (AUTO && Q.has('demo')) { // 截图用：一份“玩了一阵子”的存档
 function metaSave() { if (AUTO) return; try { localStorage.setItem('beatracer3d_meta', JSON.stringify(META)); } catch (e) { } }
 const ul = k => META.up[k] || 0;
 // 改装数值（主逻辑里调用）
-const upV = () => ul('eng') * .8, nitroLen = () => 6 + ul('nit') * .6, nitroGain = () => 1 + ul('nit') * .06;
+const upV = () => ul('eng') * .8, nitroLen = () => 10 + ul('nit') * .8, nitroGain = () => 1 + ul('nit') * .06;
 const magnetLen = () => 8 + ul('mag') * 1.5, magR = () => 24 + ul('mag') * 4;
 const carCol = () => (PAINTS[META.car] || PAINTS[0]).c;
 const canUp = () => UPG.some(u => ul(u.k) < UMAX && META.gold >= UCOST[ul(u.k)]);
@@ -56876,14 +56890,14 @@ function drawCodex() {
 function drawHelp() {
   const L = LEVELS[G.lv], th = WORLD.th; panel(40, H / 2 - 480, 640, 960, th.accent);
   txt(TT_('❓ 玩法说明'), W / 2, H / 2 - 425, 48, '#ffffff');
-  const ops = [['#ffd23f', '◆', TT_('滑动把车开进音符所在的车道，压上去时点屏幕')], ['#ff8a3d', '≈', TT_('长条按住漂移，到 ↑ 松手出弯')], ['#3ef0ff', '⇆', TT_('没点但开过去也算 GOOD；跟着音符走线就能躲开路障')], ['#ff5a5f', '!', TT_('漏拍或错道保持巡航，踩点越准加速越多')], ['#7ee081', '★', TT_('前三名解锁下一关，金币去车库改装')]];
+  const ops = [['#ffd23f', '◆', TT_('先滑到音符车道，到白色判定线时点击')], ['#ff8a3d', '≈', TT_('跟着稳定鼓点点击，长条按住漂移')], ['#3ef0ff', '⇆', TT_('一次滑动只换一道，抬手后再换下一道')], ['#ff5a5f', '!', TT_('漏拍保持巡航，踩点越准加速越多')], ['#7ee081', '★', TT_('前三名解锁下一关，金币去车库改装')]];
   ops.forEach((r, i) => { const yy = H / 2 - 345 + i * 58; hx.beginPath(); hx.arc(100, yy, 24, 0, 7); hx.fillStyle = r[0]; hx.fill(); txt(r[1], 100, yy + 1, 28, '#151726'); TXT_MAX = 510; txt(r[2], 140, yy, 26, '#ffffff', null, 'left'); TXT_MAX = 0; });
   txt(TT_('道具（拿到后点左下角按钮使用）'), 80, H / 2 - 40, 26, th.accent, null, 'left');
   ITEM_CX.slice(5).forEach((d, i) => { const yy = H / 2 + 12 + i * 52; hx.beginPath(); hx.arc(100, yy, 22, 0, 7); hx.fillStyle = d[3]; hx.fill(); txt(d[1], 100, yy + 2, 24, '#151726'); txt(d[2], 140, yy, 25, '#ffffff', null, 'left'); TXT_MAX = 430; txt(d[4], 216, yy, 22, '#c9cde0', null, 'left'); TXT_MAX = 0; });
   rr(80, H / 2 + 222, 560, 78, 20); hx.fillStyle = 'rgba(255,255,255,.08)'; hx.fill();
   txt(TT_('本关 · ') + L.name + '  ' + L.tag.join(' '), W / 2, H / 2 + 246, 22, th.accent);
   txt(L.tip, W / 2, H / 2 + 278, 22, '#ffffff');
-  txt(TT_('键盘：空格 踩点 · ← → 变道 · ↑ 道具 · P 暂停'), W / 2, H / 2 + 338, 20, '#c9cde0');
+  txt(TT_('键盘：← → 换道 · 空格 踩拍 · P 暂停'), W / 2, H / 2 + 338, 20, '#c9cde0');
 }
 // 旧开局面板（保留函数，不再调用）
 const drawStartOld = function () {
