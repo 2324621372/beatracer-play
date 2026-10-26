@@ -55267,18 +55267,23 @@ function genBar() {
   }
 }
 // ---- 来自 shared/chart.js（构建时内联）----
-const RIDE_LATE = 0.12;
-const MIN_GAP = 0.3;
-function assignLanes(notes, beat, seed) {
-  const r = RNG(seed * 31 + 7);
+const RIDE_LATE = 0.2;
+const LANE_PACE = [
+  { phrase: 16, gap: 0.55 }, // diff 0：约 4 小节换一次道，换道前至少 0.55 s
+  { phrase: 12, gap: 0.45 },
+  { phrase: 10, gap: 0.38 },
+  { phrase: 8, gap: 0.32 },
+];
+function assignLanes(notes, beat, seed, diff = 0) {
+  const r = RNG(seed * 31 + 7), pace = LANE_PACE[Math.max(0, Math.min(3, diff))];
   let lane = 1, target = 1, prevEnd = -9, phraseEnd = 0;
   for (const n of notes) {
     if (n.t >= phraseEnd) {
       const opts = [0, 1, 2].filter(l => l !== target);
       target = opts[(r() * opts.length) | 0];
-      phraseEnd = n.t + beat * (6 + r() * 4);
+      phraseEnd = n.t + beat * pace.phrase * (.8 + r() * .4);
     }
-    if (!n.go && lane !== target && n.t - prevEnd >= MIN_GAP) lane += Math.sign(target - lane);
+    if (!n.go && lane !== target && n.t - prevEnd >= pace.gap) lane += Math.sign(target - lane);
     n.lane = lane;
     prevEnd = n.hold ? n.t2 : n.t;
   }
@@ -55286,7 +55291,7 @@ function assignLanes(notes, beat, seed) {
 const laneAtLog = (log, t) => { let l = 1; for (const [tt, v] of log) { if (tt > t + 1e-9) break; l = v; } return l; };
 
 // 谱面按小节即时生成；车道分配要看前后音符，所以每生成一小节就对“还没判过的尾部”重新分配一次（结果确定、与服务端一致）
-function genUntil(t) { let added = false; while (SG.lead + SG.bars * SG.bar < t) { genBar(); added = true; } if (added) assignLanes(SG.notes, SG.beat, SG.L.seed); }
+function genUntil(t) { let added = false; while (SG.lead + SG.bars * SG.bar < t) { genBar(); added = true; } if (added) assignLanes(SG.notes, SG.beat, SG.L.seed, SG.L.diff); }
 
 // ====================== 音频合成 ======================
 let AC = null, MASTER = null, BUS = null, NB = null, LAT = 0, T0 = 0, SP = 0;
@@ -55602,21 +55607,40 @@ function buildItems(L) {
   }
   BARS = ITEMS.filter(it => it.k === 'bar');
 }
-// 跟着音符走线就不会撞：路障进入前方 ~60 米时，估算车到那里的时刻；若那一刻的音符恰好在路障所在车道，
-// 把路障挪到另一条没有音符的车道（只在玩家看清之前挪，挪动后锁定）
-function steerBarriers() {
-  const P = G.p, v = Math.max(15, P.v), ns = SG.notes;
-  for (const b of BARS) {
-    if (b.locked || hid(b)) continue;
-    const d = fwd(b.s, P.s); if (d < 40 || d > 70) continue;
-    b.locked = true;
-    const t = G.now + d / v, lanes = new Set();
-    for (let i = G.ni; i < ns.length; i++) { const n = ns[i]; if (n.t > t + .6) break; if (n.t > t - .6 || (n.hold && n.t < t && n.t2 > t - .3)) lanes.add(n.lane); }
-    if (!lanes.has(b.lane)) continue;
-    const free = [0, 1, 2].filter(l => !lanes.has(l) && !BARS.some(o => o !== b && o.lane === l && Math.abs(fwd(o.s, b.s)) < 1));
-    if (!free.length) { b.got = G.now; continue; } // 三条道都有拍：这个路障直接撤掉
-    const nl = free[(b.s * 7 | 0) % free.length], p = trk(b.s), lat = LANES[nl];
-    b.lane = nl; b.lat = lat; b.x = p.x + p.tz * lat; b.z = p.z - p.tx * lat; b.o.position.set(b.x, b.o.position.y, b.z);
+// 跟着音符走线 = 躲开障碍 + 吃到奖励：道具进入前方 40–70 米时（玩家还没看清），估算车开到那里的时刻，
+// 按那一刻音符所在的车道重新摆放：
+//   - 路障：挪到没有音符的车道（三条道都有拍就撤掉）
+//   - 金币 / 氮气瓶 / 加速带 / 道具箱：挪到音符所在的车道，顺路就能吃到
+// 摆放后锁定，下一圈重新判断（第二圈的音符不同）
+function placeAt(it, lane) { const p = trk(it.s), lat = LANES[lane]; it.lane = lane; it.lat = lat; it.x = p.x + p.tz * lat; it.z = p.z - p.tx * lat; it.o.position.set(it.x, it.o.position.y, it.z); }
+function noteLanesAt(t, win) {
+  const ns = SG.notes, lanes = new Set();
+  for (let i = G.ni; i < ns.length; i++) { const n = ns[i]; if (n.t > t + win) break; if (n.t > t - win || (n.hold && n.t < t && n.t2 > t - .3)) lanes.add(n.lane); }
+  return lanes;
+}
+// 某时刻车“应该在”的车道：最近的音符所在车道（前后都没有音符就是 null）
+function laneForTime(t) {
+  const ns = SG.notes; let best = null, bd = 1.2;
+  for (let i = G.ni; i < ns.length; i++) { const n = ns[i]; if (n.t > t + bd) break; const d = n.hold && n.t <= t && n.t2 >= t ? 0 : Math.abs(n.t - t); if (d < bd) { bd = d; best = n.lane; } }
+  return best;
+}
+function steerItems() {
+  const P = G.p, v = Math.max(15, P.v);
+  for (const it of ITEMS) {
+    if (it.locked || hid(it)) continue;
+    const d = fwd(it.s, P.s); if (d < 40 || d > 70) continue;
+    it.locked = true;
+    const t = G.now + d / v;
+    if (it.k === 'bar') {
+      const lanes = noteLanesAt(t, .6);
+      if (!lanes.has(it.lane)) continue;
+      const free = [0, 1, 2].filter(l => !lanes.has(l) && !BARS.some(o => o !== it && o.lane === l && Math.abs(fwd(o.s, it.s)) < 1));
+      if (!free.length) { it.got = G.now; continue; }
+      placeAt(it, free[(it.s * 7 | 0) % free.length]);
+    } else {
+      const l = laneForTime(t);
+      if (l != null && l !== it.lane) placeAt(it, l);
+    }
   }
 }
 function fxAt(x, y, z, col, size) { const m = new THREE.Mesh(FXG, new THREE.MeshBasicMaterial({ color: col, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); m.position.set(x, y, z); SCN.add(m); FX.push({ m, t: G.now, size: size || 1 }); }
@@ -56067,7 +56091,7 @@ function update(dt) {
     sfx('bump'); G.shake = .2;
   }
   mechUpdate(dt, prevS);
-  if (race) steerBarriers();
+  if (race) steerItems();
   // 道具拾取
   if (race) for (const it of ITEMS) { if (hid(it)) continue;
     const mag = it.k === 'coin' && G.now < G.magnetEnd && fwd(it.s, P.s) < magR();
@@ -56080,7 +56104,7 @@ function update(dt) {
   if (race) for (const c of CARS) { const ahead = c.s > P.s; if (c.ahead && !ahead) { G.overtakes++; G.score += Math.round(500 * mult()); pop(TT_('超车! ') + c.name, '#ffffff', 44, -200); sfx('pass'); } c.ahead = ahead; }
   G.rank = 1 + CARS.filter(c => c.fin || c.s > P.s).length;
   // 圈数
-  const lap = Math.floor(Math.max(0, P.s) / TRK.L); if (lap > G.lap && !G.over) { G.lapT.push(now - SG.lead); G.lap = lap; for (const b of BARS) b.locked = false; if (lap < LAPS) pop(TT_('最后一圈!'), '#ffd23f', 64, -300, 360); }
+  const lap = Math.floor(Math.max(0, P.s) / TRK.L); if (lap > G.lap && !G.over) { G.lapT.push(now - SG.lead); G.lap = lap; for (const it of ITEMS) it.locked = false; if (lap < LAPS) pop(TT_('最后一圈!'), '#ffd23f', 64, -300, 360); }
   if (!G.over && P.s >= raceDist) finish();
   if (G.over && !G.ui && now >= G.endAt) openUI('result');
   G.drift = G.hold ? 1 : 0;
@@ -56467,7 +56491,8 @@ const BR = RNG(99), BOT_ACC = +(Q.get('acc') || 1);
 function bot() {
   const ns = SG.notes;
   if (G.hold) { const n = G.hold.n; if (n.br == null) n.br = n.t2 + (BR() - .5) * .06 * BOT_ACC; if (G.now >= n.br) release('bot'); return; }
-  for (let i = G.ni; i < ns.length; i++) { const n = ns[i]; if (n.t > G.now + .2) break; if (n.j) continue; if (n.bt == null) n.bt = n.t + (BR() - .45) * .11 * BOT_ACC; if (G.now >= n.bt) { press('bot'); break; } }
+  // 每个音符只按一次；不在那道就不按（靠开过算 GOOD）
+  for (let i = G.ni; i < ns.length; i++) { const n = ns[i]; if (n.t > G.now + .2) break; if (n.j || n.botPressed) continue; if (n.bt == null) n.bt = n.t + (BR() - .45) * .11 * BOT_ACC; if (G.now >= n.bt) { n.botPressed = 1; if (n.lane === G.p.lane) press('bot'); break; } }
   // 走线：躲路障 / 吃道具（反应时间随 acc 变差）
   const P = G.p; G.botT -= 1 / 60; if (G.botT > 0) return; G.botT = .12 * BOT_ACC;
   const nx = SG.notes.slice(G.ni, G.ni + 6).find(n => !n.j && n.t > G.now - .05 && n.t - G.now < 1.1 / Math.max(.6, BOT_ACC * .5));
